@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 148007912}
-  timeLimit: 3
+  timeLimit: 1
   timePassed: 0
   buttonValue: 0
 --- !u!1 &999064032
