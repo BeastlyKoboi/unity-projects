@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class ProgressBar : MonoBehaviour
 {
-    // 
+    //
+    [SerializeField]
+    private GameObject player;
     private Slider progress;
     public float timeLimit;
     public float timePassed;
     private bool started;
+    public int buttonValue; 
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,7 @@ public class ProgressBar : MonoBehaviour
         started = false;
         progress.maxValue = timeLimit;
         timePassed = 0;
+        buttonValue = 5;
     }
 
     // Update is called once per frame
@@ -34,6 +38,7 @@ public class ProgressBar : MonoBehaviour
                 started = false;
                 timePassed = 0;
                 progress.value = 0;
+                player.GetComponent<Player>().AddMoney(buttonValue);
             }
             else
             {
