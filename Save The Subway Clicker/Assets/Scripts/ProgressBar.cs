@@ -7,12 +7,22 @@ public class ProgressBar : MonoBehaviour
 {
     //
     [SerializeField]
-    private GameObject player;
+    private GameObject station;
+
     private Slider progress;
-    public float timeLimit;
+    private float timeLimit;
     public float timePassed;
     private bool started;
-    public int buttonValue; 
+    private bool hasOperator;
+
+    public float TimeLimit
+    {
+        set
+        {
+            timeLimit = value;
+            progress.maxValue = timeLimit;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -20,9 +30,10 @@ public class ProgressBar : MonoBehaviour
         progress = GetComponent<Slider>();
         progress.value = 0;
         started = false;
+        timeLimit = station.GetComponent<Station>().timeLimit;
         progress.maxValue = timeLimit;
         timePassed = 0;
-        buttonValue = 5;
+        hasOperator = false;
     }
 
     // Update is called once per frame
@@ -31,14 +42,18 @@ public class ProgressBar : MonoBehaviour
         if (started)
         {
             timePassed += Time.deltaTime;
-            
 
             if (timePassed >= progress.maxValue)
             {
                 started = false;
                 timePassed = 0;
                 progress.value = 0;
-                player.GetComponent<Player>().AddMoney(buttonValue);
+                station.GetComponent<Station>().PayPlayer();
+
+                if (hasOperator)
+                {
+                    started = true;
+                }
             }
             else
             {

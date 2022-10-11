@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     // 
     [SerializeField]
-    int money;
+    float money;
 
     public TextMeshProUGUI moneyUI;
 
@@ -16,16 +16,16 @@ public class Player : MonoBehaviour
     void Start()
     {
         money = 0;
-        moneyUI.text = string.Format("{0}", money);
+        moneyUI.text = string.Format("{0:C2}", money);
     }
 
     /// <summary>
     /// Method to add money to the player
     /// </summary>
     /// <param name="earnings"></param>
-    public void AddMoney(int earnings)
+    public void AddMoney(float earnings)
     {
         money += earnings;
-        moneyUI.text = string.Format("{0}", money);
+        moneyUI.text = string.Format("{0:C2}", money);
     }
 }
