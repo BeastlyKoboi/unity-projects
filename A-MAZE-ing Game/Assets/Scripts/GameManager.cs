@@ -17,11 +17,17 @@ public class GameManager : MonoBehaviour
         // Initialize starting movement values
         movementTimer = 0;
         movementCooldown = 5;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.N))
+        {
+            maze.CreateDFSMaze(50, 50, .1f, .1f);
+        }
+
         if (Input.GetKey(KeyCode.W) && movementTimer == 0)
         {
             maze.MovePlayerUp();
@@ -47,6 +53,8 @@ public class GameManager : MonoBehaviour
         {
             movementTimer--;
         }
+
+       
 
     }
 

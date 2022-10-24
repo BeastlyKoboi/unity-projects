@@ -5,15 +5,17 @@ using UnityEngine;
 public class Maze : MonoBehaviour
 {
     // Fields for containing the current maze and special vertices
-    private GameObject mazeVertices;
+    private GameObject[,] mazeVertices;
     private Vertex[,] vertexScripts;
     private Vertex startVertex;
     private Vertex finalVertex;
+    public GameObject prefab;
 
     // Fields for Display Info
     private const int VERTEX_PXL_SIZE = 10;
+    private float vertexSize;
     private Color[] VERTEX_COLORS = { Color.blue, Color.white, Color.black, Color.red };
-    private Vector2Int offset;
+    private Vector2 offset;
 
     // Random obj for rng
 
@@ -24,6 +26,8 @@ public class Maze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        vertexSize = prefab.GetComponent<SpriteRenderer>().bounds.size.x;
         
     }
 
@@ -33,29 +37,30 @@ public class Maze : MonoBehaviour
         
     }
 
-    public void CreateDFSMaze(int mazeSizeX, int mazeSizeY, int originX, int originY, int screenWidth, int screenHeight)
+    public void CreateDFSMaze(int mazeSizeX, int mazeSizeY, float originX, float originY)
     {
-        //// Overwrites the size of the maze
-        //this.mazeSizeX = mazeSizeX;
-        //this.mazeSizeY = mazeSizeY;
+        // int mazeSizeX, int mazeSizeY, int originX, int originY, int screenWidth, int screenHeight
 
-        //// Offsets (for centering)
-        //offset.X = originX + (screenWidth - VERTEX_PXL_SIZE * mazeSizeX) / 2;
-        //offset.Y = originY + (screenHeight - VERTEX_PXL_SIZE * mazeSizeY) / 2;
+        // Offsets (for centering)
+        //offset.x = originX + (screenWidth - VERTEX_PXL_SIZE * mazeSizeX) / 2;
+        //offset.y = originY + (screenHeight - VERTEX_PXL_SIZE * mazeSizeY) / 2;
 
-        //// Set up the Vertices
-        //mazeVertices = new Vertex[mazeSizeX, mazeSizeY];
-        //for (int y = 0; y < mazeSizeY; y++)
-        //{
-        //    for (int x = 0; x < mazeSizeX; x++)
-        //    {
-        //        // Set up the data to represent an empty space
-        //        CellType currentType = CellType.Wall;
+        offset.x = originX;
+        offset.y = originY;
 
-        //        // Set up this Vertex and check for start/end
-        //        mazeVertices[x, y] = new Vertex(currentType, x, y);
-        //    }
-        //}
+        // Set up the Vertices
+        mazeVertices = new GameObject[mazeSizeX, mazeSizeY];
+        for (int y = 0; y < mazeSizeY; y++)
+        {
+            for (int x = 0; x < mazeSizeX; x++)
+            {
+                
+                // Set up this Vertex and check for start/end
+                mazeVertices[x, y] = Instantiate(prefab,
+                    new Vector3(offset.x + x * vertexSize, offset.y + y * vertexSize, 0),
+                    Quaternion.identity);
+            }
+        }
 
         //// Saves the start and exit
         //startVertex = mazeVertices[1, 1];
