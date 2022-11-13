@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 3497490425321600098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.64, y: 1.83, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -97,3 +97,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1053a4411be343a468c7942d238f32da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  mazePos: {x: 0, y: 0}
+  visited: 0
+  spriteRenderer: {fileID: 8828389949551356532}
+  sprites:
+  - {fileID: 21300000, guid: 97364b96657e24a0bab88ecbd2578439, type: 3}
+  - {fileID: 21300000, guid: 4273bb39cb579dd4d8b1c9f69bedbdd2, type: 3}
+  - {fileID: 21300000, guid: 1a53ac257f9c5044abf72d2732966e26, type: 3}
+  - {fileID: 21300000, guid: 9ae787075fa99334cbc465d571c9b934, type: 3}
+  - {fileID: 21300000, guid: ee90078361000b74b96964843e798f59, type: 3}
+  - {fileID: 21300000, guid: b2dfa15d24a09a1439ca5db4ac9b4ee3, type: 3}

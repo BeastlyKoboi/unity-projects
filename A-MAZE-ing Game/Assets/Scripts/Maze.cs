@@ -7,8 +7,8 @@ public class Maze : MonoBehaviour
     // Fields for containing the current maze and special vertices
     private GameObject[,] mazeVertices;
     private Vertex[,] vertexScripts;
-    private Vertex startVertex;
-    private Vertex finalVertex;
+    public Vertex startVertex;
+    public Vertex finalVertex;
     public GameObject prefab;
 
     // Fields for Display Info
@@ -45,40 +45,136 @@ public class Maze : MonoBehaviour
         //offset.x = originX + (screenWidth - VERTEX_PXL_SIZE * mazeSizeX) / 2;
         //offset.y = originY + (screenHeight - VERTEX_PXL_SIZE * mazeSizeY) / 2;
 
+        if (mazeVertices != null)
+        {
+            for (int y = 0; y < mazeSizeY; y++)
+            {
+                for (int x = 0; x < mazeSizeX; x++)
+                {
+                    Destroy(mazeVertices[x, y]);
+                }
+            }
+        }
+
         offset.x = originX;
         offset.y = originY;
 
         // Set up the Vertices
         mazeVertices = new GameObject[mazeSizeX, mazeSizeY];
+        vertexScripts = new Vertex[mazeSizeX, mazeSizeY];
+
         for (int y = 0; y < mazeSizeY; y++)
         {
             for (int x = 0; x < mazeSizeX; x++)
             {
-                
                 // Set up this Vertex and check for start/end
                 mazeVertices[x, y] = Instantiate(prefab,
-                    new Vector3(offset.x + x * vertexSize, offset.y + y * vertexSize, 0),
+                    new Vector3(offset.x + x * vertexSize, offset.y - y * vertexSize, 0),
                     Quaternion.identity);
+                
             }
         }
 
-        //// Saves the start and exit
-        //startVertex = mazeVertices[1, 1];
-        //startVertex.Type = CellType.Start;
-        //finalVertex = mazeVertices[mazeSizeX - 2, mazeSizeY - 2];
-        //finalVertex.Type = CellType.Exit;
+        for (int y = 0; y < mazeSizeY; y++)
+        {
+            for (int x = 0; x < mazeSizeX; x++)
+            {
+                // Set up this Vertex and check for start/end
+                
+                vertexScripts[x, y] = mazeVertices[x, y].GetComponent<Vertex>();
+                vertexScripts[x, y].mazePos = new Vector2Int(x, y);
+            }
+        }
 
-        //// Saves the player origin
-        //playerLoc.X = startVertex.X;
-        //playerLoc.Y = startVertex.Y;
+        // Saves the start and exit
+        startVertex = vertexScripts[1, 1];
+        startVertex.Type = VertexType.Start;
+        finalVertex = vertexScripts[mazeSizeX - 2, mazeSizeY - 2];
+        finalVertex.Type = VertexType.Exit;
 
-        //// Declare currentVertex and initialize new stack
-        //Vertex currentVertex;
-        //Stack<Vertex> stack = new Stack<Vertex>();
+        // Saves the player origin
+        playerLoc.x = startVertex.mazePos.x;
+        playerLoc.y = startVertex.mazePos.y;
 
-        //// Push start vertex and mark it visited
-        //startVertex.Visited = true;
-        //stack.Push(startVertex);
+        // Declare currentVertex and initialize new stack
+        Vertex currentVertex;
+        Stack<Vertex> stack = new Stack<Vertex>();
+
+        // Push start vertex and mark it visited
+        startVertex.Visited = true;
+        stack.Push(startVertex);
+
+        // Loop creates paths to exit and dead ends,
+        // throughout entire maze 
+        while (stack.Count != 0)
+        {
+            // Saves the new current vertex
+            currentVertex = stack.Pop();
+
+            // If exit is not found, keep going
+            if (currentVertex.Type != VertexType.Exit)
+            {
+                // create list of unvisited neighbors
+                List<Vertex> neighbors = new List<Vertex>();
+
+                // Checks for neighbors that are not visited
+                if (TileExists(currentVertex.mazePos.x - 2, currentVertex.mazePos.y) &&
+                    !vertexScripts[currentVertex.mazePos.x - 2, currentVertex.mazePos.y].Visited)
+                neighbors.Add(vertexScripts[currentVertex.mazePos.x - 2, currentVertex.mazePos.y]);
+
+                if (TileExists(currentVertex.mazePos.x, currentVertex.mazePos.y - 2) &&
+                    !vertexScripts[currentVertex.mazePos.x, currentVertex.mazePos.y - 2].Visited)
+                neighbors.Add(vertexScripts[currentVertex.mazePos.x, currentVertex.mazePos.y - 2]);
+
+                if (TileExists(currentVertex.mazePos.x + 2, currentVertex.mazePos.y) &&
+                    !vertexScripts[currentVertex.mazePos.x + 2, currentVertex.mazePos.y].Visited)
+                neighbors.Add(vertexScripts[currentVertex.mazePos.x + 2, currentVertex.mazePos.y]);
+
+                if (TileExists(currentVertex.mazePos.x, currentVertex.mazePos.y + 2) &&
+                    !vertexScripts[currentVertex.mazePos.x, currentVertex.mazePos.y + 2].Visited)
+                neighbors.Add(vertexScripts[currentVertex.mazePos.x, currentVertex.mazePos.y + 2]);
+
+                Debug.Log(neighbors.Count);
+                //Debug.Break();
+
+                // If there are remaining neighbors,
+                // push current vert, make neighbor empty,
+                // then push the neighbor too
+                if (neighbors.Count != 0)
+                {
+                    // Declare vertex to hold random vertex
+                    Vertex randVertex;
+
+                    // Add current vertex to stack
+                    stack.Push(currentVertex);
+
+                    // Picks random neighbor and saves it
+                    randVertex = neighbors[Random.Range(0, neighbors.Count)];
+
+                    // Makes wall in between current and rand an empty cell and visited too
+                    vertexScripts[currentVertex.mazePos.x + (randVertex.mazePos.x - currentVertex.mazePos.x) / 2,
+                        currentVertex.mazePos.y + (randVertex.mazePos.y - currentVertex.mazePos.y) / 2].Visited = true;
+                    vertexScripts[currentVertex.mazePos.x + (randVertex.mazePos.x - currentVertex.mazePos.x) / 2,
+                        currentVertex.mazePos.y + (randVertex.mazePos.y - currentVertex.mazePos.y) / 2].Type = VertexType.Empty;
+
+                    randVertex.Visited = true;
+
+                    if (randVertex.Type == VertexType.Wall)
+                    {
+                        randVertex.Type = VertexType.Empty;
+                    }
+
+                    // Add the random vertex to stack
+                    stack.Push(randVertex);
+                }
+            }
+
+        }
+        ResetAllVertices();
+
+
+
+
 
         //// Loop creates paths to exit and dead ends,
         //// throughout entire maze 
@@ -244,7 +340,7 @@ public class Maze : MonoBehaviour
     {
         // Valid indices?
         return (y >= 0 && x >= 0 &&
-            y < vertexScripts.GetLength(0) &&
-            x < vertexScripts.GetLength(1));
+            y < vertexScripts.GetLength(1) &&
+            x < vertexScripts.GetLength(0));
     }
 }

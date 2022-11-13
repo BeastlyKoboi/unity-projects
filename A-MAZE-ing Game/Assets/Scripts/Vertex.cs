@@ -5,9 +5,11 @@ using UnityEngine;
 public class Vertex : MonoBehaviour
 {
     // Fields to hold the cell type, position, and visited status
-    private VertexType type;
-    private Vector2Int mazePos;
-    private bool visited;
+    public VertexType type;
+    public Vector2Int mazePos;
+    public bool visited;
+    public SpriteRenderer spriteRenderer;
+    public Sprite[] sprites;
 
     #region Properties for the fields
     /// <summary>
@@ -16,7 +18,29 @@ public class Vertex : MonoBehaviour
     public VertexType Type
     {
         get { return type; }
-        set { type = value; }
+        set 
+        { 
+            type = value; 
+            
+            switch(type)
+            {
+                case VertexType.Wall:
+                    spriteRenderer.sprite = sprites[0];
+                    break;
+                case VertexType.Empty:
+                    spriteRenderer.sprite = sprites[1];
+                    break;
+                case VertexType.Start:
+                    spriteRenderer.sprite = sprites[3];
+                    break;
+                case VertexType.Exit:
+                    spriteRenderer.sprite = sprites[4];
+                    break;
+                default:
+                    spriteRenderer.sprite = sprites[0];
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -34,16 +58,31 @@ public class Vertex : MonoBehaviour
     public bool Visited
     {
         get { return visited; }
-        set { visited = value; }
+        set 
+        { 
+            visited = value;
+            if (type == VertexType.Empty)
+            {
+                if (visited)
+                    spriteRenderer.sprite = sprites[2];
+                else
+                    spriteRenderer.sprite = sprites[1];
+            }
+
+        }
     }
     #endregion
+
+    private void Awake()
+    {
+        type = VertexType.Wall;
+        visited = false;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        type = VertexType.Wall;
-        mazePos = new Vector2Int();
-        visited = false;
+        
     }
 
     public void SetMazePos()

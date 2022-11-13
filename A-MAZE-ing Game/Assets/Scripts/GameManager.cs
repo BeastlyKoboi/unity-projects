@@ -23,9 +23,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            maze.CreateDFSMaze(50, 50, .1f, .1f);
+            maze.CreateDFSMaze(53, 53, -3f, 5f);
         }
 
         if (Input.GetKey(KeyCode.W) && movementTimer == 0)
