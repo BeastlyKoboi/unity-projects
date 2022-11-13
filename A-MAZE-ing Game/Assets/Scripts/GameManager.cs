@@ -6,10 +6,17 @@ public class GameManager : MonoBehaviour
 {
     // Fields to hold the maze
     public Maze maze;
+    public Camera cam;
 
     // Fields to define movement speed
     private int movementTimer;
     private int movementCooldown;
+
+    // Maze offset to center maze
+    public Vector2 offset;
+
+    // Number of tiles in maze
+    public Vector2Int mazeSize;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +25,8 @@ public class GameManager : MonoBehaviour
         movementTimer = 0;
         movementCooldown = 5;
 
+        offset.x = -1f;
+        offset.y = -4f;
     }
 
     // Update is called once per frame
