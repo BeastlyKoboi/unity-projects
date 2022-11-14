@@ -56,8 +56,9 @@ public class Maze : MonoBehaviour
             }
         }
 
-        offset.x = originX;
-        offset.y = originY;
+        // calculates the center from the offset
+        offset.x = originX + ((9 - originX) * 100 - (mazeSizeX * 16)) / 200;
+        offset.y = originY - ((5 + originY) * 100 - (mazeSizeY * 16)) / 200;
 
         // Set up the Vertices
         mazeVertices = new GameObject[mazeSizeX, mazeSizeY];
@@ -171,75 +172,6 @@ public class Maze : MonoBehaviour
 
         }
         ResetAllVertices();
-
-
-
-
-
-        //// Loop creates paths to exit and dead ends,
-        //// throughout entire maze 
-        //while (stack.Count != 0)
-        //{
-        //    // Saves the new current vertex
-        //    currentVertex = stack.Pop();
-
-        //    // If exit is not found, keep going
-        //    if (currentVertex.Type != CellType.Exit)
-        //    {
-        //        // create list of unvisited neighbors
-        //        List<Vertex> neighbors = new List<Vertex>();
-
-        //        // Checks for neighbors that are not visited
-        //        if (TileExists(currentVertex.X - 2, currentVertex.Y) &&
-        //            !mazeVertices[currentVertex.X - 2, currentVertex.Y].Visited)
-        //            neighbors.Add(mazeVertices[currentVertex.X - 2, currentVertex.Y]);
-
-        //        if (TileExists(currentVertex.X, currentVertex.Y - 2) &&
-        //            !mazeVertices[currentVertex.X, currentVertex.Y - 2].Visited)
-        //            neighbors.Add(mazeVertices[currentVertex.X, currentVertex.Y - 2]);
-
-        //        if (TileExists(currentVertex.X + 2, currentVertex.Y) &&
-        //            !mazeVertices[currentVertex.X + 2, currentVertex.Y].Visited)
-        //            neighbors.Add(mazeVertices[currentVertex.X + 2, currentVertex.Y]);
-
-        //        if (TileExists(currentVertex.X, currentVertex.Y + 2) &&
-        //            !mazeVertices[currentVertex.X, currentVertex.Y + 2].Visited)
-        //            neighbors.Add(mazeVertices[currentVertex.X, currentVertex.Y + 2]);
-
-        //        // If there are remaining neighbors,
-        //        // push current vert, make neighbor empty,
-        //        // then push the neighbor too
-        //        if (neighbors.Count != 0)
-        //        {
-        //            // Declare vertex to hold random vertex
-        //            Vertex randVertex;
-
-        //            // Add current vertex to stack
-        //            stack.Push(currentVertex);
-
-        //            // Picks random neighbor and saves it
-        //            randVertex = neighbors[rng.Next(neighbors.Count)];
-
-        //            // Makes wall in between current and rand an empty cell and visited too
-        //            mazeVertices[currentVertex.X + (randVertex.X - currentVertex.X) / 2,
-        //                currentVertex.Y + (randVertex.Y - currentVertex.Y) / 2].Visited = true;
-        //            mazeVertices[currentVertex.X + (randVertex.X - currentVertex.X) / 2,
-        //                currentVertex.Y + (randVertex.Y - currentVertex.Y) / 2].Type = CellType.Empty;
-
-        //            randVertex.Visited = true;
-
-        //            if (randVertex.Type == CellType.Wall)
-        //            {
-        //                randVertex.Type = CellType.Empty;
-        //            }
-
-        //            // Add the random vertex to stack
-        //            stack.Push(randVertex);
-        //        }
-        //    }
-        //}
-        //// end of while
-        //ResetAllVertices();
     }
 
     #region Methods to move player
