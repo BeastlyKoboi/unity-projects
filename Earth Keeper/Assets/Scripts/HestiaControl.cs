@@ -7,8 +7,8 @@ public class HestiaControl : MonoBehaviour
     public GameManager gameManager;
     public GameObject antiRock;
     public float speed = 5f;
-    public float xLimit = 9;
-    public float yLimit = 5;
+    public float xLimit = 8;
+    public float yLimit = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,6 @@ public class HestiaControl : MonoBehaviour
     {
         if (collision.gameObject.tag == "Asteroids")
         {
-            Time.timeScale = 0;
             Debug.Log("Hit");
         }
     }
