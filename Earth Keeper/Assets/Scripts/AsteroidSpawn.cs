@@ -21,12 +21,43 @@ public class AsteroidSpawn : MonoBehaviour
     //
     void Spawn()
     {
-        /*
-        // Create a rock at a random y position
+        float randomSide = Random.Range(1, 5);
         float random = Random.Range(-spawnYLimit, spawnYLimit);
-        Vector3 spawnPos = transform.position + new Vector3(0, random, 0f);
-        gameManager.AddRockToList(Instantiate(rock, spawnPos, Quaternion.identity));
+        Vector3 spawnPos;
+        float theta;
+
+        switch (randomSide)
+        {
+            // top side
+            case 1:
+                spawnPos = new Vector3(Random.Range(-spawnXLimit, spawnXLimit), spawnYLimit, 0f);
+                break;
+
+            // right side
+            case 2:
+                spawnPos = new Vector3(spawnXLimit, Random.Range(-spawnYLimit, spawnYLimit), 0f);
+                break;
+            
+            // bottom side
+            case 3:
+                spawnPos = new Vector3(Random.Range(-spawnXLimit, spawnXLimit), -spawnYLimit, 0f);
+                break;
+
+            // left side
+            case 4:
+                spawnPos = new Vector3(-spawnXLimit, Random.Range(-spawnYLimit, spawnYLimit), 0f);
+                break;
+                
+            // top side 
+            default:
+                spawnPos = new Vector3(Random.Range(-spawnXLimit, spawnXLimit), spawnYLimit, 0f);
+                break;
+        }
+
+        theta = Mathf.Atan2((earth.transform.position.y - spawnPos.y) , (earth.transform.position.x - spawnPos.x));
+        theta *= Mathf.Rad2Deg;
+
+        gameManager.AddAsteroid(Instantiate(asteroidPrefab, spawnPos, Quaternion.Euler(0, 0, theta)));
         Invoke("Spawn", Random.Range(minSpawnDelay, maxSpawnDelay));
-        */
     }
 }

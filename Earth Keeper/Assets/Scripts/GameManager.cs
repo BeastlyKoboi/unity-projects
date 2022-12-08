@@ -27,6 +27,16 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void AddAsteroid(GameObject asteroid)
+    {
+        asteroids.Add(asteroid);
+    }
+
+    public bool RemoveAsteroid(GameObject asteroid)
+    {
+        return asteroids.Remove(asteroid);
+    }
+
     /*
     public Text scoreText;
     public Text gameOverText;

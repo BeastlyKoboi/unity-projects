@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EarthCollider : MonoBehaviour
 {
+    public GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -19,10 +21,11 @@ public class EarthCollider : MonoBehaviour
     //
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Asteroids")
+        Debug.Log(collision.gameObject.tag + "?=" + "Asteroids");
+        if (collision.gameObject.CompareTag("Asteroids"))
         {
-            Time.timeScale = 0;
+            gameManager.RemoveAsteroid(collision.gameObject);
+            Destroy(collision.gameObject);
         }
-
     }
 }

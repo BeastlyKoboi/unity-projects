@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 545300618}
-  earth: {fileID: 0}
+  earth: {fileID: 1957897838}
   asteroidPrefab: {fileID: 1668141280898880214, guid: e4f897488261849479c20130bee625e9, type: 3}
   minSpawnDelay: 1
   maxSpawnDelay: 3
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 1375144713}
   m_Layer: 0
   m_Name: Hestia
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -698,7 +698,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1957897842
 MonoBehaviour:
@@ -712,6 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b447c6365d9e1446a0492ad010c1095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 545300618}
 --- !u!50 &1957897843
 Rigidbody2D:
   serializedVersion: 4
@@ -818,15 +819,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6412090063750664288, guid: e4f897488261849479c20130bee625e9, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6412090063750664288, guid: e4f897488261849479c20130bee625e9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.21
+      value: -6.53
       objectReference: {fileID: 0}
     - target: {fileID: 6412090063750664288, guid: e4f897488261849479c20130bee625e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.47
+      value: -2.94
       objectReference: {fileID: 0}
     - target: {fileID: 6412090063750664288, guid: e4f897488261849479c20130bee625e9, type: 3}
       propertyPath: m_LocalPosition.z
