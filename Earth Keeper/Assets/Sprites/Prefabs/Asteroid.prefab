@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 1244366031648027276}
   - component: {fileID: 3186528128901676804}
   - component: {fileID: 3263623611876334661}
-  m_Layer: 0
+  - component: {fileID: 1389824136967028945}
+  - component: {fileID: -3442480046287599257}
+  m_Layer: 9
   m_Name: Asteroid
   m_TagString: Asteroids
   m_Icon: {fileID: 0}
@@ -114,4 +116,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c731835de05a28e4796cfe4ce2ffce25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 7219068526667820532, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
   speed: 2
+--- !u!50 &1389824136967028945
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668141280898880214}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!95 &-3442480046287599257
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668141280898880214}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 232cb2e2f65654816a518d742d537096, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

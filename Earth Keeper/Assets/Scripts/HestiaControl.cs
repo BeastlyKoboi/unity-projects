@@ -5,7 +5,6 @@ using UnityEngine;
 public class HestiaControl : MonoBehaviour
 {
     public GameManager gameManager;
-    public GameObject antiRock;
     public float speed = 5f;
     public float xLimit = 8;
     public float yLimit = 4;
@@ -35,7 +34,7 @@ public class HestiaControl : MonoBehaviour
     {
         if (collision.gameObject.tag == "Asteroids")
         {
-            Debug.Log("Hit");
+            Debug.Log("Hit Hestia");
         }
     }
 }

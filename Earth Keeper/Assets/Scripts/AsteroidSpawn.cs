@@ -7,8 +7,8 @@ public class AsteroidSpawn : MonoBehaviour
     public GameManager gameManager;
     public GameObject earth;
     public GameObject asteroidPrefab;
-    public float minSpawnDelay = 1f;
-    public float maxSpawnDelay = 3f;
+    public float minSpawnDelay = 3f;
+    public float maxSpawnDelay = 5f;
     public float spawnXLimit = 10f;
     public float spawnYLimit = 6f;
 
@@ -57,7 +57,11 @@ public class AsteroidSpawn : MonoBehaviour
         theta = Mathf.Atan2((earth.transform.position.y - spawnPos.y) , (earth.transform.position.x - spawnPos.x));
         theta *= Mathf.Rad2Deg;
 
-        gameManager.AddAsteroid(Instantiate(asteroidPrefab, spawnPos, Quaternion.Euler(0, 0, theta)));
+        GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, Quaternion.Euler(0, 0, theta));
+
+        newAsteroid.GetComponent<AsteroidMove>().gameManager = gameManager;
+
+        gameManager.AddAsteroid(newAsteroid);
         Invoke("Spawn", Random.Range(minSpawnDelay, maxSpawnDelay));
     }
 }
