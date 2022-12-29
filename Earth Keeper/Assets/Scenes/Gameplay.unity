@@ -1956,6 +1956,22 @@ PrefabInstance:
       propertyPath: earth
       value: 
       objectReference: {fileID: 1957897838}
+    - target: {fileID: 7219068526667820530, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
+      propertyPath: maxSpawnDelay
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219068526667820530, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
+      propertyPath: minSpawnDelay
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219068526667820530, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
+      propertyPath: timeTilSpeedUp
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219068526667820530, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
+      propertyPath: maxTimeTilSpeedUp
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7219068526667820532, guid: 8d84bef53ec4e4d0fbe6dba6cb1cafd8, type: 3}
       propertyPath: earth
       value: 

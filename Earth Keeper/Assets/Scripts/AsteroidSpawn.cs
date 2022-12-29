@@ -8,14 +8,31 @@ public class AsteroidSpawn : MonoBehaviour
     public GameObject earth;
     public GameObject asteroidPrefab;
     public float minSpawnDelay = 3f;
-    public float maxSpawnDelay = 5f;
+    public float maxSpawnDelay = 6f;
     public float spawnXLimit = 10f;
     public float spawnYLimit = 6f;
+    public float timeTilSpeedUp;
+    public float maxTimeTilSpeedUp;
 
     // Start is called before the first frame update
     void Start()
     {
+        timeTilSpeedUp = maxTimeTilSpeedUp;
         Spawn();
+    }
+
+    //
+    private void Update()
+    {
+        if (timeTilSpeedUp < 0)
+        {
+            minSpawnDelay *= .9f;
+            maxSpawnDelay *= .9f;
+
+            timeTilSpeedUp = maxTimeTilSpeedUp;
+        }
+
+        timeTilSpeedUp -= Time.deltaTime;
     }
 
     //
@@ -62,6 +79,7 @@ public class AsteroidSpawn : MonoBehaviour
         newAsteroid.GetComponent<AsteroidMove>().gameManager = gameManager;
 
         gameManager.AddAsteroid(newAsteroid);
+
         Invoke("Spawn", Random.Range(minSpawnDelay, maxSpawnDelay));
     }
 }

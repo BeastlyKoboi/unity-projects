@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         missiles = new List<GameObject>();
         missilesToBeDestroyed = new List<GameObject>();
 
-        Cursor.SetCursor(mouseCrosshair, new Vector2(8, 8), CursorMode.Auto);
+        Cursor.SetCursor(mouseCrosshair, new Vector2(16, 16), CursorMode.Auto);
 
         volume = PlayerPrefs.GetFloat("Volume", 1);
         gameMusic.volume = volume;
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         timeElapsed += Time.deltaTime;
-        timeElapsedText.text = "Time Elapsed: " + Mathf.Ceil(timeElapsed);
+        timeElapsedText.text = "Time Elapsed: " + Mathf.Ceil(timeElapsed) + "s";
 
 
         if (Input.GetKeyDown(shootKey) && !isPaused)
