@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class Grass : MonoBehaviour
+public class BlockInfo : MonoBehaviour
 {
+    [SerializeField]
     private float durability;
 
     public SpriteRenderer blockRenderer;
@@ -22,13 +22,13 @@ public class Grass : MonoBehaviour
         set
         {
             durability = value;
-            
+
             if (durability < 100.0 - frame * (100.0 / blockFrames.Count))
             {
                 NextSpriteFrame();
             }
         }
-    } 
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +41,7 @@ public class Grass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // 
@@ -52,7 +52,10 @@ public class Grass : MonoBehaviour
             blockRenderer.sprite = blockFrames[frame];
             frame++;
         }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
-
 
 }
