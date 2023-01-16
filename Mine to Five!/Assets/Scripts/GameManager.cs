@@ -1,22 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     // Map Limits
     private int halfMapWidth;
 
+    //
+    [SerializeField] private PlayerControl playerControl;
+
     //-- Block Prefabs --//
     // Grass Block
-    public GameObject grassBlock;
-    public GameObject dirtBlock;
-    public GameObject coalBlock;
+    [SerializeField] private GameObject grassBlock;
+    [SerializeField] private GameObject dirtBlock;
+    [SerializeField] private GameObject coalBlock;
+    [SerializeField] private GameObject copperBlock;
 
     // Layer Depths
     private int grassHeight;
     private int layerOneHeight;
     private int layerTwoHeight;
+
+    //
+    [SerializeField] private TextMeshProUGUI energyText;
+
+    private int coalOre;
+    [SerializeField] private TextMeshProUGUI coalText;
 
 
     // Start is called before the first frame update
@@ -28,6 +40,8 @@ public class GameManager : MonoBehaviour
         layerOneHeight = 10;
         layerTwoHeight = 10;
 
+        coalOre = 0;
+
         CreateMap();
     }
 
@@ -35,6 +49,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+        int energyLeft = (int)Mathf.Ceil(playerControl.EnergyLeft);
+        energyText.text = energyLeft.ToString() + "/" + playerControl.EnergyMax;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
     }
 
     /// <summary>
@@ -74,5 +95,32 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //
+    public void IncrementOre(string tag)
+    {
+        switch (tag)
+        {
+            case "Coal":
+                coalOre++;
+                coalText.text = coalOre.ToString();
+                break;
+
+            default: 
+                break; 
+        }
+    }
+
+    // 
+    public void TogglePause()
+    {
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+        }
+    }
 
 }
