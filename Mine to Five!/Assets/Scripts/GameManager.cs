@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     //-- Block Prefabs --//
     // Grass Block
+    [SerializeField] private GameObject bedrockBlock;
     [SerializeField] private GameObject grassBlock;
     [SerializeField] private GameObject dirtBlock;
     [SerializeField] private GameObject coalBlock;
@@ -66,20 +67,34 @@ public class GameManager : MonoBehaviour
         float blockSize = 2 * 0.64f;
 
         int layerOffset = 0;
-        
+
+        // Calculate left and right bedrock
+        float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
+        float bedrockXRight = (halfMapWidth + 1) * blockSize;
+
+        // Add Bedrock Here
+        Instantiate(bedrockBlock, new Vector3(bedrockXLeft, -blockSize / 2, 0), Quaternion.identity);
+
         // Make grass layer
         for (int count = -halfMapWidth; count <= halfMapWidth; count++)
         {
             GameObject block = Instantiate(grassBlock, new Vector3(count * blockSize, -blockSize / 2, 0), Quaternion.identity);
 
         }
+
+        // Add Bedrock here
+        Instantiate(bedrockBlock, new Vector3(bedrockXRight, -blockSize / 2, 0), Quaternion.identity);
+
         layerOffset += grassHeight;
 
         // Make first layer of ore
         for (int row = 0; row < layerOneHeight; row++)
         {
             float rowY = -blockSize * (layerOffset + row) - (blockSize / 2);
-            
+
+            // Add Bedrock Here
+            Instantiate(bedrockBlock, new Vector3(bedrockXLeft, rowY, 0), Quaternion.identity);
+
             for (int count = -halfMapWidth; count <= halfMapWidth; count++)
             {
                 if (Random.value > .8)
@@ -90,8 +105,24 @@ public class GameManager : MonoBehaviour
                 {
                     Instantiate(dirtBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
                 }
-            } 
+            }
+
+            // Add Bedrock here
+            Instantiate(bedrockBlock, new Vector3(bedrockXRight, rowY, 0), Quaternion.identity);
+
         }
+
+        layerOffset += layerOneHeight;
+
+        // Calculate bottom row y
+        float bottomRowY = -blockSize * layerOffset - (blockSize / 2);
+
+        // Make Bottom Bedrock layer
+        for (int count = -halfMapWidth; count <= halfMapWidth; count++)
+        {
+            Instantiate(bedrockBlock, new Vector3(count * blockSize, bottomRowY, 0), Quaternion.identity);
+        }
+
 
     }
 

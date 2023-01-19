@@ -75,7 +75,7 @@ public class PlayerControl : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
         // Finds out if collision reduces blocks durability
-        if (LayerMask.LayerToName(collision.gameObject.layer) == "Blocks")
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Blocks" && !collision.gameObject.CompareTag("Bedrock"))
         {
             float drillDmg = 0;
             BlockInfo blockInfoScript = collision.gameObject.GetComponent<BlockInfo>();
