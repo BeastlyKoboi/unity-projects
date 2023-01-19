@@ -25,7 +25,10 @@ public class GameManager : MonoBehaviour
     private int layerOneHeight;
     private int layerTwoHeight;
 
-    //
+    // Paused UI
+    [SerializeField] private GameObject pausedMenu;
+
+    // Gameplay UI
     [SerializeField] private TextMeshProUGUI energyText;
 
     private int coalOre;
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pausedMenu.SetActive(false);
+
         halfMapWidth = 15;
 
         grassHeight = 1;
@@ -141,17 +146,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    /// <summary>
+    /// Method to toggle the pause menu and the timescale.kj
+    /// </summary>    
     public void TogglePause()
     {
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
+            pausedMenu.SetActive(false);
         }
         else
         {
             Time.timeScale = 0;
+            pausedMenu.SetActive(true);
         }
     }
+
+    //
+
 
 }
