@@ -15,8 +15,6 @@ public class PlayerControl : MonoBehaviour
     private float blockSize = 2 * 0.64f;
 
     private float drillStrength = 1.5f;
-    private float energyMax = 100;
-    private float energyLeft = 100;
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -24,17 +22,6 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     private Rigidbody2D rb;
 
-    // 
-    public float EnergyLeft
-    {
-        get { return energyLeft; }
-    }
-
-    public float EnergyMax
-    {
-        get { return energyMax; }
-        set { energyMax = value; }
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -100,20 +87,17 @@ public class PlayerControl : MonoBehaviour
                 if (horizontalMoveAxis < 0 && collision.transform.position.x < transform.position.x)
                 {
                     blockInfoScript.Durability -= drillDmg;
-                    energyLeft -= .1f;
                 }
                 // If to the right and right is pressed, lower durability
                 else if (horizontalMoveAxis > 0 && collision.transform.position.x > transform.position.x)
                 {
                     blockInfoScript.Durability -= drillDmg;
-                    energyLeft -= .1f;
                 }
             }
             // Checks for blocks below player
             else if (verticalMoveAxis < 0 && IsBlockBelowPlayer(collision))
             {
                 blockInfoScript.Durability -= drillDmg;
-                energyLeft -= .1f;
             }
 
             // Checks for ore destruction

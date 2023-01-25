@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    // Map Limits
-    private int halfMapWidth;
-
-    //
+    // The script attached to the player
     [SerializeField] private PlayerControl playerControl;
+
+    // The cameras for gameplay and the stocks
+    [SerializeField] private Camera[] cams;
+    [SerializeField] private int currentCamIndex = 0;
 
     //-- Block Prefabs --//
     // Grass Block
@@ -20,33 +21,31 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject coalBlock;
     [SerializeField] private GameObject copperBlock;
 
+    // Map Limits
+    private int halfMapWidth = 15;
+
     // Layer Depths
-    private int grassHeight;
-    private int layerOneHeight;
-    private int layerTwoHeight;
+    private int grassHeight = 1;
+    private int layerOneHeight = 10;
+    private int layerTwoHeight = 10;
+
+    // Gameplay UI
+    private int currentHour = 8;
+    private float currentTimePassed = 0.0f;
+    private int hourIntervals = 15;
+    [SerializeField] private TextMeshProUGUI workTimeText;
+    private int coalOre = 0;
+    [SerializeField] private TextMeshProUGUI coalText;
 
     // Paused UI
     [SerializeField] private GameObject pausedMenu;
-
-    // Gameplay UI
-    [SerializeField] private TextMeshProUGUI energyText;
-
-    private int coalOre;
-    [SerializeField] private TextMeshProUGUI coalText;
-
 
     // Start is called before the first frame update
     void Start()
     {
         pausedMenu.SetActive(false);
 
-        halfMapWidth = 15;
-
-        grassHeight = 1;
-        layerOneHeight = 10;
-        layerTwoHeight = 10;
-
-        coalOre = 0;
+        currentCamIndex = 0;
 
         CreateMap();
     }
@@ -54,9 +53,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentTimePassed += Time.deltaTime;
 
-        int energyLeft = (int)Mathf.Ceil(playerControl.EnergyLeft);
-        energyText.text = energyLeft.ToString() + "/" + playerControl.EnergyMax;
+        if (currentTimePassed >= hourIntervals)
+        {
+            currentTimePassed -= hourIntervals;
+            currentHour++;
+
+            if (currentHour > 12)
+            {
+                currentHour = 1;
+            }
+            else if (currentHour == 5)
+            {
+
+            }
+
+            workTimeText.text = currentHour + ":00";
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            SwitchCamera();
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -65,7 +84,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Automatically generates the map to begin the game with several different layers of ore rarity.
     /// </summary>
     private void CreateMap()
     {
@@ -127,11 +146,12 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(bedrockBlock, new Vector3(count * blockSize, bottomRowY, 0), Quaternion.identity);
         }
-
-
     }
 
-    //
+    /// <summary>
+    /// Increment the collected ore that was just destroyed
+    /// </summary>
+    /// <param name="tag"></param>
     public void IncrementOre(string tag)
     {
         switch (tag)
@@ -163,7 +183,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //
+    /// <summary>
+    /// Toggle to the next camera, possibly to the stock graphs or gameplay. 
+    /// </summary>
+    private void SwitchCamera()
+    {
+        currentCamIndex++;
 
+        if (currentCamIndex < cams.Length)
+        {
+            cams[currentCamIndex - 1].enabled = false;
+            cams[currentCamIndex].enabled = true;
+        }
+        else
+        {
+            cams[currentCamIndex - 1].enabled = false;
+            currentCamIndex = 0;
+            cams[currentCamIndex].enabled = true;
+        }
+    }
 
 }
