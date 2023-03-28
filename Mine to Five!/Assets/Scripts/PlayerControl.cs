@@ -59,6 +59,14 @@ public class PlayerControl : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Building"))
+        {
+            gameManager.ToggleUpgradeMenu();
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         // Finds out if collision reduces blocks durability

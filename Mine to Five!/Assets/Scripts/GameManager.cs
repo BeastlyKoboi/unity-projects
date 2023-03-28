@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
     // Paused UI
     [SerializeField] private GameObject pausedMenu;
+    [SerializeField] private GameObject upgradesMenu;
+    [SerializeField] private GameObject stocksUI;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
             }
             else if (currentHour == 5)
             {
-
+                // Work day ends
             }
 
             workTimeText.text = currentHour + ":00";
@@ -79,7 +81,16 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            if (upgradesMenu.activeInHierarchy)
+            {
+                ToggleUpgradeMenu();
+            }
+            else
+            {
+                TogglePause();
+            }
+
+
         }
     }
 
@@ -194,13 +205,23 @@ public class GameManager : MonoBehaviour
         {
             cams[currentCamIndex - 1].enabled = false;
             cams[currentCamIndex].enabled = true;
+
+            stocksUI.SetActive(!stocksUI.activeInHierarchy);
         }
         else
         {
             cams[currentCamIndex - 1].enabled = false;
             currentCamIndex = 0;
             cams[currentCamIndex].enabled = true;
+
+            stocksUI.SetActive(!stocksUI.activeInHierarchy);
+
         }
     }
 
+    // 
+    public void ToggleUpgradeMenu()
+    {
+        upgradesMenu.SetActive(!upgradesMenu.activeInHierarchy); 
+    }
 }

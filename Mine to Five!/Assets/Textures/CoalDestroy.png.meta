@@ -104,12 +104,12 @@ TextureImporter:
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 2
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -306,14 +306,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CoalDestroy_3: 1577844131
       CoalDestroy_4: -1562009874
       CoalDestroy_6: 501307620
+      CoalDestroy_1: -434197820
       CoalDestroy_7: -2021389996
       CoalDestroy_2: 1509118477
       CoalDestroy_5: 1803579738
       CoalDestroy_0: -737968597
-      CoalDestroy_1: -434197820
+      CoalDestroy_3: 1577844131
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
