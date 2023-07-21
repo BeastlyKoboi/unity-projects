@@ -28,45 +28,49 @@ public class OreStockGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ProgressStocks();
-        }
+        //if (Input.GetKeyDown(KeyCode.Tab))
+        //{
+        //    ProgressStocks();
+        //}
         
 
     }
 
     //
-    void ProgressStocks()
+    public void ProgressStocks()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        float rngValue = Mathf.PerlinNoise(Time.time * 0.05f, Time.time * 0.05f);
+        
+
+        if (priceHistory.Count < 8)
         {
-            float rngValue = Mathf.PerlinNoise(Time.time * 1.0f, 0.0f);
+            priceHistory.Add(priceScales[0] * rngValue);
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(priceHistory.Count, 
+                new Vector3(priceHistory.Count * lineWidth, 8 * rngValue, 0) + startPoint);
+        }
+        else
+        {
+            priceHistory.RemoveAt(0);
+            priceHistory.Add(priceScales[0] * rngValue);
 
-            if (priceHistory.Count < 10)
+            Vector3 temp = new Vector3((priceHistory.Count + 1) * lineWidth, 8 * rngValue, 0) + startPoint;
+            Vector3 temp2;
+            for (int index = priceHistory.Count; index >= 0; index--)
             {
-                priceHistory.Add(priceScales[0] * rngValue);
-                lineRenderer.positionCount++;
-                lineRenderer.SetPosition(priceHistory.Count, new Vector3(priceHistory.Count * lineWidth, 8 * rngValue, 0) + startPoint);
+                temp2 = lineRenderer.GetPosition(index);
+                temp.x -= lineWidth;
+                lineRenderer.SetPosition(index, temp);
+                temp = temp2;
             }
-            else
-            {
-                priceHistory.RemoveAt(0);
-                priceHistory.Add(priceScales[0] * rngValue);
 
-                Vector3 temp = new Vector3((priceHistory.Count + 1) * lineWidth, 8 * rngValue, 0) + startPoint;
-                Vector3 temp2;
-                for (int index = priceHistory.Count; index >= 0; index--)
-                {
-                    temp2 = lineRenderer.GetPosition(index);
-                    temp.x -= lineWidth;
-                    lineRenderer.SetPosition(index, temp);
-                    temp = temp2;
-                }
-
-            }
         }
     }
 
 
+    // 
+    public float GetStockPrice()
+    {
+        return priceHistory[priceHistory.Count - 1];
+    }
 }

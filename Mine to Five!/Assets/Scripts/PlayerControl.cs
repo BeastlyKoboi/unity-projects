@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class PlayerControl : MonoBehaviour
     private float speed = 10;
     private float jumpingForce = 20;
 
-    private float horizontalMoveAxis;
-    private float verticalMoveAxis;
+    public Vector2 moveInput;
+
     private float blockSize = 2 * 0.64f;
 
     private float drillStrength = 1.5f;
@@ -22,6 +23,17 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     private Rigidbody2D rb;
 
+    [SerializeField] private InputActionAsset actions;
+    private InputAction moveAction;
+
+    private void Awake()
+    {
+        // 
+        moveAction = actions.FindActionMap("Mining").FindAction("move");
+
+        //
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,10 +44,9 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMoveAxis = Input.GetAxis("Horizontal");
-        verticalMoveAxis = Input.GetAxis("Vertical");
-        
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) && IsGrounded())
+        moveInput = moveAction.ReadValue<Vector2>();
+
+        if (moveInput.y > 0 && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingForce);
         }
@@ -48,13 +59,13 @@ public class PlayerControl : MonoBehaviour
         
         
 
-        if (verticalMoveAxis < 0)
+        if (moveInput.y < 0)
         {
-            rb.velocity = new Vector2(horizontalMoveAxis * speed, rb.velocity.y + verticalMoveAxis);
+            rb.velocity = new Vector2(moveInput.x * speed, rb.velocity.y + moveInput.y);
         }
         else
         {
-            rb.velocity = new Vector2(horizontalMoveAxis * speed, rb.velocity.y);
+            rb.velocity = new Vector2(moveInput.x * speed, rb.velocity.y);
         }
         
     }
@@ -89,21 +100,21 @@ public class PlayerControl : MonoBehaviour
             }
 
             // Checks for blocks to the left and right of player
-            if (horizontalMoveAxis != 0 && IsBlockNextToPlayer(collision))
+            if (moveInput.x != 0 && IsBlockNextToPlayer(collision))
             {
                 // If to the left and left is pressed, lower durability
-                if (horizontalMoveAxis < 0 && collision.transform.position.x < transform.position.x)
+                if (moveInput.x < 0 && collision.transform.position.x < transform.position.x)
                 {
                     blockInfoScript.Durability -= drillDmg;
                 }
                 // If to the right and right is pressed, lower durability
-                else if (horizontalMoveAxis > 0 && collision.transform.position.x > transform.position.x)
+                else if (moveInput.x > 0 && collision.transform.position.x > transform.position.x)
                 {
                     blockInfoScript.Durability -= drillDmg;
                 }
             }
             // Checks for blocks below player
-            else if (verticalMoveAxis < 0 && IsBlockBelowPlayer(collision))
+            else if (moveInput.y < 0 && IsBlockBelowPlayer(collision))
             {
                 blockInfoScript.Durability -= drillDmg;
             }
@@ -143,6 +154,16 @@ public class PlayerControl : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, .5f, groundLayer);
+    }
+
+    private void OnEnable()
+    {
+        actions.FindActionMap("Mining").Enable();
+    }
+
+    private void OnDisable()
+    {
+        actions.FindActionMap("Mining").Disable();
     }
 
 }

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     // The script attached to the player
     [SerializeField] private PlayerControl playerControl;
+    [SerializeField] private OreStockGenerator oreStockGenerator;
 
     // The cameras for gameplay and the stocks
     [SerializeField] private Camera[] cams;
@@ -30,17 +31,34 @@ public class GameManager : MonoBehaviour
     private int layerTwoHeight = 10;
 
     // Gameplay UI
-    private int currentHour = 8;
+    private int currentHour = 9;
     private float currentTimePassed = 0.0f;
-    private int hourIntervals = 15;
+    private int hourIntervals = 5;
     [SerializeField] private TextMeshProUGUI workTimeText;
     private int coalOre = 0;
     [SerializeField] private TextMeshProUGUI coalText;
+
+    [SerializeField] private TextMeshProUGUI orePriceText;
+
+    [SerializeField] private TextMeshProUGUI playerCashText;
 
     // Paused UI
     [SerializeField] private GameObject pausedMenu;
     [SerializeField] private GameObject upgradesMenu;
     [SerializeField] private GameObject stocksUI;
+
+    // Gameplay Variables
+    [SerializeField] private float playerCash;
+
+    public float PlayerCash
+    {
+        get { return playerCash; }
+        set 
+        {
+            playerCash = value;
+            playerCashText.text = "$" + playerCash;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +77,10 @@ public class GameManager : MonoBehaviour
 
         if (currentTimePassed >= hourIntervals)
         {
+            oreStockGenerator.ProgressStocks();
+
+            orePriceText.text = "$" + oreStockGenerator.GetStockPrice();
+
             currentTimePassed -= hourIntervals;
             currentHour++;
 
@@ -74,24 +96,24 @@ public class GameManager : MonoBehaviour
             workTimeText.text = currentHour + ":00";
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SwitchCamera();
-        }
+        //if (Input.GetKeyDown(KeyCode.C))
+        //{
+        //    SwitchCamera();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (upgradesMenu.activeInHierarchy)
-            {
-                ToggleUpgradeMenu();
-            }
-            else
-            {
-                TogglePause();
-            }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    if (upgradesMenu.activeInHierarchy)
+        //    {
+        //        ToggleUpgradeMenu();
+        //    }
+        //    else
+        //    {
+        //        TogglePause();
+        //    }
 
 
-        }
+        //}
     }
 
     /// <summary>
@@ -177,6 +199,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    ///
+    public void DecrementOre(string tag, int quantity)
+    {
+        switch (tag)
+        {
+            case "Coal":
+                coalOre -= quantity;
+                coalText.text = coalOre.ToString();
+                break;
+
+            default:
+                break;
+        }
+    }
+
     /// <summary>
     /// Method to toggle the pause menu and the timescale.kj
     /// </summary>    
@@ -223,5 +260,15 @@ public class GameManager : MonoBehaviour
     public void ToggleUpgradeMenu()
     {
         upgradesMenu.SetActive(!upgradesMenu.activeInHierarchy); 
+    }
+
+    //
+    public void SellOre(int quantity)
+    {
+        if (coalOre >= quantity)
+        {
+            DecrementOre("Coal", quantity);
+            PlayerCash += oreStockGenerator.GetStockPrice() * quantity;
+        }
     }
 }
