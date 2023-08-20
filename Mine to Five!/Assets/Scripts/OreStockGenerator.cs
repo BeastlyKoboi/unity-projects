@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class OreStockGenerator : MonoBehaviour
 {
-    private int camLimX = 8;
-    private int camLimY = 5;
-
     private Vector3 startPoint = new Vector3(0, 0, 0);
     private float lineWidth = 1.5f;
 
@@ -27,12 +24,7 @@ public class OreStockGenerator : MonoBehaviour
     
     // Update is called once per frame
     void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Tab))
-        //{
-        //    ProgressStocks();
-        //}
-        
+    {        
 
     }
 

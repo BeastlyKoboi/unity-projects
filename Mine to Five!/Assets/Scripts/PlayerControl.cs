@@ -55,9 +55,6 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //transform.Translate(horizontalMoveAxis * speed, verticalMoveAxis * speed, 0);
-        
-        
 
         if (moveInput.y < 0)
         {
@@ -71,6 +68,14 @@ public class PlayerControl : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Building"))
+        {
+            gameManager.ToggleUpgradeMenu();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Building"))
         {

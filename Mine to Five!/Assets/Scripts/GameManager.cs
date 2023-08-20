@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     // The script attached to the player
     [SerializeField] private PlayerControl playerControl;
-    [SerializeField] private OreStockGenerator oreStockGenerator;
-
-    // The cameras for gameplay and the stocks
-    [SerializeField] private Camera[] cams;
-    [SerializeField] private int currentCamIndex = 0;
 
     //-- Block Prefabs --//
     // Grass Block
@@ -38,14 +34,15 @@ public class GameManager : MonoBehaviour
     private int coalOre = 0;
     [SerializeField] private TextMeshProUGUI coalText;
 
-    [SerializeField] private TextMeshProUGUI orePriceText;
-
     [SerializeField] private TextMeshProUGUI playerCashText;
 
     // Paused UI
     [SerializeField] private GameObject pausedMenu;
     [SerializeField] private GameObject upgradesMenu;
-    [SerializeField] private GameObject stocksUI;
+
+    //
+    [SerializeField] private InputActionAsset actions;
+    private InputAction pauseAction; 
 
     // Gameplay Variables
     [SerializeField] private float playerCash;
@@ -60,12 +57,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        pauseAction = actions.FindActionMap("Mining").FindAction("pause");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         pausedMenu.SetActive(false);
-
-        currentCamIndex = 0;
 
         CreateMap();
     }
@@ -73,14 +73,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool paused = pauseAction.WasReleasedThisFrame();
+
+        if (paused)
+        {
+            TogglePause();
+        }
+
         currentTimePassed += Time.deltaTime;
 
         if (currentTimePassed >= hourIntervals)
         {
-            oreStockGenerator.ProgressStocks();
-
-            orePriceText.text = "$" + oreStockGenerator.GetStockPrice();
-
             currentTimePassed -= hourIntervals;
             currentHour++;
 
@@ -96,24 +99,7 @@ public class GameManager : MonoBehaviour
             workTimeText.text = currentHour + ":00";
         }
 
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    SwitchCamera();
-        //}
 
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    if (upgradesMenu.activeInHierarchy)
-        //    {
-        //        ToggleUpgradeMenu();
-        //    }
-        //    else
-        //    {
-        //        TogglePause();
-        //    }
-
-
-        //}
     }
 
     /// <summary>
@@ -231,31 +217,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Toggle to the next camera, possibly to the stock graphs or gameplay. 
-    /// </summary>
-    private void SwitchCamera()
-    {
-        currentCamIndex++;
-
-        if (currentCamIndex < cams.Length)
-        {
-            cams[currentCamIndex - 1].enabled = false;
-            cams[currentCamIndex].enabled = true;
-
-            stocksUI.SetActive(!stocksUI.activeInHierarchy);
-        }
-        else
-        {
-            cams[currentCamIndex - 1].enabled = false;
-            currentCamIndex = 0;
-            cams[currentCamIndex].enabled = true;
-
-            stocksUI.SetActive(!stocksUI.activeInHierarchy);
-
-        }
-    }
-
     // 
     public void ToggleUpgradeMenu()
     {
@@ -268,7 +229,6 @@ public class GameManager : MonoBehaviour
         if (coalOre >= quantity)
         {
             DecrementOre("Coal", quantity);
-            PlayerCash += oreStockGenerator.GetStockPrice() * quantity;
         }
     }
 }
