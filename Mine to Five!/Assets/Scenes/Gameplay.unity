@@ -680,9 +680,10 @@ GameObject:
   m_Component:
   - component: {fileID: 521356978}
   - component: {fileID: 521356977}
+  - component: {fileID: 521356979}
   m_Layer: 0
   m_Name: AltarToGaea
-  m_TagString: Untagged
+  m_TagString: Altar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -754,6 +755,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &521356979
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521356976}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.32}
+  serializedVersion: 2
+  m_Radius: 0.32
 --- !u!1 &535291692
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,7 +2870,7 @@ GameObject:
   - component: {fileID: 1920396821}
   m_Layer: 0
   m_Name: Seller
-  m_TagString: Untagged
+  m_TagString: Depot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
