@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
     private int layerOneHeight = 10;
     private int layerTwoHeight = 10;
 
+    // Collections of created blocks, to destroy upon resets
+    [SerializeField]
+    private List<GameObject> mapBlocks;
+
     // Gameplay UI
     private int currentHour = 9;
     private float currentTimePassed = 0.0f;
@@ -38,7 +42,8 @@ public class GameManager : MonoBehaviour
 
     // Paused UI
     [SerializeField] private GameObject pausedMenu;
-    [SerializeField] private GameObject upgradesMenu;
+    [SerializeField] private GameObject depotMenu;
+    [SerializeField] private GameObject altarMenu;
 
     //
     [SerializeField] private InputActionAsset actions;
@@ -167,6 +172,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Layer y start, layer length, ore chances,  
+    private void InitializeLayer() 
+    { 
+
+    }
+
     /// <summary>
     /// Increment the collected ore that was just destroyed
     /// </summary>
@@ -218,9 +229,14 @@ public class GameManager : MonoBehaviour
     }
 
     // 
-    public void ToggleUpgradeMenu()
+    public void ToggleDepotMenu()
     {
-        upgradesMenu.SetActive(!upgradesMenu.activeInHierarchy); 
+        depotMenu.SetActive(!depotMenu.activeInHierarchy); 
+    }
+
+    public void ToggleAltarMenu()
+    {
+        altarMenu.SetActive(!altarMenu.activeInHierarchy);
     }
 
     //

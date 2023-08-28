@@ -30,9 +30,16 @@ public class PlayerControl : MonoBehaviour
     {
         // 
         moveAction = actions.FindActionMap("Mining").FindAction("move");
+    }
 
-        //
+    private void OnEnable()
+    {
+        actions.FindActionMap("Mining").Enable();
+    }
 
+    private void OnDisable()
+    {
+        actions.FindActionMap("Mining").Disable();
     }
 
     // Start is called before the first frame update
@@ -69,37 +76,48 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Building"))
+        if (collision.CompareTag(TagManager.DEPOT_TAG))
         {
-            gameManager.ToggleUpgradeMenu();
+            gameManager.ToggleDepotMenu();
+        }
+        else if (collision.CompareTag(TagManager.ALTAR_TAG))
+        {
+            gameManager.ToggleAltarMenu();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Building"))
+        if (collision.CompareTag(TagManager.DEPOT_TAG))
         {
-            gameManager.ToggleUpgradeMenu();
+            gameManager.ToggleDepotMenu();
+        }
+        else if (collision.CompareTag(TagManager.ALTAR_TAG))
+        {
+            gameManager.ToggleAltarMenu();
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag(TagManager.BEDROCK_TAG)) 
+            return;
+
         // Finds out if collision reduces blocks durability
-        if (LayerMask.LayerToName(collision.gameObject.layer) == "Blocks" && !collision.gameObject.CompareTag("Bedrock"))
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Blocks")
         {
             float drillDmg = 0;
             BlockInfo blockInfoScript = collision.gameObject.GetComponent<BlockInfo>();
 
-            if (collision.gameObject.CompareTag("Grass"))
+            if (collision.gameObject.CompareTag(TagManager.GRASS_TAG))
             {
                 drillDmg = drillStrength;
             }
-            else if (collision.gameObject.CompareTag("Dirt"))
+            else if (collision.gameObject.CompareTag(TagManager.DIRT_TAG))
             {
                 drillDmg = drillStrength;
             }
-            else if (collision.gameObject.CompareTag("Coal"))
+            else if (collision.gameObject.CompareTag(TagManager.COAL_TAG))
             {
                 drillDmg = drillStrength * .6f;
             }
@@ -161,14 +179,5 @@ public class PlayerControl : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, .5f, groundLayer);
     }
 
-    private void OnEnable()
-    {
-        actions.FindActionMap("Mining").Enable();
-    }
-
-    private void OnDisable()
-    {
-        actions.FindActionMap("Mining").Disable();
-    }
 
 }

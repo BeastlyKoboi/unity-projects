@@ -6,11 +6,8 @@ public class BlockInfo : MonoBehaviour
 {
     [SerializeField]
     private float durability;
-
     public SpriteRenderer blockRenderer;
-
     public List<Sprite> blockFrames;
-
     public int frame;
 
     public float Durability
@@ -36,12 +33,6 @@ public class BlockInfo : MonoBehaviour
         durability = 100f;
         blockRenderer = GetComponent<SpriteRenderer>();
         frame = 1;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     // 
