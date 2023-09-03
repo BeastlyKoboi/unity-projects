@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
         float bedrockXRight = (halfMapWidth + 1) * blockSize;
 
-        // Add Bedrock Here
+        // Add grass layer left bedrock
         Instantiate(bedrockBlock, new Vector3(bedrockXLeft, -blockSize / 2, 0), Quaternion.identity);
 
         // Make grass layer
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        // Add Bedrock here
+        // Add grass layer right bedrock
         Instantiate(bedrockBlock, new Vector3(bedrockXRight, -blockSize / 2, 0), Quaternion.identity);
 
         layerOffset += grassHeight;
@@ -173,9 +173,46 @@ public class GameManager : MonoBehaviour
     }
 
     // Layer y start, layer length, ore chances,  
-    private void InitializeLayer() 
-    { 
+    private void InitializeLayer(int layerHeight) 
+    {
+        float blockSize = 2 * 0.64f;
 
+        int layerOffset = 0;
+
+        // Calculate left and right bedrock
+        float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
+        float bedrockXRight = (halfMapWidth + 1) * blockSize;
+
+        // Make first layer of ore
+        for (int row = 0; row < layerHeight; row++)
+        {
+            float rowY = -blockSize * (layerOffset + row) - (blockSize / 2);
+
+            // Add Bedrock Here
+            Instantiate(bedrockBlock, new Vector3(bedrockXLeft, rowY, 0), Quaternion.identity);
+
+            for (int count = -halfMapWidth; count <= halfMapWidth; count++)
+            {
+                if (Random.value > (blockSize += bedrockXLeft))
+                {
+                    Instantiate(coalBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(dirtBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
+                }
+
+                switch (Random.value)
+                {
+                    
+
+                }
+            }
+
+            // Add Bedrock here
+            Instantiate(bedrockBlock, new Vector3(bedrockXRight, rowY, 0), Quaternion.identity);
+
+        }
     }
 
     /// <summary>
