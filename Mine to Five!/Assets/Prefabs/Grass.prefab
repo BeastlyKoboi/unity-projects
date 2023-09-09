@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694657924adc5cf44bab50fe19b3a963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durability: 0
+  durabilityMax: 100
   blockRenderer: {fileID: 0}
   blockFrames:
   - {fileID: -215150435, guid: b336204341c66084f86a884e4edbd23d, type: 3}

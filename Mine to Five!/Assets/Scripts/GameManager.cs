@@ -18,17 +18,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject coalBlock;
     [SerializeField] private GameObject copperBlock;
 
-    // Map Limits
+    // Map & Block Info
     private int halfMapWidth = 15;
+    float blockSize = 2 * 0.64f;
 
     // Layer Depths
     private int grassHeight = 1;
     private int layerOneHeight = 10;
     private int layerTwoHeight = 10;
+    private OreThresholds oreThresholds = new OreThresholds(0.7f, 0.9f, 0.95f);
 
     // Collections of created blocks, to destroy upon resets
     [SerializeField]
-    private List<GameObject> mapBlocks;
+    private List<GameObject> mapBlocks = new List<GameObject>();
 
     // Gameplay UI
     private int currentHour = 9;
@@ -112,8 +114,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void CreateMap()
     {
-        float blockSize = 2 * 0.64f;
-
         int layerOffset = 0;
 
         // Calculate left and right bedrock
@@ -136,29 +136,7 @@ public class GameManager : MonoBehaviour
         layerOffset += grassHeight;
 
         // Make first layer of ore
-        for (int row = 0; row < layerOneHeight; row++)
-        {
-            float rowY = -blockSize * (layerOffset + row) - (blockSize / 2);
-
-            // Add Bedrock Here
-            Instantiate(bedrockBlock, new Vector3(bedrockXLeft, rowY, 0), Quaternion.identity);
-
-            for (int count = -halfMapWidth; count <= halfMapWidth; count++)
-            {
-                if (Random.value > .8)
-                {
-                    Instantiate(coalBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
-                }
-                else
-                {
-                    Instantiate(dirtBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
-                }
-            }
-
-            // Add Bedrock here
-            Instantiate(bedrockBlock, new Vector3(bedrockXRight, rowY, 0), Quaternion.identity);
-
-        }
+        InitializeLayer(layerOffset, layerOneHeight);
 
         layerOffset += layerOneHeight;
 
@@ -173,18 +151,28 @@ public class GameManager : MonoBehaviour
     }
 
     // Layer y start, layer length, ore chances,  
-    private void InitializeLayer(int layerHeight) 
+    private void InitializeLayer(int layerOffset, int layerDepth) 
     {
-        float blockSize = 2 * 0.64f;
+        // Plan 
+        // CreateMap will...
+        // Bring up loading screen 
+        // Delete all previous destructable blocks if any.
+        // run InitializeLayer() on all layers needed
+        // run InitializeBottomBedrock() 
+        // Brong Down loading screen
 
-        int layerOffset = 0;
+        // InitializeLayer() will...
+        // 
 
         // Calculate left and right bedrock
         float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
         float bedrockXRight = (halfMapWidth + 1) * blockSize;
 
+        float chance = 0.0f;
+        GameObject blockPrefab = dirtBlock;
+
         // Make first layer of ore
-        for (int row = 0; row < layerHeight; row++)
+        for (int row = 0; row < layerDepth; row++)
         {
             float rowY = -blockSize * (layerOffset + row) - (blockSize / 2);
 
@@ -193,20 +181,16 @@ public class GameManager : MonoBehaviour
 
             for (int count = -halfMapWidth; count <= halfMapWidth; count++)
             {
-                if (Random.value > (blockSize += bedrockXLeft))
-                {
-                    Instantiate(coalBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
-                }
-                else
-                {
-                    Instantiate(dirtBlock, new Vector3(count * blockSize, rowY, 0), Quaternion.identity);
-                }
+                chance = Random.value;
 
-                switch (Random.value)
-                {
-                    
+                if (chance < oreThresholds.Dirt)
+                    blockPrefab = dirtBlock;
+                else if (chance < oreThresholds.Coal)
+                    blockPrefab = coalBlock; 
+                else if (chance < oreThresholds.Copper)
+                    blockPrefab = copperBlock;
 
-                }
+                mapBlocks.Add(Instantiate(blockPrefab, new Vector3(count * blockSize, rowY, 0), Quaternion.identity));
             }
 
             // Add Bedrock here
@@ -248,6 +232,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //
+    public void SellOre(int quantity)
+    {
+        if (coalOre >= quantity)
+        {
+            DecrementOre("Coal", quantity);
+        }
+    }
+
     /// <summary>
     /// Method to toggle the pause menu and the timescale.kj
     /// </summary>    
@@ -276,12 +269,4 @@ public class GameManager : MonoBehaviour
         altarMenu.SetActive(!altarMenu.activeInHierarchy);
     }
 
-    //
-    public void SellOre(int quantity)
-    {
-        if (coalOre >= quantity)
-        {
-            DecrementOre("Coal", quantity);
-        }
-    }
 }

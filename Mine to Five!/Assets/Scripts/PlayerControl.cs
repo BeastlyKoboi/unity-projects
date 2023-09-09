@@ -15,7 +15,7 @@ public class PlayerControl : MonoBehaviour
 
     private float blockSize = 2 * 0.64f;
 
-    private float drillStrength = 1.5f;
+    private float drillStrength = 30f;
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -111,15 +111,15 @@ public class PlayerControl : MonoBehaviour
 
             if (collision.gameObject.CompareTag(TagManager.GRASS_TAG))
             {
-                drillDmg = drillStrength;
+                drillDmg = drillStrength * Time.deltaTime;
             }
             else if (collision.gameObject.CompareTag(TagManager.DIRT_TAG))
             {
-                drillDmg = drillStrength;
+                drillDmg = drillStrength * Time.deltaTime;
             }
             else if (collision.gameObject.CompareTag(TagManager.COAL_TAG))
             {
-                drillDmg = drillStrength * .6f;
+                drillDmg = drillStrength * Time.deltaTime;
             }
 
             // Checks for blocks to the left and right of player

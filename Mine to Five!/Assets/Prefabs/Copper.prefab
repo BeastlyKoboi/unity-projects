@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5225490280577311353}
   - component: {fileID: 2704472465474759803}
   - component: {fileID: 9009205997907177834}
-  - component: {fileID: 8688620341499764307}
   m_Layer: 6
   m_Name: Copper
   m_TagString: Copper
@@ -125,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694657924adc5cf44bab50fe19b3a963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durability: 0
+  durabilityMax: 300
   blockRenderer: {fileID: 0}
   blockFrames:
   - {fileID: -1490608726, guid: 251eee04d0ba740478ee1d552653f3bd, type: 3}
@@ -137,16 +136,3 @@ MonoBehaviour:
   - {fileID: -2134120825, guid: 251eee04d0ba740478ee1d552653f3bd, type: 3}
   - {fileID: 399594995, guid: 251eee04d0ba740478ee1d552653f3bd, type: 3}
   frame: 0
---- !u!65 &8688620341499764307
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7265426399925476133}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}

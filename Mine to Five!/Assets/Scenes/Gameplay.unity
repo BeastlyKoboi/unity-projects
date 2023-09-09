@@ -957,7 +957,7 @@ MonoBehaviour:
   grassBlock: {fileID: 647560964974941571, guid: 67ba7f3eec3c92d4d8c44e2ef2c3c782, type: 3}
   dirtBlock: {fileID: 772170416998064669, guid: bc4d227f1971c3b43b244bb06a8e315a, type: 3}
   coalBlock: {fileID: 1457460059185957576, guid: cd50e97e25e800540a5957f4e43e7930, type: 3}
-  copperBlock: {fileID: 0}
+  copperBlock: {fileID: 7265426399925476133, guid: c3436110033213f468c82033b0d1347f, type: 3}
   mapBlocks: []
   workTimeText: {fileID: 2027108171}
   coalText: {fileID: 1608019398}
@@ -1892,7 +1892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &996501991
 RectTransform:
   m_ObjectHideFlags: 0
