@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private float currentTimePassed = 0.0f;
     private int hourIntervals = 5;
     [SerializeField] private TextMeshProUGUI workTimeText;
+    [SerializeField] private Animator workTimeAnim;
     private int coalOre = 0;
     [SerializeField] private TextMeshProUGUI coalText;
     private int copperOre = 0;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     // Gameplay Variables
     [SerializeField] private float playerCash;
+    private bool isClockedIn = false;
 
     public float PlayerCash
     {
@@ -88,7 +90,19 @@ public class GameManager : MonoBehaviour
         {
             TogglePause();
         }
+        
+        if (!isClockedIn && playerControl.isUnderground())
+        {
+            isClockedIn = true;
+            workTimeAnim.SetTrigger("ClockedIn");
+        }
+        
+        if (isClockedIn) 
+            UpdateClock();
+    }
 
+    private void UpdateClock()
+    {
         currentTimePassed += Time.deltaTime;
 
         if (currentTimePassed >= hourIntervals)
@@ -102,14 +116,34 @@ public class GameManager : MonoBehaviour
             }
             else if (currentHour == 5)
             {
-                // Work day ends
+                workTimeAnim.SetTrigger("ClockedOut");
             }
 
             workTimeText.text = currentHour + ":00";
         }
-
-
     }
+
+    // IEnumerator Blink()
+    //{
+    //    Color color = workTimeText.color;
+
+    //    while (true)
+    //    {
+    //        for (float alpha = 1f; alpha >= 0; alpha -= 0.1f)
+    //        {
+    //            color.a = alpha;
+    //            workTimeText.color = color;
+    //            yield return new WaitForSeconds(.1f);
+    //        }
+
+    //        for (float alpha = 0; alpha <= 1f; alpha += 0.1f)
+    //        {
+    //            color.a = alpha;
+    //            workTimeText.color = color;
+    //            yield return new WaitForSeconds(.1f);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Automatically generates the map to begin the game with several different layers of ore rarity.
@@ -118,22 +152,11 @@ public class GameManager : MonoBehaviour
     {
         int layerOffset = 0;
 
-        // Calculate left and right bedrock
-        float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
-        float bedrockXRight = (halfMapWidth + 1) * blockSize;
-
-        // Add grass layer left bedrock
-        Instantiate(bedrockBlock, new Vector3(bedrockXLeft, -blockSize / 2, 0), Quaternion.identity);
-
         // Make grass layer
         for (int count = -halfMapWidth; count <= halfMapWidth; count++)
         {
             GameObject block = Instantiate(grassBlock, new Vector3(count * blockSize, -blockSize / 2, 0), Quaternion.identity);
-
         }
-
-        // Add grass layer right bedrock
-        Instantiate(bedrockBlock, new Vector3(bedrockXRight, -blockSize / 2, 0), Quaternion.identity);
 
         layerOffset += grassHeight;
 
@@ -142,34 +165,17 @@ public class GameManager : MonoBehaviour
 
         layerOffset += layerOneHeight;
 
-        // Calculate bottom row y
-        float bottomRowY = -blockSize * layerOffset - (blockSize / 2);
-
-        // Make Bottom Bedrock layer
-        for (int count = -halfMapWidth; count <= halfMapWidth; count++)
-        {
-            Instantiate(bedrockBlock, new Vector3(count * blockSize, bottomRowY, 0), Quaternion.identity);
-        }
+        // Make bedrock separately to make map resets easier
+        InitializeBedrock(layerOffset);
     }
 
-    // Layer y start, layer length, ore chances,  
+    /// <summary>
+    /// Create a layer of dirt, eventually with a given ore distribution
+    /// </summary>
+    /// <param name="layerOffset"></param>
+    /// <param name="layerDepth"></param>
     private void InitializeLayer(int layerOffset, int layerDepth) 
     {
-        // Plan 
-        // CreateMap will...
-        // Bring up loading screen 
-        // Delete all previous destructable blocks if any.
-        // run InitializeLayer() on all layers needed
-        // run InitializeBottomBedrock() 
-        // Brong Down loading screen
-
-        // InitializeLayer() will...
-        // 
-
-        // Calculate left and right bedrock
-        float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
-        float bedrockXRight = (halfMapWidth + 1) * blockSize;
-
         float chance = 0.0f;
         GameObject blockPrefab = dirtBlock;
 
@@ -177,9 +183,6 @@ public class GameManager : MonoBehaviour
         for (int row = 0; row < layerDepth; row++)
         {
             float rowY = -blockSize * (layerOffset + row) - (blockSize / 2);
-
-            // Add Bedrock Here
-            Instantiate(bedrockBlock, new Vector3(bedrockXLeft, rowY, 0), Quaternion.identity);
 
             for (int count = -halfMapWidth; count <= halfMapWidth; count++)
             {
@@ -195,9 +198,36 @@ public class GameManager : MonoBehaviour
                 mapBlocks.Add(Instantiate(blockPrefab, new Vector3(count * blockSize, rowY, 0), Quaternion.identity));
             }
 
-            // Add Bedrock here
-            Instantiate(bedrockBlock, new Vector3(bedrockXRight, rowY, 0), Quaternion.identity);
+        }
+    }
 
+    /// <summary>
+    /// Creates all of the bounding bedrock of the map.
+    /// </summary>
+    /// <param name="layerOffset"></param>
+    private void InitializeBedrock(int layerOffset)
+    {
+        // Calculate left and right bedrock
+        float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
+        float bedrockXRight = (halfMapWidth + 1) * blockSize;
+
+        // Make first layer of ore
+        for (int row = 0; row < layerOffset; row++)
+        {
+            float rowY = -blockSize * row - (blockSize / 2);
+
+            // Make Left and right bounded bedrock
+            Instantiate(bedrockBlock, new Vector3(bedrockXLeft, rowY, 0), Quaternion.identity);
+            Instantiate(bedrockBlock, new Vector3(bedrockXRight, rowY, 0), Quaternion.identity);
+        }
+
+        // Calculate bottom row y
+        float bottomRowY = -blockSize * layerOffset - (blockSize / 2);
+
+        // Make Bottom Bedrock layer
+        for (int count = -halfMapWidth; count <= halfMapWidth; count++)
+        {
+            Instantiate(bedrockBlock, new Vector3(count * blockSize, bottomRowY, 0), Quaternion.identity);
         }
     }
 

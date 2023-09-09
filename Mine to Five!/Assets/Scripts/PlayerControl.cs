@@ -174,5 +174,8 @@ public class PlayerControl : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, .5f, groundLayer);
     }
 
-
+    public bool isUnderground()
+    {
+        return transform.position.y < 0;
+    }
 }

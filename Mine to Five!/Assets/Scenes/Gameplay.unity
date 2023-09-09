@@ -960,6 +960,7 @@ MonoBehaviour:
   copperBlock: {fileID: 7265426399925476133, guid: c3436110033213f468c82033b0d1347f, type: 3}
   mapBlocks: []
   workTimeText: {fileID: 2027108171}
+  workTimeAnim: {fileID: 2027108173}
   coalText: {fileID: 1608019398}
   copperText: {fileID: 1139576257}
   playerCashText: {fileID: 30569200}
@@ -3791,6 +3792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2027108170}
   - component: {fileID: 2027108172}
+  - component: {fileID: 2027108173}
   - component: {fileID: 2027108171}
   m_Layer: 5
   m_Name: WorkTime
@@ -3916,6 +3918,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027108169}
   m_CullTransparentMesh: 1
+--- !u!95 &2027108173
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027108169}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7bf458e546a54bd49975e3345f2dfab5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2042115099
 GameObject:
   m_ObjectHideFlags: 0
