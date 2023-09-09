@@ -25,11 +25,13 @@ public class PlayerControl : MonoBehaviour
 
     [SerializeField] private InputActionAsset actions;
     private InputAction moveAction;
+    private InputAction godModeAction;
 
     private void Awake()
     {
         // 
         moveAction = actions.FindActionMap("Mining").FindAction("move");
+        godModeAction = actions.FindActionMap("Mining").FindAction("godmode");
     }
 
     private void OnEnable()
@@ -48,10 +50,16 @@ public class PlayerControl : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
+
+        if (godModeAction.WasPerformedThisFrame())
+        {
+            Debug.Log("God Mode Enabled!");
+            speed = 20;
+            drillStrength = 200;
+        }
 
         if (moveInput.y > 0 && IsGrounded())
         {
@@ -62,7 +70,6 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         if (moveInput.y < 0)
         {
             rb.velocity = new Vector2(moveInput.x * speed, rb.velocity.y + moveInput.y);
@@ -103,52 +110,40 @@ public class PlayerControl : MonoBehaviour
         if (collision.gameObject.CompareTag(TagManager.BEDROCK_TAG)) 
             return;
 
-        // Finds out if collision reduces blocks durability
-        if (LayerMask.LayerToName(collision.gameObject.layer) == "Blocks")
-        {
-            float drillDmg = 0;
-            BlockInfo blockInfoScript = collision.gameObject.GetComponent<BlockInfo>();
+        if (LayerMask.LayerToName(collision.gameObject.layer) != "Blocks")
+            return;
 
-            if (collision.gameObject.CompareTag(TagManager.GRASS_TAG))
-            {
-                drillDmg = drillStrength * Time.deltaTime;
-            }
-            else if (collision.gameObject.CompareTag(TagManager.DIRT_TAG))
-            {
-                drillDmg = drillStrength * Time.deltaTime;
-            }
-            else if (collision.gameObject.CompareTag(TagManager.COAL_TAG))
-            {
-                drillDmg = drillStrength * Time.deltaTime;
-            }
+        if (moveInput.x == 0 && moveInput.y >= 0)
+            return;
 
-            // Checks for blocks to the left and right of player
-            if (moveInput.x != 0 && IsBlockNextToPlayer(collision))
-            {
-                // If to the left and left is pressed, lower durability
-                if (moveInput.x < 0 && collision.transform.position.x < transform.position.x)
-                {
-                    blockInfoScript.Durability -= drillDmg;
-                }
-                // If to the right and right is pressed, lower durability
-                else if (moveInput.x > 0 && collision.transform.position.x > transform.position.x)
-                {
-                    blockInfoScript.Durability -= drillDmg;
-                }
-            }
-            // Checks for blocks below player
-            else if (moveInput.y < 0 && IsBlockBelowPlayer(collision))
-            {
-                blockInfoScript.Durability -= drillDmg;
-            }
+        BlockInfo blockInfoScript = collision.gameObject.GetComponent<BlockInfo>();
+        float drillDmg = drillStrength * Time.deltaTime;
 
-            // Checks for ore destruction
-            if (blockInfoScript.Durability < 0)
-            {
-                gameManager.IncrementOre(collision.gameObject.tag);
-            }
-        }
+        if (IsDrillingBlock(collision))
+            blockInfoScript.Durability -= drillDmg;
 
+        // Checks for ore destruction
+        if (blockInfoScript.Durability < 0)
+            gameManager.IncrementOre(collision.gameObject.tag);
+
+    }
+
+    /// <summary>
+    /// Checks if the colliding block matches the drilling direction
+    /// </summary>
+    /// <param name="collision"></param>
+    /// <returns></returns>
+    private bool IsDrillingBlock(Collision2D collision)
+    {
+        return (
+            // Is drilling block to left or right
+            (IsBlockNextToPlayer(collision) &&
+                ((moveInput.x < 0 && collision.transform.position.x < transform.position.x) ||
+                (moveInput.x > 0 && collision.transform.position.x > transform.position.x)))
+            ||
+            // Is drilling block directly below player
+            (moveInput.y < 0 && IsBlockBelowPlayer(collision))
+        );
     }
 
     /// <summary>

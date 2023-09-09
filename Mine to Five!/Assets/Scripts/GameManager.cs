@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI workTimeText;
     private int coalOre = 0;
     [SerializeField] private TextMeshProUGUI coalText;
+    private int copperOre = 0;
+    [SerializeField] private TextMeshProUGUI copperText;
 
     [SerializeField] private TextMeshProUGUI playerCashText;
 
@@ -211,6 +213,10 @@ public class GameManager : MonoBehaviour
                 coalOre++;
                 coalText.text = coalOre.ToString();
                 break;
+            case "Copper":
+                copperOre++;
+                copperText.text = copperOre.ToString();
+                break;
 
             default: 
                 break; 
@@ -225,6 +231,10 @@ public class GameManager : MonoBehaviour
             case "Coal":
                 coalOre -= quantity;
                 coalText.text = coalOre.ToString();
+                break;
+            case "Copper":
+                copperOre -= quantity;
+                copperText.text = copperOre.ToString();
                 break;
 
             default:
