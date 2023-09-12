@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerCashText;
 
     // Paused UI
+    [SerializeField] private GameObject loadPanel;
     [SerializeField] private GameObject pausedMenu;
     [SerializeField] private GameObject depotMenu;
     [SerializeField] private GameObject altarMenu;
@@ -77,13 +78,20 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         pausedMenu.SetActive(false);
+        
+        loadPanel.SetActive(true);
 
         CreateMap();
+        
+        loadPanel.SetActive(false);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         bool paused = pauseAction.WasReleasedThisFrame();
 
         if (paused)
@@ -91,7 +99,7 @@ public class GameManager : MonoBehaviour
             TogglePause();
         }
         
-        if (!isClockedIn && playerControl.isUnderground())
+        if (!isClockedIn && playerControl.IsUnderground())
         {
             isClockedIn = true;
             workTimeAnim.SetTrigger("ClockedIn");
@@ -116,40 +124,42 @@ public class GameManager : MonoBehaviour
             }
             else if (currentHour == 5)
             {
-                workTimeAnim.SetTrigger("ClockedOut");
+                ClockOut();
             }
 
             workTimeText.text = currentHour + ":00";
         }
     }
 
-    // IEnumerator Blink()
-    //{
-    //    Color color = workTimeText.color;
+    private void ClockOut()
+    {
+        workTimeAnim.SetTrigger("ClockedOut");
+        isClockedIn = false;
+        playerControl.TeleportToSpawn();
 
-    //    while (true)
-    //    {
-    //        for (float alpha = 1f; alpha >= 0; alpha -= 0.1f)
-    //        {
-    //            color.a = alpha;
-    //            workTimeText.color = color;
-    //            yield return new WaitForSeconds(.1f);
-    //        }
-
-    //        for (float alpha = 0; alpha <= 1f; alpha += 0.1f)
-    //        {
-    //            color.a = alpha;
-    //            workTimeText.color = color;
-    //            yield return new WaitForSeconds(.1f);
-    //        }
-    //    }
-    //}
+        // Active load panel
+        loadPanel.SetActive(true);
+        // Create map
+        CreateMap();
+        // deactive load panel 
+        loadPanel.SetActive(false);
+    }
 
     /// <summary>
     /// Automatically generates the map to begin the game with several different layers of ore rarity.
     /// </summary>
     private void CreateMap()
     {
+        //
+        if (mapBlocks.Count != 0)
+        {
+            foreach (GameObject block in mapBlocks)
+            {
+                Destroy(block);
+            }
+            mapBlocks.Clear();
+        }
+
         int layerOffset = 0;
 
         // Make grass layer

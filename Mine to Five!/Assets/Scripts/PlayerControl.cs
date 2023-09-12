@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public class PlayerControl : MonoBehaviour
 {
     // 
+    private Vector3 spawnPos = new Vector3(0, 0.64f, 0);
     private float speed = 10;
     private float jumpingForce = 20;
 
@@ -61,6 +63,7 @@ public class PlayerControl : MonoBehaviour
             drillStrength = 200;
         }
 
+        // TODO: Find out if this should be in Fixed Update
         if (moveInput.y > 0 && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingForce);
@@ -174,8 +177,14 @@ public class PlayerControl : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, .5f, groundLayer);
     }
 
-    public bool isUnderground()
+    public bool IsUnderground()
     {
         return transform.position.y < 0;
     }
+
+    public void TeleportToSpawn()
+    {
+        transform.position = spawnPos;
+    }
+
 }
