@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     // Gameplay UI
     private int currentHour = 9;
     private float currentTimePassed = 0.0f;
-    private int hourIntervals = 5;
+    [SerializeField] private int hourIntervals = 5;
     [SerializeField] private TextMeshProUGUI workTimeText;
     [SerializeField] private Animator workTimeAnim;
     private int coalOre = 0;
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     // Paused UI
     [SerializeField] private GameObject loadPanel;
+    [SerializeField] private Animator loadPanelAnim;
     [SerializeField] private GameObject pausedMenu;
     [SerializeField] private GameObject depotMenu;
     [SerializeField] private GameObject altarMenu;
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
     private InputAction pauseAction; 
 
     // Gameplay Variables
+    private enum GameState { Gameplay, Menu, Transition };
+    private GameState gameState = GameState.Gameplay;
     [SerializeField] private float playerCash;
     private bool isClockedIn = false;
 
@@ -69,6 +72,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int CurrentHour
+    {
+        get { return currentHour; }
+        set 
+        { 
+            currentHour = value;
+            workTimeText.text = currentHour + ":00";
+        }
+    }
+
     private void Awake()
     {
         pauseAction = actions.FindActionMap("Mining").FindAction("pause");
@@ -79,19 +92,14 @@ public class GameManager : MonoBehaviour
     {
         pausedMenu.SetActive(false);
         
-        loadPanel.SetActive(true);
-
         CreateMap();
         
-        loadPanel.SetActive(false);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
         bool paused = pauseAction.WasReleasedThisFrame();
 
         if (paused)
@@ -107,6 +115,7 @@ public class GameManager : MonoBehaviour
         
         if (isClockedIn) 
             UpdateClock();
+
     }
 
     private void UpdateClock()
@@ -116,33 +125,37 @@ public class GameManager : MonoBehaviour
         if (currentTimePassed >= hourIntervals)
         {
             currentTimePassed -= hourIntervals;
-            currentHour++;
+            CurrentHour++;
 
-            if (currentHour > 12)
+            if (CurrentHour > 12)
             {
-                currentHour = 1;
+                CurrentHour = 1;
             }
             else if (currentHour == 5)
             {
                 ClockOut();
             }
-
-            workTimeText.text = currentHour + ":00";
         }
     }
 
     private void ClockOut()
     {
+        loadPanelAnim.SetTrigger("FadeIn");
+        Invoke("ResetMap", 1.0f);
+    }
+
+    private void ResetMap()
+    {
         workTimeAnim.SetTrigger("ClockedOut");
+        currentTimePassed = 0;
+        CurrentHour = 9;
         isClockedIn = false;
+
         playerControl.TeleportToSpawn();
 
-        // Active load panel
-        loadPanel.SetActive(true);
-        // Create map
         CreateMap();
-        // deactive load panel 
-        loadPanel.SetActive(false);
+
+        loadPanelAnim.SetTrigger("FadeOut");
     }
 
     /// <summary>
@@ -319,4 +332,13 @@ public class GameManager : MonoBehaviour
         altarMenu.SetActive(!altarMenu.activeInHierarchy);
     }
 
+    public void ActivateDepotMenuSell()
+    {
+
+    }
+
+    public void ActivateDepotMenuUpgrade()
+    {
+
+    }
 }
