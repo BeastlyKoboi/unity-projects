@@ -45,11 +45,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI playerCashText;
 
-    // Paused UI
+    // Paused and Menu UIs
     [SerializeField] private GameObject loadPanel;
     [SerializeField] private Animator loadPanelAnim;
     [SerializeField] private GameObject pausedMenu;
     [SerializeField] private GameObject depotMenu;
+    [SerializeField] private GameObject depotSellTab;
+    [SerializeField] private GameObject depotUpgradeTab;
     [SerializeField] private GameObject altarMenu;
 
     //
@@ -332,13 +334,18 @@ public class GameManager : MonoBehaviour
         altarMenu.SetActive(!altarMenu.activeInHierarchy);
     }
 
-    public void ActivateDepotMenuSell()
+    public void ActivateDepotSellTab()
     {
+        depotSellTab.SetActive(true);
+        depotUpgradeTab.SetActive(false);
+        Debug.Log("Function Called");
 
     }
 
-    public void ActivateDepotMenuUpgrade()
-    {
-
+    public void ActivateDepotUpgradeTab()
+    {   
+        depotUpgradeTab.SetActive(true);
+        depotSellTab.SetActive(false);
+        Debug.Log("Function Called");
     }
 }
