@@ -14,8 +14,11 @@ public class CardModel : MonoBehaviour
     public virtual string FlavorText { get; }
     public virtual CardType Type { get; set; }
 
-    public virtual string CardbackPath { get; }
-    public virtual string PortraitPath { get; }
+    public virtual string CardbackPath { get; } = "Cardback_Placeholder.png";
+    public virtual string UnitFramePath { get; } = "UnitCardFrontFrame.png";
+    public virtual string SpellFramePath { get; } = "SpellCardFrontFrame.png";
+
+    public virtual string PortraitPath { get; set; } 
 
     // Add reqs for targeting ally/enemy units, and ally cards.
 
