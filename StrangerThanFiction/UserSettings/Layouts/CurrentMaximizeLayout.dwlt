@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 503, y: 492}
   m_MaxSize: {x: 18097, y: 14042}
   vertical: 0
-  controlID: 34197
+  controlID: 38055
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 34198
+  controlID: 38056
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 34199
+  controlID: 38057
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -235,9 +235,9 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 270.8}
-      m_SelectedIDs: b0d9fdff
-      m_LastClickedID: -140880
+      scrollPos: {x: 0, y: 210.79999}
+      m_SelectedIDs: 2405feff
+      m_LastClickedID: -129756
       m_ExpandedIDs: b2d9fdff10dcfdff3adcfdff2405feff347fffff12fbffff42fbffff9a6e0000b26e0000ce6e0000086f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -658,9 +658,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 452.79523, y: 270.80295, z: -0.9598485}
+    m_Target: {x: 372.57843, y: 157.26584, z: -0.5754299}
     speed: 2
-    m_Value: {x: 452.79523, y: 270.80295, z: -0.9598485}
+    m_Value: {x: 372.57843, y: 157.26584, z: -0.5754299}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -710,9 +710,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 173.40434
+    m_Target: 176.0644
     speed: 2
-    m_Value: 173.40434
+    m_Value: 176.0644
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -809,7 +809,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Textures/Placeholder Images
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -817,16 +817,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Textures/Placeholder Images
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\itsal\Documents\GitHub\unity-projects\StrangerThanFiction
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 60}
-    m_SelectedIDs: fa710000
-    m_LastClickedID: 29178
-    m_ExpandedIDs: 000000005e710000607100008671000000ca9a3bffffff7f
+    m_SelectedIDs: 78710000
+    m_LastClickedID: 29048
+    m_ExpandedIDs: 000000005e7100006071000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -879,8 +879,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: b0d9fdff
-    m_LastClickedInstanceID: -140880
+    m_SelectedInstanceIDs: 2405feff
+    m_LastClickedInstanceID: -129756
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
