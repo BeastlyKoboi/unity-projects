@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
         // Make grass layer
         for (int count = -halfMapWidth; count <= halfMapWidth; count++)
         {
-            GameObject block = Instantiate(grassBlock, new Vector3(count * blockSize, -blockSize / 2, 0), Quaternion.identity);
+            mapBlocks.Add(Instantiate(grassBlock, new Vector3(count * blockSize, -blockSize / 2, 0), Quaternion.identity));
         }
 
         layerOffset += grassHeight;
@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         float bedrockXLeft = -(halfMapWidth + 1) * blockSize;
         float bedrockXRight = (halfMapWidth + 1) * blockSize;
 
-        // Make first layer of ore
+        // Make the left and right columns of bedrock
         for (int row = 0; row < layerOffset; row++)
         {
             float rowY = -blockSize * row - (blockSize / 2);
