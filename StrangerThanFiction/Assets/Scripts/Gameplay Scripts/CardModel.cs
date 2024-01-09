@@ -34,10 +34,20 @@ public class CardModel : MonoBehaviour
     public event Action OnDraw;
     public event Action OnDiscard;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        // transform.FindChild("CardPrefab(Clone)");
+
+        if (Type == CardType.Unit)
+        {
+
+        }
+        if (Type == CardType.Spell)
+        {
+
+        }
     }
 
     public virtual async Task Play(Player player) 

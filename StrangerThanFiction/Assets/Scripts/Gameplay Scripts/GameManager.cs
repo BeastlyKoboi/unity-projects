@@ -111,19 +111,15 @@ public class GameManager : MonoBehaviour
                 
                 int lastCardIndex = player1.deck.Count - 1;
                 CardModel drawnCard;
-                //Debug.Log(lastCardIndex);
                 if (lastCardIndex >= 0)
                 {
-                    Debug.Log("Player 1");
                     drawnCard = player1.deck[lastCardIndex];
                     player1.deck.RemoveAt(lastCardIndex);
                     player1.handManager.AddCardToHandFromDeck(drawnCard);
                 }
                 lastCardIndex = player2.deck.Count - 1;
-                //Debug.Log(lastCardIndex);
                 if (lastCardIndex >= 0)
                 {
-                    Debug.Log("Player 2");
                     drawnCard = player2.deck[lastCardIndex];
                     player2.deck.RemoveAt(lastCardIndex);
                     player2.handManager.AddCardToHandFromDeck(drawnCard);

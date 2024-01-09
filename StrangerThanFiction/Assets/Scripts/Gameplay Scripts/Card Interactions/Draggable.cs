@@ -7,20 +7,22 @@ using UnityEngine.UIElements;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    RectTransform rectTransform;
-    Vector2 offset;
+    private RectTransform rectTransform;
+    private Vector2 offset;
+    public bool isSelected; 
 
     // Start is called before the first frame update
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        isSelected = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         // offset = rectTransform.anchoredPosition - eventData.position;
         offset = this.transform.position - new Vector3(eventData.position.x, eventData.position.y, 0);
-
+        isSelected = true;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -32,7 +34,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
+        isSelected = false;
     }
 
 

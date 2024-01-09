@@ -26,7 +26,9 @@ public class Player : MonoBehaviour
 
     public int actWins = 0;
 
+    // Eventually replace this with a deck manager
     public List<CardModel> deck;
+    public GameObject deckGameObject;
     public HandManager handManager;
     public List<CardModel> discarded;
 
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour
             Type MyScriptType = System.Type.GetType(card + ",Assembly-CSharp");
 
             GameObject cardObj = new GameObject(card, typeof(RectTransform));
-            cardObj.transform.SetParent(handManager.gameObject.transform, false);
+            cardObj.transform.SetParent(deckGameObject.transform, false);
 
             cardObj.AddComponent(MyScriptType);
 
