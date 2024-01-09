@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     RectTransform rectTransform;
     Vector2 offset;

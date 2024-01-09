@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -26,12 +27,15 @@ public class Player : MonoBehaviour
     public int actWins = 0;
 
     public List<CardModel> deck;
-    public HandManager hand;
+    public HandManager handManager;
     public List<CardModel> discarded;
 
     public int totalDepth = 0;
 
     public bool hasEndedTurn = false;
+
+    public GameObject cardPrefab;
+    public GameObject unitPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -52,16 +56,20 @@ public class Player : MonoBehaviour
         {
             Type MyScriptType = System.Type.GetType(card + ",Assembly-CSharp");
 
-            GameObject cardObj = new GameObject();
+            GameObject cardObj = new GameObject(card, typeof(RectTransform));
+            cardObj.transform.SetParent(handManager.gameObject.transform, false);
+
             cardObj.AddComponent(MyScriptType);
-            Debug.Log(MyScriptType);
+
+            Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity).transform.SetParent(cardObj.transform, false);
+
             deck.Add(cardObj.GetComponent<CardModel>());
         }
     }
 
     public async Task PlayerTurn()
     {
-        while (hand.selectedCard == null)
+        while (handManager.selectedCard == null)
         {
 
             await Task.Yield();

@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         JsonUtility.FromJsonOverwrite(StarterDecksJSON.text, this);
 
         player1.PopulateDeck(Pinocchio);
+        player2.PopulateDeck(Pinocchio);
 
         // Call on game start 
         StartGame();
@@ -105,7 +106,31 @@ public class GameManager : MonoBehaviour
 
         do
         {
+            for (int i = 0; i < 5; i++)
+            {
+                
+                int lastCardIndex = player1.deck.Count - 1;
+                CardModel drawnCard;
+                //Debug.Log(lastCardIndex);
+                if (lastCardIndex >= 0)
+                {
+                    Debug.Log("Player 1");
+                    drawnCard = player1.deck[lastCardIndex];
+                    player1.deck.RemoveAt(lastCardIndex);
+                    player1.handManager.AddCardToHandFromDeck(drawnCard);
+                }
+                lastCardIndex = player2.deck.Count - 1;
+                //Debug.Log(lastCardIndex);
+                if (lastCardIndex >= 0)
+                {
+                    Debug.Log("Player 2");
+                    drawnCard = player2.deck[lastCardIndex];
+                    player2.deck.RemoveAt(lastCardIndex);
+                    player2.handManager.AddCardToHandFromDeck(drawnCard);
+                }
 
+                await Task.Delay(500);
+            }
 
             await player1.PlayerTurn();
 
