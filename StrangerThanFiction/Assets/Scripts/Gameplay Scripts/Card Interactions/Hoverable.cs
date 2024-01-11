@@ -51,7 +51,7 @@ public class Hoverable : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler,
     {
         rectTransform = GetComponent<RectTransform>();
         startPos = rectTransform.anchoredPosition;
-        endPos = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 200);
+        endPos = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 150);
         startRotation = rectTransform.localRotation;
         endRotation = Quaternion.Euler(0, 0, 0);
     }
