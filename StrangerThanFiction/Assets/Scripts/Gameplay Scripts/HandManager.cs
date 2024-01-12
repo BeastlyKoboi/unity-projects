@@ -80,4 +80,15 @@ public class HandManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This will eventually be called every time an action is 
+    /// taken that can change whether a card is playable. It should 
+    /// check each card's play requirements and make sure that they are 
+    /// met, and if not disable their draggable component. 
+    /// </summary>
+    public void RefreshPlayableCards()
+    {
+
+    }
+
 }

@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private CardModel card;
     private RectTransform rectTransform;
     private Vector2 offset;
     public bool isSelected; 
@@ -15,6 +16,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        card = GetComponent<CardModel>();
         isSelected = false;
     }
 
@@ -35,6 +37,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnEndDrag(PointerEventData eventData)
     {
         isSelected = false;
+
+        // Needs to check if intersecting with player board areas,
+        // or if a spell, the center of the screen
+        card.Owner.PlayCard(card);
     }
 
 

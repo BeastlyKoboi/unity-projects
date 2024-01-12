@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class Hoverable : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler, IPointerDownHandler, IPointerExitHandler
 {
     public RectTransform rectTransform;
+    public Draggable draggable;
     public Vector2 startPos;
     public Vector2 endPos;
     public Quaternion startRotation;
@@ -29,6 +30,8 @@ public class Hoverable : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler,
     {
         if (isHovered)
         {
+            if (draggable.isSelected) return;
+
             rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, endPos, moveSpeed * Time.deltaTime);
             rectTransform.localRotation = Quaternion.RotateTowards(rectTransform.localRotation, endRotation, rotSpeed * Time.deltaTime);
         }
@@ -50,6 +53,7 @@ public class Hoverable : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler,
     private void OnEnable()
     {
         rectTransform = GetComponent<RectTransform>();
+        draggable = GetComponent<Draggable>();
         startPos = rectTransform.anchoredPosition;
         endPos = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 150);
         startRotation = rectTransform.localRotation;

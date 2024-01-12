@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEditor.TextCore.Text;
 using UnityEngine;
 
 /// <summary>
@@ -14,28 +15,27 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Player enemyPlayer;
-
     public static event Action OnUnitSummoned;
     public static event Action OnCardPlayed;
 
-    // act wins, the deck, and the hand, 
+    [HeaderAttribute("Enemy Info")]
+    public Player enemyPlayer;
 
+    [HeaderAttribute("Game State Info")]
     public int maxMana = 5;
     public int currentMana = 5;
-
     public int actWins = 0;
+    public int totalDepth = 0;
+    public bool hasEndedTurn = false;
 
+    [HeaderAttribute("The Cards")]
     // Eventually replace this with a deck manager
     public List<CardModel> deck;
     public GameObject deckGameObject;
     public HandManager handManager;
     public List<CardModel> discarded;
 
-    public int totalDepth = 0;
-
-    public bool hasEndedTurn = false;
-
+    [HeaderAttribute("Card Prefabs")]
     public GameObject cardPrefab;
     public GameObject unitPrefab;
 
@@ -51,21 +51,12 @@ public class Player : MonoBehaviour
         
     }
 
-    public void PopulateDeck(string[] cards)
+    public void PopulateDeck(string[] cards, bool isHidden)
     {
         deck = new List<CardModel>();
         foreach (string card in cards)
         {
-            Type MyScriptType = System.Type.GetType(card + ",Assembly-CSharp");
-
-            GameObject cardObj = new GameObject(card, typeof(RectTransform));
-            cardObj.transform.SetParent(deckGameObject.transform, false);
-
-            cardObj.AddComponent(MyScriptType);
-
-            Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity).transform.SetParent(cardObj.transform, false);
-
-            deck.Add(cardObj.GetComponent<CardModel>());
+            deck.Add(CreateCard(card, isHidden));
         }
     }
 
@@ -80,10 +71,27 @@ public class Player : MonoBehaviour
         Debug.Log("Card Selected");
     }
 
-    public async void DrawCard()
+    public void PlayCard(CardModel card)
     {
-
+        Debug.Log("Card Played: ${0}", card);
     }
 
+    private CardModel CreateCard(string cardName, bool isHidden, string creator = "") 
+    {
+        Type MyScriptType = System.Type.GetType(cardName + ",Assembly-CSharp");
+
+        GameObject cardObj = new GameObject(cardName, typeof(RectTransform));
+        cardObj.transform.SetParent(deckGameObject.transform, false);
+
+        cardObj.AddComponent(MyScriptType);
+
+        Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity).transform.SetParent(cardObj.transform, false);
+
+        CardModel cardScript = cardObj.GetComponent<CardModel>();
+        cardScript.IsHidden = isHidden;
+        cardScript.Owner = this;
+
+        return cardScript;
+    }
 
 }

@@ -15,6 +15,8 @@ public class CardModel : MonoBehaviour
     public virtual string FlavorText { get; }
     public virtual CardType Type { get; set; }
 
+    public virtual bool IsHidden { get; set; } = false;
+
     // Add reqs for targeting ally/enemy units, and ally cards.
 
     public virtual uint BaseCost { get; }
@@ -29,6 +31,11 @@ public class CardModel : MonoBehaviour
     public virtual uint CurrentCost { get; set; }
     public virtual uint CurrentDepth { get; set; }
     public virtual uint CurrentPlotArmor { get; set; }
+
+    public Dictionary<string, int> Conditions { get; set; }
+    public Dictionary<string, int> PlayRequirements { get; set; }
+
+    public Player Owner { get; set; }
 
     public event Action OnPlay;
     public event Action OnSummon;
@@ -46,6 +53,8 @@ public class CardModel : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+
+
         OverwriteCardPrefab();
 
         if (Type == CardType.Unit)
@@ -115,6 +124,8 @@ public class CardModel : MonoBehaviour
             cardView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
             cardView.Find("Description").GetComponent<TextMeshProUGUI>().text = Description;
 
+            if (IsHidden)
+                cardView.Find("Cardback").gameObject.SetActive(true);
         }
     }
 

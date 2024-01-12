@@ -14,17 +14,19 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameOver;
     // Also add some for act beginnings and ends
 
+    [HeaderAttribute("The Players")]
     public Player player1; // The human player
     public Player player2; // The AI eventually 
 
+    [HeaderAttribute("Managers")]
     public UIManager uiManager;
     public BoardManager boardManager;
 
+    [HeaderAttribute("Game State Information")]
     public uint roundNumber = 0;
     public uint actNumber = 0;
-    
-    public enum GameState { Player1Turn, Player2Turn }
 
+    [HeaderAttribute("Text Assets")]
     [SerializeField] private TextAsset StarterDecksJSON;
     public string[] Pinocchio;
     public string[] TheBigBadWolf;
@@ -40,8 +42,8 @@ public class GameManager : MonoBehaviour
 
         JsonUtility.FromJsonOverwrite(StarterDecksJSON.text, this);
 
-        player1.PopulateDeck(Pinocchio);
-        player2.PopulateDeck(Pinocchio);
+        player1.PopulateDeck(Pinocchio, false);
+        player2.PopulateDeck(Pinocchio, true);
 
         // Call on game start 
         StartGame();

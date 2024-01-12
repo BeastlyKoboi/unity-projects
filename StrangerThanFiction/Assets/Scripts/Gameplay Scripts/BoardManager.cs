@@ -15,4 +15,6 @@ public class BoardManager : MonoBehaviour
     {
         
     }
+
+    // Likely needs helper methods within that like GetWeakestEnemy etc
 }

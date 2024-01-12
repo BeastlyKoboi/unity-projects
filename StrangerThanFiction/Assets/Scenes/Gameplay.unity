@@ -3594,12 +3594,12 @@ MonoBehaviour:
   maxMana: 5
   currentMana: 5
   actWins: 0
+  totalDepth: 0
+  hasEndedTurn: 0
   deck: []
   deckGameObject: {fileID: 1486007808}
   handManager: {fileID: 843313943}
   discarded: []
-  totalDepth: 0
-  hasEndedTurn: 0
   cardPrefab: {fileID: 1809478321450799374, guid: 8eb117f63706b9044a57923dbabb1dda, type: 3}
   unitPrefab: {fileID: 1809478321450799374, guid: fd56e59cc9f8a344daa2832031ed56e4, type: 3}
 --- !u!224 &1021245016
@@ -6299,12 +6299,12 @@ MonoBehaviour:
   maxMana: 5
   currentMana: 5
   actWins: 0
+  totalDepth: 0
+  hasEndedTurn: 0
   deck: []
   deckGameObject: {fileID: 1022669803}
   handManager: {fileID: 992530777}
   discarded: []
-  totalDepth: 0
-  hasEndedTurn: 0
   cardPrefab: {fileID: 1809478321450799374, guid: 8eb117f63706b9044a57923dbabb1dda, type: 3}
   unitPrefab: {fileID: 1809478321450799374, guid: fd56e59cc9f8a344daa2832031ed56e4, type: 3}
 --- !u!1 &2102977897
