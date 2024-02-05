@@ -35,12 +35,34 @@ public class CardModel : MonoBehaviour
     public Dictionary<string, int> Conditions { get; set; }
     public Dictionary<string, int> PlayRequirements { get; set; }
 
+    private bool _playable = true;
+    public bool Playable
+    {
+        get { return _playable; }
+        set
+        {
+            if (_playable == value) 
+                return; 
+
+            cardView.Find("Glow").gameObject.SetActive(value);
+            GetComponent<Draggable>().enabled = value;
+        }
+    }
+
     public Player Owner { get; set; }
+    public BoardManager Board { get; set; }
 
     public event Action OnPlay;
     public event Action OnSummon;
     public event Action OnDraw;
     public event Action OnDiscard;
+    public event Action OnDestroy;
+
+    public Transform cardView;
+    public Transform unitView;
+
+    // Unit specific placement info
+    public UnitRow SelectedArea { get; set; }
 
     private void Awake()
     {
@@ -65,13 +87,27 @@ public class CardModel : MonoBehaviour
     }
 
     public virtual async Task Play(Player player) 
-    { 
+    {
+        Owner.currentMana -= CurrentCost;
+
+        if (Type == CardType.Unit)
+        {
+            cardView.gameObject.SetActive(false);
+            unitView.gameObject.SetActive(true);
+            Board.SummonUnit(this, SelectedArea);
+        }
+
         OnPlay?.Invoke();
     }
 
     public virtual async Task Discard(Player player)
     {
         OnDiscard?.Invoke();
+    }
+
+    public virtual async Task Destroy(Player player)
+    {
+        OnDestroy?.Invoke();
     }
 
     private static Sprite LoadSprite(string path)
@@ -92,45 +128,62 @@ public class CardModel : MonoBehaviour
 
     private void OverwriteCardPrefab()
     {
-        Transform cardView = transform.Find("CardPrefab(Clone)");
-        if (cardView != null)
+        cardView = transform.Find("CardPrefab(Clone)");
+        if (cardView == null)
+            return;
+
+        // Load portrait picture
+        Sprite sprite = LoadSprite(PortraitPath);
+        Transform portrait = cardView.Find("Portrait");
+
+        if (sprite != null)
+            portrait.GetComponent<Image>().sprite = sprite;
+
+        cardView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
+
+        //  
+        if (Type == CardType.Spell)
         {
-            // Load portrait picture
-            Sprite sprite = LoadSprite(PortraitPath);
-            Transform portrait = cardView.Find("Portrait");
+            Sprite spellCardFrame = LoadSprite("Assets/Textures/SpellCardFrame.png");
+            Transform background = cardView.Find("Background");
+            background.GetComponent<Image>().sprite = spellCardFrame;
 
-            if (sprite != null)
-                portrait.GetComponent<Image>().sprite = sprite;
+            cardView.Find("Depth").gameObject.SetActive(false);
+            cardView.Find("PlotArmor").gameObject.SetActive(false);
 
-            cardView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
-
-            //  
-            if (Type == CardType.Spell)
-            {
-                Sprite spellCardFrame = LoadSprite("Assets/Textures/SpellCardFrame.png");
-                Transform background = cardView.Find("Background");
-                background.GetComponent<Image>().sprite = spellCardFrame;
-
-                cardView.Find("Depth").gameObject.SetActive(false);
-                cardView.Find("PlotArmor").gameObject.SetActive(false);
-
-            }
-            else
-            {
-                cardView.Find("Depth").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
-                cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
-            }
-
-            cardView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
-            cardView.Find("Description").GetComponent<TextMeshProUGUI>().text = Description;
-
-            if (IsHidden)
-                cardView.Find("Cardback").gameObject.SetActive(true);
         }
+        else
+        {
+            cardView.Find("Depth").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+            cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
+        }
+
+        cardView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
+        cardView.Find("Description").GetComponent<TextMeshProUGUI>().text = Description;
+
+        if (IsHidden)
+            cardView.Find("Cardback").gameObject.SetActive(true);
     }
 
     private void OverwriteUnitPrefab()
     {
+        unitView = transform.Find("UnitPrefab(Clone)");
+        
+        if (unitView == null)
+            return;
 
+        // Load portrait picture
+        Sprite sprite = LoadSprite(PortraitPath);
+        Transform portrait = unitView.Find("Portrait");
+
+        if (sprite != null)
+            portrait.GetComponent<Image>().sprite = sprite;
+
+        unitView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
+        unitView.Find("Depth").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+        unitView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
+        unitView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
+
+        unitView.gameObject.SetActive(false);
     }
 }

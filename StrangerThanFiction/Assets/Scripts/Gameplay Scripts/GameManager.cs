@@ -104,42 +104,44 @@ public class GameManager : MonoBehaviour
     {
         uiManager.RoundStart(roundNumber);
 
-        // Draw Cards
+        OnRoundStart?.Invoke();
 
+        player1.currentMana = 0;
+        player1.currentMana += player1.maxMana;
+        player2.currentMana = 0;
+        player2.currentMana += player2.maxMana;
+
+
+        await DrawHands(); // ITF maybe put this in event with numCards to draw as a variable
+
+        // Draw Cards
         do
         {
-            for (int i = 0; i < 5; i++)
-            {
-                
-                int lastCardIndex = player1.deck.Count - 1;
-                CardModel drawnCard;
-                if (lastCardIndex >= 0)
-                {
-                    drawnCard = player1.deck[lastCardIndex];
-                    player1.deck.RemoveAt(lastCardIndex);
-                    player1.handManager.AddCardToHandFromDeck(drawnCard);
-                }
-                lastCardIndex = player2.deck.Count - 1;
-                if (lastCardIndex >= 0)
-                {
-                    drawnCard = player2.deck[lastCardIndex];
-                    player2.deck.RemoveAt(lastCardIndex);
-                    player2.handManager.AddCardToHandFromDeck(drawnCard);
-                }
-
-                await Task.Delay(500);
-            }
-
             await player1.PlayerTurn();
 
             await player2.PlayerTurn();
 
             await Task.Yield();
 
-        } while (!(player1.hasEndedTurn && player2.hasEndedTurn));
-
+        } while (player1.CanDoSomething() || player2.CanDoSomething());
         // 
+
+        OnRoundEnd?.Invoke();
     }
+
+    private async Task DrawHands(int numCards = 5)
+    {
+        for (int i = 0; i < numCards; i++)
+        {
+            player1.DrawCard();
+
+            player2.DrawCard();
+
+            await Task.Delay(500);
+        }
+    }
+
+
 
     private void EndGame()
     {

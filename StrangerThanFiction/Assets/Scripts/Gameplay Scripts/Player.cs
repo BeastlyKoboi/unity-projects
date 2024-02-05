@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor.TextCore.Text;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// My thinking is that all player input will be filtered in from here, human or AI. 
@@ -15,18 +16,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static event Action OnUnitSummoned;
+    public static event Action<CardModel> OnUnitSummoned;
     public static event Action OnCardPlayed;
+    public event Action OnMyTurnStart;
 
-    [HeaderAttribute("Enemy Info")]
+    [HeaderAttribute("Game and Enemy Info")]
+    public GameManager gameManager;
+    public BoardManager board;
     public Player enemyPlayer;
 
     [HeaderAttribute("Game State Info")]
-    public int maxMana = 5;
-    public int currentMana = 5;
-    public int actWins = 0;
-    public int totalDepth = 0;
+    public uint maxMana = 5;
+    public uint currentMana = 5;
+    public uint actWins = 0;
+    public uint totalDepth = 0;
     public bool hasEndedTurn = false;
+    public bool hasEndedRound = false;
 
     [HeaderAttribute("The Cards")]
     // Eventually replace this with a deck manager
@@ -62,18 +67,54 @@ public class Player : MonoBehaviour
 
     public async Task PlayerTurn()
     {
-        while (handManager.selectedCard == null)
-        {
+        OnMyTurnStart?.Invoke();
 
+        while (handManager.playedCard == null)
+        {
             await Task.Yield();
         }
 
-        Debug.Log("Card Selected");
+        Debug.Log("Card Played");
+        await PlayCard(handManager.playedCard);
+
     }
 
-    public void PlayCard(CardModel card)
+    public void DrawCard()
     {
-        Debug.Log("Card Played: ${0}", card);
+        if (deck.Count > 0)
+        {
+            CardModel drawnCard;
+            drawnCard = deck[deck.Count - 1];
+            deck.RemoveAt(deck.Count - 1);
+            handManager.AddCardToHandFromDeck(drawnCard);
+        }
+        else
+        {
+            ShuffleDiscardIntoDeck();
+        }
+    }
+
+    public bool CanDoSomething()
+    {
+        bool actionsLeft = true;
+
+        if (handManager.NumPlayableCards == 0)
+        {
+            actionsLeft = false;
+        }
+
+        return actionsLeft;
+    }
+
+    private async Task PlayCard(CardModel card)
+    {
+        await card.Play(this);
+        handManager.RemoveCardFromHand(card);
+    }
+
+    private void ShuffleDiscardIntoDeck()
+    {
+
     }
 
     private CardModel CreateCard(string cardName, bool isHidden, string creator = "") 
@@ -90,8 +131,14 @@ public class Player : MonoBehaviour
         CardModel cardScript = cardObj.GetComponent<CardModel>();
         cardScript.IsHidden = isHidden;
         cardScript.Owner = this;
+        cardScript.Board = board;
+
+        if (cardScript.Type == CardType.Unit) 
+            Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity).transform.SetParent(cardObj.transform, false);
 
         return cardScript;
     }
+
+
 
 }

@@ -8,6 +8,8 @@ public class HandManager : MonoBehaviour
 {
     public List<CardModel> hand;
     public List<CardModel> nonInteractiveCards;
+    public int NumPlayableCards = 0;
+
 
     public Vector2 handBounds;
     public int rotationBounds;
@@ -16,6 +18,7 @@ public class HandManager : MonoBehaviour
 
     public CardModel hoveredCard; 
     public CardModel selectedCard;
+    public CardModel playedCard;
 
     // Start is called before the first frame update
     void Start()
@@ -44,13 +47,19 @@ public class HandManager : MonoBehaviour
         card.transform.SetParent(transform);
         hand.Insert(0, card);
         UpdateTargetTransforms();
-
+        RefreshPlayableCards();
         // Add hover and drag scripts 
     }
 
     public void RemoveCardFromHand(CardModel card)
     {
+        Destroy(card.GetComponent<Appear>());
+        Destroy(card.GetComponent<Hoverable>());
+        Destroy(card.GetComponent<Draggable>());
         hand.Remove(card);
+        playedCard = null;
+        UpdateTargetTransforms();
+        RefreshPlayableCards();
         // remove hover and drag scripts
     }
 
@@ -88,6 +97,21 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void RefreshPlayableCards()
     {
+        NumPlayableCards = 0;
+
+        for (int i = 0; i < hand.Count; i++)
+        {
+            CardModel card = hand[i];
+            bool isPlayable = true;
+
+            if (card.CurrentCost > card.Owner.currentMana)
+                isPlayable = false;
+
+            if (isPlayable) NumPlayableCards++;
+
+            card.Playable = isPlayable;
+        }
+
 
     }
 
