@@ -22,13 +22,43 @@ public class Player : MonoBehaviour
 
     [HeaderAttribute("Game and Enemy Info")]
     public GameManager gameManager;
+    public UIManager uiManager;
     public BoardManager board;
     public Player enemyPlayer;
 
     [HeaderAttribute("Game State Info")]
-    public uint maxMana = 5;
-    public uint currentMana = 5;
-    public uint actWins = 0;
+    private uint _maxMana = 5;
+    public uint MaxMana
+    {
+        get { return _maxMana; }
+        set 
+        { 
+            _maxMana = value;
+            uiManager.UpdateMana(this);
+        }
+    }
+    private uint _currentMana = 5;
+    public uint CurrentMana
+    {
+        get { return _currentMana; }
+        set
+        {
+            _currentMana = value;
+            uiManager.UpdateMana(this);
+        }
+    }
+
+    private uint _actWins = 0;
+    public uint ActWins
+    {
+        get { return _actWins; }
+        set
+        {
+            _actWins = value;
+            uiManager.UpdateActWins(this);
+        }
+    }
+
     public uint totalDepth = 0;
     public bool hasEndedTurn = false;
     public bool hasEndedRound = false;

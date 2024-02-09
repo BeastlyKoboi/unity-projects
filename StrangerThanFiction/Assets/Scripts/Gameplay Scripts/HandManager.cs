@@ -104,7 +104,7 @@ public class HandManager : MonoBehaviour
             CardModel card = hand[i];
             bool isPlayable = true;
 
-            if (card.CurrentCost > card.Owner.currentMana)
+            if (card.CurrentCost > card.Owner.CurrentMana)
                 isPlayable = false;
 
             if (isPlayable) NumPlayableCards++;

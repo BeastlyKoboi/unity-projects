@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 
             // shuffle discard into deck
             
-        } while (actNumber != 3 || player1.actWins == 2 || player2.actWins == 2);
+        } while (actNumber != 3 || player1.ActWins == 2 || player2.ActWins == 2);
 
         EndGame();
     }
@@ -106,10 +106,10 @@ public class GameManager : MonoBehaviour
 
         OnRoundStart?.Invoke();
 
-        player1.currentMana = 0;
-        player1.currentMana += player1.maxMana;
-        player2.currentMana = 0;
-        player2.currentMana += player2.maxMana;
+        player1.CurrentMana = 0;
+        player1.CurrentMana += player1.MaxMana;
+        player2.CurrentMana = 0;
+        player2.CurrentMana += player2.MaxMana;
 
 
         await DrawHands(); // ITF maybe put this in event with numCards to draw as a variable

@@ -88,7 +88,7 @@ public class CardModel : MonoBehaviour
 
     public virtual async Task Play(Player player) 
     {
-        Owner.currentMana -= CurrentCost;
+        Owner.CurrentMana -= CurrentCost;
 
         if (Type == CardType.Unit)
         {

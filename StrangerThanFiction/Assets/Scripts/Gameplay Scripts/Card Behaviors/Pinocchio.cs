@@ -10,7 +10,7 @@ public sealed class Pinocchio : CardModel
     public override string FlavorText => base.FlavorText;
     public override CardType Type => CardType.Unit;
 
-    public override uint BaseCost => 3;
+    public override uint BaseCost => 2;
     public override uint BaseDepth => 3;
     public override uint BasePlotArmor => 3;
 
