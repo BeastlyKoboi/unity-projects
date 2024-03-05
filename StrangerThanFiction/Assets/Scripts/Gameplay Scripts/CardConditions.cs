@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Deprecated
 public static class CardConditions
 {
     // Postive Conditions 

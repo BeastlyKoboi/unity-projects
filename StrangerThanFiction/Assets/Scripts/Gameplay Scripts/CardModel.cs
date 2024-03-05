@@ -32,7 +32,7 @@ public class CardModel : MonoBehaviour
     public virtual uint CurrentDepth { get; set; }
     public virtual uint CurrentPlotArmor { get; set; }
 
-    public Dictionary<string, int> Conditions { get; set; }
+    private Dictionary<string, ICondition> conditions = new Dictionary<string, ICondition>();
     public Dictionary<string, int> PlayRequirements { get; set; }
 
     [SerializeField] private bool _playable = true;
@@ -112,6 +112,46 @@ public class CardModel : MonoBehaviour
     public virtual async Task Destroy(Player player)
     {
         OnDestroy?.Invoke();
+    }
+
+
+    // Method to add a condition
+    public void ApplyCondition(string conditionName, ICondition condition)
+    {
+        if (!conditions.ContainsKey(conditionName))
+        {
+            conditions.Add(conditionName, condition);
+            condition.OnAdd(this);
+        }
+        else
+        {
+            conditions[conditionName].OnSurplus(this, condition);
+        }
+    }
+
+    // Method to remove a condition
+    public void RemoveCondition(string conditionName)
+    {
+        if (conditions.ContainsKey(conditionName))
+        {
+            conditions[conditionName].OnRemove(this);
+            conditions.Remove(conditionName);
+        }
+    }
+
+    // Method to trigger a condition
+    public void TriggerCondition(string conditionName)
+    {
+        if (conditions.ContainsKey(conditionName))
+        {
+            conditions[conditionName].OnTrigger(this);
+        }
+    }
+
+    // Method to find out if this unit has a condition
+    public bool HasCondition(string conditionName)
+    {
+        return conditions.ContainsKey(conditionName);
     }
 
     private static Sprite LoadSprite(string path)
