@@ -35,7 +35,7 @@ public class UnitRow : MonoBehaviour
 
     }
 
-    public void UpdateUnitPositions()
+    public void UpdateUnitPositions() 
     {
         
         float unitWidth = units[0].unitView.transform.localScale.x * units[0].unitView.GetComponent<RectTransform>().rect.width;

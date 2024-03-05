@@ -20,7 +20,7 @@ public class CardModel : MonoBehaviour
     // Add reqs for targeting ally/enemy units, and ally cards.
 
     public virtual uint BaseCost { get; }
-    public virtual uint BaseDepth { get; }
+    public virtual uint BasePower { get; }
     public virtual uint BasePlotArmor { get; }
 
     public virtual string PortraitPath { get; set; } 
@@ -35,14 +35,18 @@ public class CardModel : MonoBehaviour
     public Dictionary<string, int> Conditions { get; set; }
     public Dictionary<string, int> PlayRequirements { get; set; }
 
-    private bool _playable = true;
+    [SerializeField] private bool _playable = true;
     public bool Playable
     {
         get { return _playable; }
         set
         {
-            if (_playable == value) 
-                return; 
+            //if (_playable == value) 
+            //    return; 
+            _playable = value;
+
+            if (IsHidden & _playable) 
+                return;
 
             cardView.Find("Glow").gameObject.SetActive(value);
             GetComponent<Draggable>().enabled = value;
@@ -67,7 +71,7 @@ public class CardModel : MonoBehaviour
     private void Awake()
     {
         CurrentCost = BaseCost;
-        CurrentDepth = BaseDepth;
+        CurrentDepth = BasePower;
         CurrentPlotArmor = BasePlotArmor;
 
     }
@@ -77,12 +81,12 @@ public class CardModel : MonoBehaviour
     {
 
 
-        OverwriteCardPrefab();
+        //OverwriteCardPrefab();
 
-        if (Type == CardType.Unit)
-        {
-            OverwriteUnitPrefab();
-        }
+        //if (Type == CardType.Unit)
+        //{
+        //    OverwriteUnitPrefab();
+        //}
 
     }
 
@@ -126,7 +130,7 @@ public class CardModel : MonoBehaviour
         return null;
     }
 
-    private void OverwriteCardPrefab()
+    public void OverwriteCardPrefab()
     {
         cardView = transform.Find("CardPrefab(Clone)");
         if (cardView == null)
@@ -148,13 +152,13 @@ public class CardModel : MonoBehaviour
             Transform background = cardView.Find("Background");
             background.GetComponent<Image>().sprite = spellCardFrame;
 
-            cardView.Find("Depth").gameObject.SetActive(false);
+            cardView.Find("Power").gameObject.SetActive(false);
             cardView.Find("PlotArmor").gameObject.SetActive(false);
 
         }
         else
         {
-            cardView.Find("Depth").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+            cardView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
             cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
         }
 
@@ -165,7 +169,7 @@ public class CardModel : MonoBehaviour
             cardView.Find("Cardback").gameObject.SetActive(true);
     }
 
-    private void OverwriteUnitPrefab()
+    public void OverwriteUnitPrefab()
     {
         unitView = transform.Find("UnitPrefab(Clone)");
         
@@ -180,7 +184,7 @@ public class CardModel : MonoBehaviour
             portrait.GetComponent<Image>().sprite = sprite;
 
         unitView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
-        unitView.Find("Depth").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+        unitView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
         unitView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
         unitView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor.TextCore.Text;
 using UnityEngine;
+using UnityEngine.XR;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
@@ -64,11 +65,10 @@ public class Player : MonoBehaviour
     public bool hasEndedRound = false;
 
     [HeaderAttribute("The Cards")]
-    // Eventually replace this with a deck manager
-    public List<CardModel> deck;
     public GameObject deckGameObject;
+    public CardPile Deck { get; set; }
     public HandManager handManager;
-    public List<CardModel> discarded;
+    public CardPile Discard { get; set; }
 
     [HeaderAttribute("Card Prefabs")]
     public GameObject cardPrefab;
@@ -77,27 +77,29 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void PopulateDeck(string[] cards, bool isHidden)
     {
-        deck = new List<CardModel>();
+        Deck = new CardPile();
+        //Deck.OnChange += UpdateDeck;
+        Deck.OnChange += () =>
+        {
+            uiManager.UpdateDeck(this);
+        };
+
         foreach (string card in cards)
         {
-            deck.Add(CreateCard(card, isHidden));
+            Deck.Add(CreateCard(card, isHidden));
         }
     }
 
     public async Task PlayerTurn()
     {
         OnMyTurnStart?.Invoke();
+
+        handManager.RefreshPlayableCards();
 
         while (handManager.playedCard == null)
         {
@@ -107,15 +109,16 @@ public class Player : MonoBehaviour
         Debug.Log("Card Played");
         await PlayCard(handManager.playedCard);
 
+        handManager.LockCards();
     }
 
     public void DrawCard()
     {
-        if (deck.Count > 0)
+        if (Deck.Count > 0)
         {
             CardModel drawnCard;
-            drawnCard = deck[deck.Count - 1];
-            deck.RemoveAt(deck.Count - 1);
+            drawnCard = Deck[Deck.Count - 1];
+            Deck.RemoveAt(Deck.Count - 1);
             handManager.AddCardToHandFromDeck(drawnCard);
         }
         else
@@ -149,7 +152,7 @@ public class Player : MonoBehaviour
 
     private CardModel CreateCard(string cardName, bool isHidden, string creator = "") 
     {
-        Type MyScriptType = System.Type.GetType(cardName + ",Assembly-CSharp");
+        Type MyScriptType = System.Type.GetType(cardName);
 
         GameObject cardObj = new GameObject(cardName, typeof(RectTransform));
         cardObj.transform.SetParent(deckGameObject.transform, false);
@@ -163,8 +166,13 @@ public class Player : MonoBehaviour
         cardScript.Owner = this;
         cardScript.Board = board;
 
-        if (cardScript.Type == CardType.Unit) 
+        cardScript.OverwriteCardPrefab();
+
+        if (cardScript.Type == CardType.Unit)
+        {
             Instantiate(unitPrefab, new Vector3(0, 0, 0), Quaternion.identity).transform.SetParent(cardObj.transform, false);
+            cardScript.OverwriteUnitPrefab();
+        }
 
         return cardScript;
     }

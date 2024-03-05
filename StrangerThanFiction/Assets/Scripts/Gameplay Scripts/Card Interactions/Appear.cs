@@ -42,6 +42,9 @@ public class Appear : MonoBehaviour
         {
             rectTransform.anchoredPosition = endPos;
             isMoving = false;
+            if (gameObject.GetComponent<CardModel>().IsHidden)
+                return;
+
             GetComponent<Hoverable>().enabled = true;
             GetComponent<Draggable>().enabled = true;
         }

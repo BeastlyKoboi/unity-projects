@@ -117,7 +117,11 @@ public class GameManager : MonoBehaviour
         // Draw Cards
         do
         {
+            await Task.Delay(1000);
+
             await player1.PlayerTurn();
+
+            await Task.Delay(1000);
 
             await player2.PlayerTurn();
 

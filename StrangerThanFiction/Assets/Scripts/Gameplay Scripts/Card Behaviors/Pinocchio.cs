@@ -11,7 +11,7 @@ public sealed class Pinocchio : CardModel
     public override CardType Type => CardType.Unit;
 
     public override uint BaseCost => 2;
-    public override uint BaseDepth => 3;
+    public override uint BasePower => 3;
     public override uint BasePlotArmor => 3;
 
     public override string PortraitPath => "Assets/Textures/CardPortraits/Pinocchio.png";
@@ -19,7 +19,7 @@ public sealed class Pinocchio : CardModel
     // Didn't need to override these 
     // public override string CardbackPath => base.CardbackPath;
     // public override uint CurrentCost { get => base.CurrentCost; set => base.CurrentCost = value; }
-    // public override uint CurrentDepth { get => base.CurrentDepth; set => base.CurrentDepth = value; }
+    // public override uint CurrentPower { get => base.CurrentPower; set => base.CurrentPower = value; }
     // public override uint CurrentPlotArmor { get => base.CurrentPlotArmor; set => base.CurrentPlotArmor = value; }
 
     // Start is called before the first frame update

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -55,17 +56,17 @@ public class UIManager : MonoBehaviour
     public void UpdateDeck(Player player)
     {
         if (player == player1)
-            deckLabelPlayer1.text = $"Deck {player1.deck.Count}";
+            deckLabelPlayer1.text = $"Deck {player1.Deck.Count}";
         else if (player == player2)
-            deckLabelPlayer2.text = $"Deck {player2.deck.Count}";
+            deckLabelPlayer2.text = $"Deck {player2.Deck.Count}";
     }
     public void UpdateDiscard(Player player)
     {
         if (player == player1)
-            discardLabelPlayer1.text = $"Disc {player1.discarded.Count}";
+            discardLabelPlayer1.text = $"Disc {player1.Discard.Count}";
         else if (player == player2)
-            discardLabelPlayer2.text = $"Disc {player2.discarded.Count}";
-
+            discardLabelPlayer2.text = $"Disc {player2.Discard.Count}";
+        Debug.Log("In update discard");
     }
 
     public void UpdateMana(Player player)

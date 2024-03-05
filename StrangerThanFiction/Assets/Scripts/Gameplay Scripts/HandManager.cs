@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
-    public List<CardModel> hand;
-    public List<CardModel> nonInteractiveCards;
-    public int NumPlayableCards = 0;
+    private UIManager uiManager;
+    public CardPile Hand { get; set; }
 
+    public int NumPlayableCards = 0;
 
     public Vector2 handBounds;
     public int rotationBounds;
@@ -23,8 +23,8 @@ public class HandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hand = new List<CardModel>();
-        nonInteractiveCards = new List<CardModel>();
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        Hand = new CardPile();
 
         handBounds.x = 500;
         handBounds.y = 20;
@@ -34,18 +34,15 @@ public class HandManager : MonoBehaviour
         handCenter.y = -500;
     }
 
-    private void Update()
-    {
-
-    }
 
     public void AddCardToHandFromDeck(CardModel card)
     {
         card.AddComponent<Appear>();
         card.AddComponent<Hoverable>();
         card.AddComponent<Draggable>();
+        
         card.transform.SetParent(transform);
-        hand.Insert(0, card);
+        Hand.Insert(0, card);
         UpdateTargetTransforms();
         RefreshPlayableCards();
         // Add hover and drag scripts 
@@ -56,7 +53,7 @@ public class HandManager : MonoBehaviour
         Destroy(card.GetComponent<Appear>());
         Destroy(card.GetComponent<Hoverable>());
         Destroy(card.GetComponent<Draggable>());
-        hand.Remove(card);
+        Hand.Remove(card);
         playedCard = null;
         UpdateTargetTransforms();
         RefreshPlayableCards();
@@ -65,13 +62,13 @@ public class HandManager : MonoBehaviour
 
     private void UpdateTargetTransforms()
     {
-        float startingXPos = -(hand.Count + 1) * cardGap / 2;
+        float startingXPos = -(Hand.Count + 1) * cardGap / 2;
         Vector2 cardPos = new Vector2(startingXPos, handCenter.y - handBounds.y);
         float startingRot = rotationBounds;
-        int middleCardIndex = (int)Math.Ceiling(hand.Count / 2.0f);
+        int middleCardIndex = (int)Math.Ceiling(Hand.Count / 2.0f);
         float yPosIncrement = (2 * handBounds.y) / middleCardIndex;
 
-        for (int cardIndex = 0; cardIndex < hand.Count; cardIndex++)
+        for (int cardIndex = 0; cardIndex < Hand.Count; cardIndex++)
         {
             if (cardIndex < middleCardIndex)
             {
@@ -82,11 +79,19 @@ public class HandManager : MonoBehaviour
                 cardPos += new Vector2(cardGap, -yPosIncrement);
             }
 
-            startingRot -= 2 * rotationBounds / hand.Count;
+            startingRot -= 2 * rotationBounds / Hand.Count;
 
-            hand[cardIndex].GetComponent<Appear>().RefreshTarget(cardPos, startingRot);
+            Hand[cardIndex].GetComponent<Appear>().RefreshTarget(cardPos, startingRot);
         }
 
+    }
+
+    public void LockCards()
+    {
+        for (int i = 0; i < Hand.Count; i++)
+        {
+            Hand[i].Playable = false;
+        }
     }
 
     /// <summary>
@@ -99,9 +104,9 @@ public class HandManager : MonoBehaviour
     {
         NumPlayableCards = 0;
 
-        for (int i = 0; i < hand.Count; i++)
+        for (int i = 0; i < Hand.Count; i++)
         {
-            CardModel card = hand[i];
+            CardModel card = Hand[i];
             bool isPlayable = true;
 
             if (card.CurrentCost > card.Owner.CurrentMana)

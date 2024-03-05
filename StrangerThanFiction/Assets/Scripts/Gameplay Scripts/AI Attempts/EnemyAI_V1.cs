@@ -32,7 +32,7 @@ public class EnemyAI_V1 : MonoBehaviour
     {
         Debug.Log("Enemy Turn PlayTurn is called.");
 
-        CardModel cardToPlay = myPlayer.handManager.hand[0];
+        CardModel cardToPlay = myPlayer.handManager.Hand[0];
 
         if (cardToPlay.Type == CardType.Unit)
         {
