@@ -19,18 +19,27 @@ public class CardModel : MonoBehaviour
 
     // Add reqs for targeting ally/enemy units, and ally cards.
 
+    // Stats that will not be changed
     public virtual uint BaseCost { get; }
     public virtual uint BasePower { get; }
     public virtual uint BasePlotArmor { get; }
 
-    public virtual string PortraitPath { get; set; } 
+    public virtual string PortraitPath { get; set; }
     public virtual string CardbackPath { get; } = "Cardback_Placeholder.png";
     public virtual string UnitFramePath { get; } = "UnitCardFrontFrame.png";
     public virtual string SpellFramePath { get; } = "SpellCardFrontFrame.png";
 
+    // Stats that reflect gameplay and can be changed
+    public virtual uint MaxCost { get; set; }
+    public virtual uint MaxPower { get; set; }
+    public virtual uint MaxPlotArmor { get; set; }
+
     public virtual uint CurrentCost { get; set; }
-    public virtual uint CurrentDepth { get; set; }
+    public virtual uint CurrentPower { get; set; }
     public virtual uint CurrentPlotArmor { get; set; }
+
+    public virtual uint DamageResistence { get; set; } = 0;
+
 
     private Dictionary<string, ICondition> conditions = new Dictionary<string, ICondition>();
     public Dictionary<string, int> PlayRequirements { get; set; }
@@ -45,7 +54,7 @@ public class CardModel : MonoBehaviour
             //    return; 
             _playable = value;
 
-            if (IsHidden & _playable) 
+            if (IsHidden & _playable)
                 return;
 
             cardView.Find("Glow").gameObject.SetActive(value);
@@ -56,11 +65,17 @@ public class CardModel : MonoBehaviour
     public Player Owner { get; set; }
     public BoardManager Board { get; set; }
 
+    // Card Events 
     public event Action OnPlay;
-    public event Action OnSummon;
     public event Action OnDraw;
     public event Action OnDiscard;
     public event Action OnDestroy;
+
+    // Unit Events - only called when in play, otherwise never
+    public event Action OnSummon;
+    public event Action OnRoundStart;
+    public event Action OnRoundEnd;
+    public event Action OnTakeDamage;
 
     public Transform cardView;
     public Transform unitView;
@@ -71,26 +86,26 @@ public class CardModel : MonoBehaviour
     private void Awake()
     {
         CurrentCost = BaseCost;
-        CurrentDepth = BasePower;
+        CurrentPower = BasePower;
         CurrentPlotArmor = BasePlotArmor;
 
+        MaxCost = CurrentCost;
+        MaxPower = CurrentPower;
+        MaxPlotArmor = CurrentPlotArmor;
     }
 
     // Start is called before the first frame update
     public virtual void Start()
     {
-
-
         //OverwriteCardPrefab();
 
         //if (Type == CardType.Unit)
         //{
         //    OverwriteUnitPrefab();
         //}
-
     }
 
-    public virtual async Task Play(Player player) 
+    public virtual async Task Play(Player player)
     {
         Owner.CurrentMana -= CurrentCost;
 
@@ -114,6 +129,41 @@ public class CardModel : MonoBehaviour
         OnDestroy?.Invoke();
     }
 
+    public uint TakeDamage(uint damage, bool ignorePlotArmor = false)
+    {
+        damage -= DamageResistence;
+
+        // Make ifs for helpless or invincible
+
+        // Now that final damage is calculated, 
+        // Plot armor and then power are affected in that order
+        if (!ignorePlotArmor)
+        {
+            if (CurrentPlotArmor <= damage)
+            {
+                damage -= CurrentPlotArmor;
+                CurrentPlotArmor = 0;
+            }
+            else
+            {
+                CurrentPlotArmor -= damage;
+                damage = 0;
+            }
+        }
+
+        DamagePower(damage);
+        OnTakeDamage?.Invoke();
+        return damage;
+    }
+    private uint DamagePower(uint damage)
+    {
+        if (CurrentPower > damage)
+            CurrentPower -= damage;
+        else
+            CurrentPower = 0;
+
+        return damage;
+    }
 
     // Method to add a condition
     public void ApplyCondition(string conditionName, ICondition condition)
@@ -121,11 +171,11 @@ public class CardModel : MonoBehaviour
         if (!conditions.ContainsKey(conditionName))
         {
             conditions.Add(conditionName, condition);
-            condition.OnAdd(this);
+            condition.OnAdd();
         }
         else
         {
-            conditions[conditionName].OnSurplus(this, condition);
+            conditions[conditionName].OnSurplus(condition);
         }
     }
 
@@ -134,7 +184,7 @@ public class CardModel : MonoBehaviour
     {
         if (conditions.ContainsKey(conditionName))
         {
-            conditions[conditionName].OnRemove(this);
+            conditions[conditionName].OnRemove();
             conditions.Remove(conditionName);
         }
     }
@@ -144,7 +194,7 @@ public class CardModel : MonoBehaviour
     {
         if (conditions.ContainsKey(conditionName))
         {
-            conditions[conditionName].OnTrigger(this);
+            conditions[conditionName].OnTrigger();
         }
     }
 
@@ -159,7 +209,7 @@ public class CardModel : MonoBehaviour
         if (string.IsNullOrEmpty(path)) return null;
         if (System.IO.File.Exists(path))
         {
-            int sprite_width = 100; 
+            int sprite_width = 100;
             int sprite_height = 100;
             byte[] bytes = System.IO.File.ReadAllBytes(path);
             Texture2D texture = new Texture2D(sprite_width, sprite_height, TextureFormat.RGB24, false);
@@ -198,7 +248,7 @@ public class CardModel : MonoBehaviour
         }
         else
         {
-            cardView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+            cardView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentPower.ToString();
             cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
         }
 
@@ -212,7 +262,7 @@ public class CardModel : MonoBehaviour
     public void OverwriteUnitPrefab()
     {
         unitView = transform.Find("UnitPrefab(Clone)");
-        
+
         if (unitView == null)
             return;
 
@@ -224,7 +274,7 @@ public class CardModel : MonoBehaviour
             portrait.GetComponent<Image>().sprite = sprite;
 
         unitView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
-        unitView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentDepth.ToString();
+        unitView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentPower.ToString();
         unitView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
         unitView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
 
