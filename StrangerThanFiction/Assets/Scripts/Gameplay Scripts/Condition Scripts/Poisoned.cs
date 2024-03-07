@@ -16,6 +16,7 @@ public class Poisoned : ICondition
     public void OnTrigger()
     {
         card.TakeDamage(amount, true);
+        amount -= 1;
     }
     public void OnSurplus(ICondition surplus)
     {

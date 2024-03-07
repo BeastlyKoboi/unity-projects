@@ -24,14 +24,14 @@ public class GameManager : MonoBehaviour
 
     [HeaderAttribute("Game State Information")]
     public uint roundNumber = 0;
-    public uint actNumber = 0;
+    public uint totalRounds = 9;
 
     [HeaderAttribute("Text Assets")]
     [SerializeField] private TextAsset StarterDecksJSON;
     public string[] Pinocchio;
     public string[] TheBigBadWolf;
 
-    // Something for battlefield conditions in each act
+    // Something for battlefield conditions
 
     
 
@@ -50,18 +50,6 @@ public class GameManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // in game start method, after run, call round start (game start should select who goes first.)
-    // after round start, ping pong between player until both decide to end the round/or cannot do anything.
-    // maybe in a round activity method with a do while 
-    // should call round end (increment round num and then act stuff if necessary), which should chain to round start
-    // completing the loop, until during round end win condition is met, then call game end instead. 
-
     private void StartGame()
     {
         // Setup 
@@ -72,32 +60,16 @@ public class GameManager : MonoBehaviour
 
     private async void GameLoop()
     {
-
-        do
-        {
-            actNumber++;
-            await ActActivity();
-
-            // shuffle discard into deck
-            
-        } while (actNumber != 3 || player1.ActWins == 2 || player2.ActWins == 2);
-
-        EndGame();
-    }
-
-    private async Task ActActivity()
-    {
-        uiManager.ActStart(actNumber);
-
         do
         {
             roundNumber++;
             await RoundActivity();
 
-        } while (roundNumber % 3 != 0);
+        } while (roundNumber != totalRounds);
 
         // Decide who has most power then grant win to player
 
+        EndGame();
     }
 
     private async Task RoundActivity()
@@ -145,11 +117,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     private void EndGame()
     {
 
     }
-
 }
