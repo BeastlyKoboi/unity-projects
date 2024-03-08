@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
@@ -12,6 +13,8 @@ public class Appear : MonoBehaviour
     public float rotSpeed = 50;
     public bool isMoving = false;
 
+    public event Action<CardModel> OnAppearFinish;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -23,7 +26,7 @@ public class Appear : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -35,18 +38,20 @@ public class Appear : MonoBehaviour
         if (rectTransform.localRotation != endRotation)
         {
             rectTransform.localRotation = Quaternion.RotateTowards(rectTransform.localRotation, endRotation, rotSpeed * Time.deltaTime);
-              
+
         }
 
         if (Vector2.Distance(rectTransform.anchoredPosition, endPos) < 0.01f)
         {
             rectTransform.anchoredPosition = endPos;
             isMoving = false;
-            if (gameObject.GetComponent<CardModel>().IsHidden)
-                return;
+            if (!gameObject.GetComponent<CardModel>().IsHidden)
+            {
+                GetComponent<Hoverable>().enabled = true;
+                GetComponent<Draggable>().enabled = true;
+            }
 
-            GetComponent<Hoverable>().enabled = true;
-            GetComponent<Draggable>().enabled = true;
+            OnAppearFinish?.Invoke(GetComponent<CardModel>());
         }
         else
         {

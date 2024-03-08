@@ -19,20 +19,6 @@ public class BoardManager : MonoBehaviour
     // better functionality in the future may be achieved 
     // through UnitArea Scripts attached to a game object.
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-
     public void SummonUnit(CardModel unit, UnitRow row)
     {
         unit.IsHidden = false;
@@ -80,6 +66,86 @@ public class BoardManager : MonoBehaviour
     }
 
     // Likely needs helper methods within that like GetWeakestEnemy etc
+
+    public CardModel GetStrongestUnit(Player player)
+    {
+        UnitRow frontline;
+        UnitRow backline;
+        CardModel frontStrongest;
+        CardModel backStrongest;
+        if (player == gameManager.player1)
+        {
+            frontline = player1FrontRow;
+            backline = player1BackRow;
+        }
+        else
+        {
+            frontline = player2FrontRow;
+            backline = player2BackRow;
+        }
+
+        frontStrongest = frontline.GetStrongestUnit();
+        backStrongest = backline.GetStrongestUnit();
+
+        if (frontStrongest.CurrentPower > backStrongest.CurrentPower)
+            return frontStrongest;
+        else if (frontStrongest.CurrentPower == backStrongest.CurrentPower && 
+            frontStrongest.CurrentPlotArmor >= backStrongest.CurrentPlotArmor)
+            return frontStrongest;
+        
+        return backStrongest;
+    }
+
+    public CardModel GetWeakestUnit(Player player)
+    {
+        UnitRow frontline;
+        UnitRow backline;
+        CardModel frontWeakest;
+        CardModel backWeakest;
+        if (player == gameManager.player1)
+        {
+            frontline = player1FrontRow;
+            backline = player1BackRow;
+        }
+        else
+        {
+            frontline = player2FrontRow;
+            backline = player2BackRow;
+        }
+
+        frontWeakest = frontline.GetWeakestUnit();
+        backWeakest = backline.GetWeakestUnit();
+
+        if (frontWeakest.CurrentPower < backWeakest.CurrentPower)
+            return frontWeakest;
+        else if (frontWeakest.CurrentPower == backWeakest.CurrentPower &&
+            frontWeakest.CurrentPlotArmor <= backWeakest.CurrentPlotArmor)
+            return frontWeakest;
+
+        return backWeakest;
+    }
+
+    public uint GetTotalFrontPower(Player player)
+    {
+        UnitRow frontline;
+        if (player == gameManager.player1)
+            frontline = player1FrontRow;
+        else
+            frontline = player2FrontRow;
+
+        return frontline.GetTotalPower();
+    }
+
+    public uint GetTotalBackPower(Player player)
+    {
+        UnitRow backline;
+        if (player == gameManager.player1)
+            backline = player1BackRow;
+        else
+            backline = player2BackRow;
+
+        return backline.GetTotalPower();
+    }
 
     public UnitRow GetRandomEnemyRow()
     {

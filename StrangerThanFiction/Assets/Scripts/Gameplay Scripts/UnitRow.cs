@@ -11,13 +11,13 @@ public class UnitRow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddUnit(CardModel newUnit)
@@ -35,9 +35,9 @@ public class UnitRow : MonoBehaviour
 
     }
 
-    public void UpdateUnitPositions() 
+    public void UpdateUnitPositions()
     {
-        
+
         float unitWidth = units[0].unitView.transform.localScale.x * units[0].unitView.GetComponent<RectTransform>().rect.width;
         float unitCount = units.Count;
 
@@ -52,5 +52,62 @@ public class UnitRow : MonoBehaviour
             startingXPos += unitWidth;
         }
 
+    }
+
+    // ----------------------------------------------------------------------------
+    // Methods used to query specific units 
+    // ----------------------------------------------------------------------------
+
+    /// <summary>
+    /// Returns the strongest unit in this unit row, by power then plot armor.
+    /// </summary>
+    /// <returns></returns>
+    public CardModel GetStrongestUnit()
+    {
+        CardModel[] unitsArr = units.ToArray();
+        CardModel strongest = unitsArr[0];
+
+        for (int i = 0; i < unitsArr.Length; i++)
+        {
+            if (strongest.CurrentPower < unitsArr[i].CurrentPower)
+                strongest = unitsArr[i];
+            else if (strongest.CurrentPower == unitsArr[i].CurrentPower &&
+                strongest.CurrentPlotArmor < unitsArr[i].CurrentPlotArmor)
+                strongest = unitsArr[i];
+        }
+        return strongest;
+    }
+
+    /// <summary>
+    /// Returns the weakest unit in this unit row, by power then plot armor.
+    /// </summary>
+    /// <returns></returns>
+    public CardModel GetWeakestUnit()
+    {
+        CardModel[] unitsArr = units.ToArray();
+        CardModel weakest = unitsArr[0];
+
+        for (int i = 0; i < unitsArr.Length; i++)
+        {
+            if (weakest.CurrentPower > unitsArr[i].CurrentPower)
+                weakest = unitsArr[i];
+            else if (weakest.CurrentPower == unitsArr[i].CurrentPower &&
+                weakest.CurrentPlotArmor > unitsArr[i].CurrentPlotArmor)
+                weakest = unitsArr[i];
+        }
+        return weakest;
+    }
+
+    /// <summary>
+    /// Calculates and returns the total power of units in this row. 
+    /// </summary>
+    /// <returns></returns>
+    public uint GetTotalPower()
+    {
+        uint total = 0;
+
+        units.ForEach(unit => { total += unit.CurrentPower; });
+
+        return total;
     }
 }

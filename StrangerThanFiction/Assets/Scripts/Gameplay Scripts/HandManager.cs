@@ -48,7 +48,7 @@ public class HandManager : MonoBehaviour
         // Add hover and drag scripts 
     }
 
-    public void RemoveCardFromHand(CardModel card)
+    public void RemovePlayedCardFromHand(CardModel card)
     {
         Destroy(card.GetComponent<Appear>());
         Destroy(card.GetComponent<Hoverable>());
@@ -58,6 +58,14 @@ public class HandManager : MonoBehaviour
         UpdateTargetTransforms();
         RefreshPlayableCards();
         // remove hover and drag scripts
+    }
+
+    public void RemoveDiscardedCardFromHand(CardModel card)
+    {
+        Destroy(card.GetComponent<Appear>());
+        Destroy(card.GetComponent<Hoverable>());
+        Destroy(card.GetComponent<Draggable>());
+        Hand.Remove(card);
     }
 
     private void UpdateTargetTransforms()
@@ -116,8 +124,6 @@ public class HandManager : MonoBehaviour
 
             card.Playable = isPlayable;
         }
-
-
     }
 
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// Represents the functionality of Pinocchio Level 1 form 
+/// </summary>
 public sealed class Pinocchio : CardModel
 {
     public override string Title => "Pinnochio";

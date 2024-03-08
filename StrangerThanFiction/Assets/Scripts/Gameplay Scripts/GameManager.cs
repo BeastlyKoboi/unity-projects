@@ -102,6 +102,8 @@ public class GameManager : MonoBehaviour
         } while (player1.CanDoSomething() || player2.CanDoSomething());
         // 
 
+        await DiscardHands();
+
         OnRoundEnd?.Invoke();
     }
 
@@ -115,6 +117,25 @@ public class GameManager : MonoBehaviour
 
             await Task.Delay(500);
         }
+
+        // Draw additional cards here
+    }
+
+    private async Task DiscardHands()
+    {
+        int cardCount = player1.handManager.Hand.Count;
+        for (int i = 0; i < cardCount; i++)
+        {
+            player1.DiscardCard(player1.handManager.Hand[i]);
+        }
+
+        cardCount = player2.handManager.Hand.Count;
+        for (int i = 0; i < cardCount; i++)
+        {
+            player2.DiscardCard(player2.handManager.Hand[i]);
+        }
+
+        await Task.Delay(2000);
     }
 
     private void EndGame()

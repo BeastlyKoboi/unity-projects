@@ -27,13 +27,12 @@ public class Player : MonoBehaviour
     public BoardManager board;
     public Player enemyPlayer;
 
-    [HeaderAttribute("Game State Info")]
     private uint _maxMana = 5;
     public uint MaxMana
     {
         get { return _maxMana; }
-        set 
-        { 
+        set
+        {
             _maxMana = value;
             uiManager.UpdateMana(this);
         }
@@ -49,26 +48,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    private uint _actWins = 0;
-    public uint ActWins
-    {
-        get { return _actWins; }
-        set
-        {
-            _actWins = value;
-            uiManager.UpdateActWins(this);
-        }
-    }
-
+    [HeaderAttribute("Game State Info")]
     public uint totalDepth = 0;
     public bool hasEndedTurn = false;
     public bool hasEndedRound = false;
 
     [HeaderAttribute("The Cards")]
-    public GameObject deckGameObject;
-    public CardPile Deck { get; set; }
     public HandManager handManager;
+    public CardPile Deck { get; set; }
+    public GameObject deckGameObject;
+
     public CardPile Discard { get; set; }
+    public GameObject discardGameObject;
 
     [HeaderAttribute("Card Prefabs")]
     public GameObject cardPrefab;
@@ -93,6 +84,12 @@ public class Player : MonoBehaviour
         {
             Deck.Add(CreateCard(card, isHidden));
         }
+
+        Discard = new CardPile();
+        Discard.OnChange += () =>
+        {
+            uiManager.UpdateDiscard(this);
+        };
     }
 
     public async Task PlayerTurn()
@@ -108,6 +105,8 @@ public class Player : MonoBehaviour
 
         Debug.Log("Card Played");
         await PlayCard(handManager.playedCard);
+
+        uiManager.UpdateTotalPower();
 
         handManager.LockCards();
     }
@@ -127,6 +126,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void DiscardCard(CardModel card)
+    {
+        Appear appear = card.GetComponent<Appear>();
+        appear.RefreshTarget(new Vector2(800, -500), 0);
+        appear.OnAppearFinish += handManager.RemoveDiscardedCardFromHand;
+        appear.OnAppearFinish += Discard.Add;
+        appear.OnAppearFinish += (card) =>
+        {
+            card.gameObject.transform.SetParent(discardGameObject.transform, true);
+        };
+    }
+
     public bool CanDoSomething()
     {
         bool actionsLeft = true;
@@ -142,7 +153,7 @@ public class Player : MonoBehaviour
     private async Task PlayCard(CardModel card)
     {
         await card.Play(this);
-        handManager.RemoveCardFromHand(card);
+        handManager.RemovePlayedCardFromHand(card);
     }
 
     private void ShuffleDiscardIntoDeck()
@@ -150,7 +161,7 @@ public class Player : MonoBehaviour
 
     }
 
-    private CardModel CreateCard(string cardName, bool isHidden, string creator = "") 
+    private CardModel CreateCard(string cardName, bool isHidden, string creator = "")
     {
         Type MyScriptType = System.Type.GetType(cardName);
 
