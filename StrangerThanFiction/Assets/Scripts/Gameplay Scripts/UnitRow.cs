@@ -64,6 +64,8 @@ public class UnitRow : MonoBehaviour
     /// <returns></returns>
     public CardModel GetStrongestUnit()
     {
+        if (units.Count == 0) return null;
+
         CardModel[] unitsArr = units.ToArray();
         CardModel strongest = unitsArr[0];
 
@@ -84,6 +86,8 @@ public class UnitRow : MonoBehaviour
     /// <returns></returns>
     public CardModel GetWeakestUnit()
     {
+        if (units.Count == 0) return null;
+
         CardModel[] unitsArr = units.ToArray();
         CardModel weakest = unitsArr[0];
 

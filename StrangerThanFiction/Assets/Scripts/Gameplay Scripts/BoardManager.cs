@@ -87,6 +87,17 @@ public class BoardManager : MonoBehaviour
         frontStrongest = frontline.GetStrongestUnit();
         backStrongest = backline.GetStrongestUnit();
 
+        if (!frontStrongest && !backStrongest) return null;
+
+        if (!frontStrongest)
+        {
+            return backStrongest;
+        }
+        if (!backStrongest)
+        {
+            return frontStrongest;
+        }
+
         if (frontStrongest.CurrentPower > backStrongest.CurrentPower)
             return frontStrongest;
         else if (frontStrongest.CurrentPower == backStrongest.CurrentPower && 
@@ -115,6 +126,17 @@ public class BoardManager : MonoBehaviour
 
         frontWeakest = frontline.GetWeakestUnit();
         backWeakest = backline.GetWeakestUnit();
+
+        if (!frontWeakest && !backWeakest) return null;
+
+        if (!frontWeakest)
+        {
+            return backWeakest;
+        }
+        if (!backWeakest)
+        {
+            return frontWeakest;
+        }
 
         if (frontWeakest.CurrentPower < backWeakest.CurrentPower)
             return frontWeakest;

@@ -6,13 +6,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Manages the flow of game in a single match. 
+/// </summary>
 public class GameManager : MonoBehaviour
 {
+    // Basic gameplay events that objects can add to
     public static event Action OnGameStart;
     public static event Action OnRoundStart;
     public static event Action OnRoundEnd;
     public static event Action OnGameOver;
-    // Also add some for act beginnings and ends
 
     [HeaderAttribute("The Players")]
     public Player player1; // The human player
@@ -32,7 +35,7 @@ public class GameManager : MonoBehaviour
     public string[] TheBigBadWolf;
 
     // Something for battlefield conditions
-
+    //  - 
     
 
     // Start is called before the first frame update
@@ -50,6 +53,9 @@ public class GameManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Method to trigger the game loop.
+    /// </summary>
     private void StartGame()
     {
         // Setup 
@@ -58,8 +64,13 @@ public class GameManager : MonoBehaviour
         GameLoop();
     }
 
+    /// <summary>
+    /// Method to proceed through the rounds, and confirm a winner. 
+    /// </summary>
     private async void GameLoop()
     {
+        await Task.Delay(1000);
+
         do
         {
             roundNumber++;
@@ -72,6 +83,10 @@ public class GameManager : MonoBehaviour
         EndGame();
     }
 
+    /// <summary>
+    /// Method to go over the activity of a single round. 
+    /// </summary>
+    /// <returns></returns>
     private async Task RoundActivity()
     {
         uiManager.RoundStart(roundNumber);

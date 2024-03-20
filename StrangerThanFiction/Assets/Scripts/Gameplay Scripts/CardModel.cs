@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,9 +55,45 @@ public abstract class CardModel : MonoBehaviour
     public virtual uint MaxPower { get; set; }
     public virtual uint MaxPlotArmor { get; set; }
 
-    public virtual uint CurrentCost { get; set; }
-    public virtual uint CurrentPower { get; set; }
-    public virtual uint CurrentPlotArmor { get; set; }
+
+    private uint _currentCost;
+    public virtual uint CurrentCost
+    {
+        get { return _currentCost; }
+        set
+        {
+            _currentCost = value;
+            UpdateCardStatText();
+
+            if (unitView)
+                UpdateUnitStatText();
+        }
+    }
+    private uint _currentPower;
+    public virtual uint CurrentPower { 
+        get { return _currentPower; }
+        set
+        {
+            _currentPower = value;
+            UpdateCardStatText();
+
+            if (Type == CardType.Unit)
+                UpdateUnitStatText();
+        }
+    }
+    private uint _currentPlotArmor;
+    public virtual uint CurrentPlotArmor
+    {
+        get { return _currentPlotArmor; }
+        set
+        {
+            _currentPlotArmor = value;
+            UpdateCardStatText();
+
+            if (Type == CardType.Unit)
+                UpdateUnitStatText();
+        }
+    }
 
     // Used in conditions like Resilient
     public virtual uint DamageResistence { get; set; } = 0;
@@ -98,7 +136,14 @@ public abstract class CardModel : MonoBehaviour
 
     // Ref to update view.
     public Transform cardView;
+    private TextMeshProUGUI cardTextCost;
+    private TextMeshProUGUI cardTextPower;
+    private TextMeshProUGUI cardTextPlotArmor;
+
     public Transform unitView;
+    private TextMeshProUGUI unitTextPower;
+    private TextMeshProUGUI unitTextPlotArmor;
+
 
     // ----------------------------------------------------------------------------
     // All Card Events 
@@ -115,6 +160,9 @@ public abstract class CardModel : MonoBehaviour
     public event Action OnRoundStart;
     public event Action OnRoundEnd;
     public event Action OnTakeDamage;
+    public event Action OnGrantPower;
+    public event Action OnGrantPlotArmor;
+    public event Action OnHeal;
 
 
     private void Awake()
@@ -227,6 +275,59 @@ public abstract class CardModel : MonoBehaviour
         return damage;
     }
 
+    /// <summary>
+    /// Method to grant Power to this card and return the amount granted. 
+    /// </summary>
+    /// <param name="powerAmount"></param>
+    /// <returns></returns>
+    public uint GrantPower(uint powerAmount)
+    {
+        MaxPower += powerAmount;
+        CurrentPower += powerAmount;
+
+        OnGrantPower?.Invoke();
+
+        return powerAmount;
+    }
+
+    /// <summary>
+    /// Method to grant Plot Armor to this card and return the amount granted.
+    /// </summary>
+    /// <param name="armorAmount"></param>
+    /// <returns></returns>
+    public uint GrantPlotArmor(uint armorAmount)
+    {
+        CurrentPlotArmor += armorAmount;
+
+        OnGrantPlotArmor?.Invoke();
+
+        return armorAmount;
+    }
+
+    /// <summary>
+    /// Method to heal this unit by aan amount up to the max power.
+    /// </summary>
+    /// <param name="healAmount"></param>
+    /// <returns></returns>
+    public uint Heal(uint healAmount)
+    {
+        // Should NOT be called if in card form.
+        if (Type != CardType.Unit) return 0;
+
+        // should never be negative
+        uint totalHealPossible = MaxPower - CurrentPower;
+
+        if (totalHealPossible == 0) return 0;
+
+        healAmount = Math.Min(totalHealPossible, healAmount);
+
+        CurrentPower += healAmount;
+
+        OnHeal?.Invoke();
+
+        return healAmount;
+    }
+
     // ----------------------------------------------------------------------------
     // Unit and Card Conditions
     // ----------------------------------------------------------------------------
@@ -327,7 +428,8 @@ public abstract class CardModel : MonoBehaviour
         if (sprite != null)
             portrait.GetComponent<Image>().sprite = sprite;
 
-        cardView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
+        cardTextCost = cardView.Find("Cost").GetComponent<TextMeshProUGUI>();
+        cardTextCost.text = CurrentCost.ToString();
 
         // Placeholder has Unit Card frame automatically, so replace it if needed
         if (Type == CardType.Spell)
@@ -342,8 +444,11 @@ public abstract class CardModel : MonoBehaviour
         }
         else
         {
-            cardView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentPower.ToString();
-            cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
+            cardTextPower = cardView.Find("Power").GetComponent<TextMeshProUGUI>();
+            cardTextPower.text = CurrentPower.ToString();
+            cardTextPlotArmor = cardView.Find("PlotArmor").GetComponent<TextMeshProUGUI>();
+            cardTextPlotArmor.text = CurrentPlotArmor.ToString();
+
         }
 
         cardView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
@@ -371,11 +476,30 @@ public abstract class CardModel : MonoBehaviour
         if (sprite != null)
             portrait.GetComponent<Image>().sprite = sprite;
 
-        unitView.Find("Cost").GetComponent<TextMeshProUGUI>().text = CurrentCost.ToString();
-        unitView.Find("Power").GetComponent<TextMeshProUGUI>().text = CurrentPower.ToString();
-        unitView.Find("PlotArmor").GetComponent<TextMeshProUGUI>().text = CurrentPlotArmor.ToString();
+        unitTextPower = unitView.Find("Power").GetComponent<TextMeshProUGUI>();
+        unitTextPower.text = CurrentPower.ToString();
+
+        unitTextPlotArmor = unitView.Find("PlotArmor").GetComponent<TextMeshProUGUI>();
+        unitTextPlotArmor.text = CurrentPlotArmor.ToString();
+
+
         unitView.Find("Name").GetComponent<TextMeshProUGUI>().text = Title;
 
         unitView.gameObject.SetActive(false);
+    }
+
+    private void UpdateCardStatText()
+    {
+        if (!cardView) return;
+        cardTextCost.text = CurrentCost.ToString();
+        cardTextPower.text = CurrentPower.ToString();
+        cardTextPlotArmor.text = CurrentPlotArmor.ToString();
+    }
+
+    private void UpdateUnitStatText()
+    {
+        if (!unitView) return;
+        unitTextPower.text = CurrentPower.ToString();
+        unitTextPlotArmor.text = CurrentPlotArmor.ToString();
     }
 }

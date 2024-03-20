@@ -23,6 +23,16 @@ public sealed class Pinocchio : CardModel
     public override void Start()
     {
         base.Start();
+
+        OnPlay += () =>
+        {
+            CardModel strongestUnit = Board.GetStrongestUnit(Owner);
+
+            if (strongestUnit)
+            {
+                strongestUnit.GrantPower(3);
+            }
+        };
     }
 
 }
