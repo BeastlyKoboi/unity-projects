@@ -54,7 +54,7 @@ public class CardPile
     }
     public void Clear()
     {
-
+        cards.Clear();
     }
     public void Shuffle()
     {

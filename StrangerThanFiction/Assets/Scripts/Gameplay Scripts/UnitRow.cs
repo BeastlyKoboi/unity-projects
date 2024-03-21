@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -7,18 +9,7 @@ public class UnitRow : MonoBehaviour
 {
     public List<CardModel> units;
     public List<RectTransform> unitRects;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    delegate bool filterDelegate(CardModel unit);
 
     public void AddUnit(CardModel newUnit)
     {
@@ -113,5 +104,10 @@ public class UnitRow : MonoBehaviour
         units.ForEach(unit => { total += unit.CurrentPower; });
 
         return total;
+    }
+
+    public CardModel[] GetUnits()
+    {
+        return units.ToArray();
     }
 }

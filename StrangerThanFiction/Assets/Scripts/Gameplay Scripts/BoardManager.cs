@@ -173,4 +173,29 @@ public class BoardManager : MonoBehaviour
     {
         return (Random.value > 0.5) ? player2BackRow: player2FrontRow;
     }
+
+    public CardModel[] GetUnits(Player player)
+    {
+        UnitRow frontline;
+        UnitRow backline;
+        if (player == gameManager.player1)
+        {
+            frontline = player1FrontRow;
+            backline = player1BackRow;
+        }
+        else
+        {
+            frontline = player2FrontRow;
+            backline = player2BackRow;
+        }
+
+        CardModel[] frontUnits = frontline.GetUnits();
+        CardModel[] backUnits = backline.GetUnits();
+
+        List<CardModel> units = new List<CardModel>();
+        units.AddRange(frontUnits);
+        units.AddRange(backUnits);
+
+        return units.ToArray();
+    }
 }

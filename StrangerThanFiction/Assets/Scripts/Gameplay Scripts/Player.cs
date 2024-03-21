@@ -113,17 +113,13 @@ public class Player : MonoBehaviour
 
     public void DrawCard()
     {
-        if (Deck.Count > 0)
-        {
-            CardModel drawnCard;
-            drawnCard = Deck[Deck.Count - 1];
-            Deck.RemoveAt(Deck.Count - 1);
-            handManager.AddCardToHandFromDeck(drawnCard);
-        }
-        else
-        {
+        if (Deck.Count == 0)
             ShuffleDiscardIntoDeck();
-        }
+
+        CardModel drawnCard;
+        drawnCard = Deck[Deck.Count - 1];
+        Deck.RemoveAt(Deck.Count - 1);
+        handManager.AddCardToHandFromDeck(drawnCard);
     }
 
     public void DiscardCard(CardModel card)
@@ -158,7 +154,15 @@ public class Player : MonoBehaviour
 
     private void ShuffleDiscardIntoDeck()
     {
+        for (int i = 0; i < Discard.Count; i++)
+        {
+            Deck.Add(Discard[i]);
+            Discard[i].gameObject.transform.SetParent(deckGameObject.transform, true);
+            Discard[i].GetComponent<RectTransform>().anchoredPosition = new Vector2();
+        }
 
+        Discard.Clear();
+        Deck.Shuffle();
     }
 
     private CardModel CreateCard(string cardName, bool isHidden, string creator = "")
@@ -187,7 +191,5 @@ public class Player : MonoBehaviour
 
         return cardScript;
     }
-
-
 
 }
