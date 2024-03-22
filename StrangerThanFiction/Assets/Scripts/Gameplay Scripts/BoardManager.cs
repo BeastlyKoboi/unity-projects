@@ -24,7 +24,6 @@ public class BoardManager : MonoBehaviour
         unit.IsHidden = false;
 
         row.AddUnit(unit);
-
     }
 
     // Does not check if its for the right person, it now needs to

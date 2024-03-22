@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class EnemyAI_V1 : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class EnemyAI_V1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void PlayTurn()
@@ -33,6 +34,15 @@ public class EnemyAI_V1 : MonoBehaviour
         Debug.Log("Enemy Turn PlayTurn is called.");
 
         CardModel cardToPlay = myPlayer.handManager.Hand[0];
+
+        for (int cardIndex = 0; cardIndex < myPlayer.handManager.Hand.Count; cardIndex++)
+        {
+            if (myPlayer.handManager.Hand[cardIndex].Playable)
+            {
+                cardToPlay = myPlayer.handManager.Hand[cardIndex];
+                break;
+            }
+        }
 
         if (cardToPlay.Type == CardType.Unit)
         {

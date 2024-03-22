@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     // Something for battlefield conditions
     //  - 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
         // Call on game start 
         StartGame();
-        
+
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         // Setup 
-        
+
 
         GameLoop();
     }
@@ -106,11 +106,13 @@ public class GameManager : MonoBehaviour
         {
             await Task.Delay(1000);
 
-            await player1.PlayerTurn();
+            if (player1.CanDoSomething())
+                await player1.PlayerTurn();
 
             await Task.Delay(1000);
 
-            await player2.PlayerTurn();
+            if (player2.CanDoSomething())
+                await player2.PlayerTurn();
 
             await Task.Yield();
 
@@ -139,15 +141,17 @@ public class GameManager : MonoBehaviour
     private async Task DiscardHands()
     {
         int cardCount = player1.handManager.Hand.Count;
-        for (int i = 0; i < cardCount; i++)
+        CardModel[] cards = player1.handManager.Hand.ToArray();
+
+        for (int i = 0; i < cards.Length; i++)
         {
-            player1.DiscardCard(player1.handManager.Hand[i]);
+            player1.DiscardCard(cards[i]);
         }
 
-        cardCount = player2.handManager.Hand.Count;
-        for (int i = 0; i < cardCount; i++)
+        cards = player2.handManager.Hand.ToArray();
+        for (int i = 0; i < cards.Length; i++)
         {
-            player2.DiscardCard(player2.handManager.Hand[i]);
+            player2.DiscardCard(cards[i]);
         }
 
         await Task.Delay(2000);

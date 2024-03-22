@@ -68,7 +68,6 @@ public class UIManager : MonoBehaviour
             discardLabelPlayer1.text = $"Disc {player1.Discard.Count}";
         else if (player == player2)
             discardLabelPlayer2.text = $"Disc {player2.Discard.Count}";
-        Debug.Log("In update discard");
     }
 
     public void UpdateMana(Player player)

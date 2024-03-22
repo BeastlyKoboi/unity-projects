@@ -24,6 +24,16 @@ public class CardPile
         get { return cards.Count; }
     }
 
+    public CardModel[] ToArray()
+    {
+        return cards.ToArray();
+    }
+
+    public void ForEach(Action<CardModel> action)
+    {
+        cards.ForEach(action);
+    }
+
     public void Add(CardModel card)
     {
         cards.Add(card);
@@ -55,6 +65,9 @@ public class CardPile
     public void Clear()
     {
         cards.Clear();
+
+        OnChange?.Invoke();
+        OnCardRemoved?.Invoke();
     }
     public void Shuffle()
     {

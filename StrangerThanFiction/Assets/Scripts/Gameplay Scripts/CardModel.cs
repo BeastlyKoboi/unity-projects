@@ -200,14 +200,21 @@ public abstract class CardModel : MonoBehaviour
     {
         Owner.CurrentMana -= CurrentCost;
 
+        OnPlay?.Invoke();
+
         if (Type == CardType.Unit)
         {
-            cardView.gameObject.SetActive(false);
-            unitView.gameObject.SetActive(true);
-            Board.SummonUnit(this, SelectedArea);
+            await Summon();
         }
 
-        OnPlay?.Invoke();
+    }
+
+    public virtual async Task Summon()
+    {
+        cardView.gameObject.SetActive(false);
+        unitView.gameObject.SetActive(true);
+        Board.SummonUnit(this, SelectedArea);
+        OnSummon?.Invoke();
     }
 
     /// <summary>
@@ -434,7 +441,7 @@ public abstract class CardModel : MonoBehaviour
         // Placeholder has Unit Card frame automatically, so replace it if needed
         if (Type == CardType.Spell)
         {
-            Sprite spellCardFrame = LoadSprite("Assets/Textures/SpellCardFrame.png");
+            Sprite spellCardFrame = LoadSprite("Assets/Textures/SpellCardFrontFrame.png");
             Transform background = cardView.Find("Background");
             background.GetComponent<Image>().sprite = spellCardFrame;
 

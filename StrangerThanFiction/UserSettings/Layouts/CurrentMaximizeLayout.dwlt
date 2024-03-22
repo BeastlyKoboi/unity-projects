@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 16268
+  controlID: 35074
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 16269
+  controlID: 35075
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 16270
+  controlID: 35076
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,10 +236,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 30}
+      scrollPos: {x: 0, y: 142}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: a0c5ffff6ac6ffff0cc7ffff2cc9ffff0eceffffcaf4ffff12fbffff0a79000018790000fc7a0000307b0000367b0000627b0000a67b0000447c0000
+      m_ExpandedIDs: e6b6e0ff14daf9ffd4daf9ffe8dbf9ff60e0f9ffd6e1f9ffa0c5ffff6ac6ffff0cc7ffff2cc9ffff0eceffffcaf4ffff12fbffff0a79000018790000fc7a0000307b0000367b0000627b0000a67b0000447c0000aca10000bca10000c6a10000caa10000eaa10000fea10000aea20000bea20000eea200004ca30000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -282,8 +282,8 @@ MonoBehaviour:
     y: 0
     width: 433.6
     height: 460
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 8}
   m_Panes:
   - {fileID: 8}
@@ -671,9 +671,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.8809584, y: 13.774338, z: -10.668606}
+    m_Target: {x: 264.64114, y: 38.007366, z: -11.456368}
     speed: 2
-    m_Value: {x: -1.8809584, y: 13.774338, z: -10.668606}
+    m_Value: {x: 264.64114, y: 38.007366, z: -11.456368}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -723,9 +723,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 72.037
+    m_Target: 94.6985
     speed: 2
-    m_Value: 72.037
+    m_Value: 94.6985
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -848,7 +848,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Textures
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -856,15 +856,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Textures
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\itsal\Documents\GitHub\unity-projects\StrangerThanFiction
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: d2720000
-    m_LastClickedID: 29394
+    scrollPos: {x: 0, y: 162.20001}
+    m_SelectedIDs: 02730000
+    m_LastClickedID: 29442
     m_ExpandedIDs: 00000000d0720000d272000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -918,8 +918,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 0031feff
-    m_LastClickedInstanceID: -118528
+    m_SelectedInstanceIDs: 5080f6ff
+    m_LastClickedInstanceID: -622512
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000a874000000000000
     m_RenameOverlay:

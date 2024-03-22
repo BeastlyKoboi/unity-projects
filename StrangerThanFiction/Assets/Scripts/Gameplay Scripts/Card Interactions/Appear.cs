@@ -10,10 +10,8 @@ public class Appear : MonoBehaviour
     public Vector2 endPos;
     public Quaternion endRotation;
     public float moveSpeed = 1000;
-    public float rotSpeed = 50;
+    public float rotSpeed = 100;
     public bool isMoving = false;
-
-    public event Action<CardModel> OnAppearFinish;
 
     private void Awake()
     {
@@ -23,39 +21,24 @@ public class Appear : MonoBehaviour
         isMoving = false;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (!isMoving)
             return;
 
-        if (rectTransform.localRotation != endRotation)
-        {
-            rectTransform.localRotation = Quaternion.RotateTowards(rectTransform.localRotation, endRotation, rotSpeed * Time.deltaTime);
+        rectTransform.localRotation = Quaternion.RotateTowards(rectTransform.localRotation, endRotation, rotSpeed * Time.deltaTime);
+        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, endPos, moveSpeed * Time.deltaTime);
 
-        }
 
-        if (Vector2.Distance(rectTransform.anchoredPosition, endPos) < 0.01f)
+        if (rectTransform.localRotation == endRotation && rectTransform.anchoredPosition == endPos)
         {
-            rectTransform.anchoredPosition = endPos;
             isMoving = false;
             if (!gameObject.GetComponent<CardModel>().IsHidden)
             {
                 GetComponent<Hoverable>().enabled = true;
                 GetComponent<Draggable>().enabled = true;
             }
-
-            OnAppearFinish?.Invoke(GetComponent<CardModel>());
-        }
-        else
-        {
-            rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, endPos, moveSpeed * Time.deltaTime);
         }
     }
 

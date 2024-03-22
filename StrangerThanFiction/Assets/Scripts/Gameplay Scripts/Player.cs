@@ -94,6 +94,8 @@ public class Player : MonoBehaviour
 
     public async Task PlayerTurn()
     {
+        handManager.RefreshPlayableCards();
+
         OnMyTurnStart?.Invoke();
 
         handManager.RefreshPlayableCards();
@@ -124,19 +126,18 @@ public class Player : MonoBehaviour
 
     public void DiscardCard(CardModel card)
     {
-        Appear appear = card.GetComponent<Appear>();
-        appear.RefreshTarget(new Vector2(800, -500), 0);
-        appear.OnAppearFinish += handManager.RemoveDiscardedCardFromHand;
-        appear.OnAppearFinish += Discard.Add;
-        appear.OnAppearFinish += (card) =>
-        {
-            card.gameObject.transform.SetParent(discardGameObject.transform, true);
-        };
+        Debug.Log("In Player DiscardCard");
+        handManager.RemoveDiscardedCardFromHand(card);
+        Discard.Add(card);
+        card.gameObject.transform.SetParent(discardGameObject.transform, true);
+        card.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
     }
 
     public bool CanDoSomething()
     {
         bool actionsLeft = true;
+
+        handManager.RefreshPlayableCards();
 
         if (handManager.NumPlayableCards == 0)
         {
@@ -149,7 +150,13 @@ public class Player : MonoBehaviour
     private async Task PlayCard(CardModel card)
     {
         await card.Play(this);
-        handManager.RemovePlayedCardFromHand(card);
+
+        if (card.Type == CardType.Unit)
+            handManager.RemovePlayedCardFromHand(card);
+        else
+            DiscardCard(card);
+
+        handManager.playedCard = null;
     }
 
     private void ShuffleDiscardIntoDeck()
