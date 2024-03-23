@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     [HeaderAttribute("Game State Information")]
     public uint roundNumber = 0;
-    public uint totalRounds = 9;
+    private uint totalRounds = 6;
 
     [HeaderAttribute("Text Assets")]
     [SerializeField] private TextAsset StarterDecksJSON;
@@ -47,6 +47,11 @@ public class GameManager : MonoBehaviour
 
         player1.PopulateDeck(Pinocchio, false);
         player2.PopulateDeck(Pinocchio, true);
+
+        OnRoundStart += player1.RoundStart;
+        OnRoundStart += player2.RoundStart;
+
+        OnRoundStart += boardManager.RoundStart;
 
         // Call on game start 
         StartGame();
@@ -159,6 +164,6 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-
+        uiManager.GameOver();
     }
 }

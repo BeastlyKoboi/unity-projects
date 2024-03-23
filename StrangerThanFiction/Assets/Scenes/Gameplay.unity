@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 62685320}
   - component: {fileID: 62685319}
   m_Layer: 5
-  m_Name: totalPowerCount
+  m_Name: EnemyTotalPowerCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1508,6 +1508,7 @@ MonoBehaviour:
   board: {fileID: 815251594}
   ActPopup: {fileID: 1773886026}
   RoundPopup: {fileID: 1948315716}
+  GameOverPopup: {fileID: 2073026773}
   player1: {fileID: 1021245015}
   deckLabelPlayer1: {fileID: 383906266}
   discardLabelPlayer1: {fileID: 789126615}
@@ -1522,6 +1523,10 @@ MonoBehaviour:
   powerPlayer2: {fileID: 1782923747}
   frontPowerPlayer2: {fileID: 1266585492}
   backPowerPlayer2: {fileID: 1927407537}
+  playerTotalPowerCount: {fileID: 1147223158}
+  enemyTotalPowerCount: {fileID: 62685319}
+  overkillText: {fileID: 214032186}
+  resultText: {fileID: 1116432895}
 --- !u!4 &361155766
 Transform:
   m_ObjectHideFlags: 0
@@ -1877,7 +1882,6 @@ MonoBehaviour:
   uiManager: {fileID: 361155765}
   boardManager: {fileID: 815251594}
   roundNumber: 0
-  totalRounds: 9
   StarterDecksJSON: {fileID: 4900000, guid: b0611db885be20443984961a8eecf5e8, type: 3}
   Pinocchio: []
   TheBigBadWolf: []
@@ -5379,7 +5383,7 @@ GameObject:
   - component: {fileID: 1147223159}
   - component: {fileID: 1147223158}
   m_Layer: 5
-  m_Name: totalPowerCount
+  m_Name: PlayerTotalPowerCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9172,13 +9176,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2073026771}
+  - component: {fileID: 2073026773}
+  - component: {fileID: 2073026772}
   m_Layer: 5
   m_Name: GameOverUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2073026771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9208,6 +9214,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2000, y: 1200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2073026772
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073026770}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!95 &2073026773
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073026770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c083955e6f1205440b57fc39f50f263d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2075136936
 GameObject:
   m_ObjectHideFlags: 0

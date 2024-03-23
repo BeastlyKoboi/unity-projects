@@ -32,6 +32,18 @@ public sealed class Pinocchio : CardModel
             {
                 strongestUnit.GrantPower(3);
             }
+
+        };
+
+        OnSummon += () =>
+        {
+            
+            OnRoundStart += () =>
+            {
+                Debug.Log("In pinoc on round start");
+                CardModel card = Owner.CreateCard("TallTale", IsHidden, gameObject, "Pinocchio");
+                Owner.handManager.AddCardToHandFromDeck(card);
+            };
         };
     }
 

@@ -17,8 +17,13 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
-    public static event Action<CardModel> OnUnitSummoned;
-    public static event Action OnCardPlayed;
+    public event Action OnGameStart;
+    public event Action OnRoundStart;
+    public event Action OnRoundEnd;
+    public event Action OnGameOver;
+
+    public event Action<CardModel> OnUnitSummoned;
+    public event Action OnCardPlayed;
     public event Action OnMyTurnStart;
 
     [HeaderAttribute("Game and Enemy Info")]
@@ -68,6 +73,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        OnRoundStart += handManager.RoundStart;
 
     }
 
@@ -82,7 +88,7 @@ public class Player : MonoBehaviour
 
         foreach (string card in cards)
         {
-            Deck.Add(CreateCard(card, isHidden));
+            Deck.Add(CreateCard(card, isHidden, deckGameObject));
         }
 
         Discard = new CardPile();
@@ -126,11 +132,12 @@ public class Player : MonoBehaviour
 
     public void DiscardCard(CardModel card)
     {
-        Debug.Log("In Player DiscardCard");
-        handManager.RemoveDiscardedCardFromHand(card);
+        handManager.RemoveCardFromHand(card);
         Discard.Add(card);
         card.gameObject.transform.SetParent(discardGameObject.transform, true);
-        card.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        RectTransform cardRect = card.gameObject.GetComponent<RectTransform>();
+        cardRect.anchoredPosition = new Vector2(0, 0);
+        cardRect.rotation = Quaternion.identity;
     }
 
     public bool CanDoSomething()
@@ -152,7 +159,7 @@ public class Player : MonoBehaviour
         await card.Play(this);
 
         if (card.Type == CardType.Unit)
-            handManager.RemovePlayedCardFromHand(card);
+            handManager.RemoveCardFromHand(card);
         else
             DiscardCard(card);
 
@@ -172,12 +179,27 @@ public class Player : MonoBehaviour
         Deck.Shuffle();
     }
 
-    private CardModel CreateCard(string cardName, bool isHidden, string creator = "")
+    public void AddCardToDeck()
+    {
+
+    }
+
+    public void RoundStart()
+    {
+        OnRoundStart?.Invoke();
+    }
+
+    public void UnitSummoned(CardModel unit)
+    {
+        OnUnitSummoned?.Invoke(unit);
+    }
+
+    public CardModel CreateCard(string cardName, bool isHidden, GameObject parent, string creator = "")
     {
         Type MyScriptType = System.Type.GetType(cardName);
 
         GameObject cardObj = new GameObject(cardName, typeof(RectTransform));
-        cardObj.transform.SetParent(deckGameObject.transform, false);
+        cardObj.transform.SetParent(parent.transform, false);
 
         cardObj.AddComponent(MyScriptType);
 

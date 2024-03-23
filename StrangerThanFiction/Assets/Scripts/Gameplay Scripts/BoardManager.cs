@@ -24,6 +24,8 @@ public class BoardManager : MonoBehaviour
         unit.IsHidden = false;
 
         row.AddUnit(unit);
+
+        unit.Owner.UnitSummoned(unit);
     }
 
     // Does not check if its for the right person, it now needs to
@@ -40,7 +42,7 @@ public class BoardManager : MonoBehaviour
         {
             frontline = player1FrontRow;
             backline = player1BackRow;
-        } 
+        }
         else
         {
             frontline = player2FrontRow;
@@ -62,6 +64,34 @@ public class BoardManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void RoundStart()
+    {
+        player1FrontRow.ForEach(unit =>
+        {
+            unit.RoundStart();
+        });
+
+        player1BackRow.ForEach(unit =>
+        {
+            unit.RoundStart();
+        });
+
+        player2FrontRow.ForEach(unit =>
+        {
+            unit.RoundStart();
+        });
+
+        player2BackRow.ForEach(unit =>
+        {
+            unit.RoundStart();
+        });
+    }
+
+    public void RoundEnd()
+    {
+
     }
 
     // Likely needs helper methods within that like GetWeakestEnemy etc
@@ -99,10 +129,10 @@ public class BoardManager : MonoBehaviour
 
         if (frontStrongest.CurrentPower > backStrongest.CurrentPower)
             return frontStrongest;
-        else if (frontStrongest.CurrentPower == backStrongest.CurrentPower && 
+        else if (frontStrongest.CurrentPower == backStrongest.CurrentPower &&
             frontStrongest.CurrentPlotArmor >= backStrongest.CurrentPlotArmor)
             return frontStrongest;
-        
+
         return backStrongest;
     }
 
@@ -168,9 +198,14 @@ public class BoardManager : MonoBehaviour
         return backline.GetTotalPower();
     }
 
+    public uint GetTotalPower(Player player)
+    {
+        return GetTotalFrontPower(player) + GetTotalBackPower(player);
+    }
+
     public UnitRow GetRandomEnemyRow()
     {
-        return (Random.value > 0.5) ? player2BackRow: player2FrontRow;
+        return (Random.value > 0.5) ? player2BackRow : player2FrontRow;
     }
 
     public CardModel[] GetUnits(Player player)

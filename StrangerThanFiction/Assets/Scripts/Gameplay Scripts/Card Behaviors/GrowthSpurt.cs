@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrowthSpurt : CardModel
+public sealed class GrowthSpurt : CardModel
 {
     public override string Title => "Growth Spurt";
     public override string Description => "Grant your weakest unit +3 power.";

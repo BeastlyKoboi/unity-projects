@@ -44,8 +44,8 @@ public abstract class CardModel : MonoBehaviour
     // Stats that will not be changed - Consider making children implement this as static somehow?
     // ----------------------------------------------------------------------------
     public virtual uint BaseCost { get; }
-    public virtual uint BasePower { get; }
-    public virtual uint BasePlotArmor { get; }
+    public virtual uint BasePower { get; } = 0;
+    public virtual uint BasePlotArmor { get; } = 0;
 
     // ----------------------------------------------------------------------------
     // Stats that reflect gameplay and can be changed.
@@ -70,7 +70,8 @@ public abstract class CardModel : MonoBehaviour
         }
     }
     private uint _currentPower;
-    public virtual uint CurrentPower { 
+    public virtual uint CurrentPower
+    {
         get { return _currentPower; }
         set
         {
@@ -235,6 +236,11 @@ public abstract class CardModel : MonoBehaviour
     public virtual async Task Destroy(Player player)
     {
         OnDestroy?.Invoke();
+    }
+
+    public void RoundStart()
+    {
+        OnRoundStart?.Invoke();
     }
 
     /// <summary>
@@ -499,8 +505,12 @@ public abstract class CardModel : MonoBehaviour
     {
         if (!cardView) return;
         cardTextCost.text = CurrentCost.ToString();
-        cardTextPower.text = CurrentPower.ToString();
-        cardTextPlotArmor.text = CurrentPlotArmor.ToString();
+
+        // Spells need to be updated, but will not have these saved. 
+        if (cardTextPower)
+            cardTextPower.text = CurrentPower.ToString();
+        if (cardTextPlotArmor)
+            cardTextPlotArmor.text = CurrentPlotArmor.ToString();
     }
 
     private void UpdateUnitStatText()

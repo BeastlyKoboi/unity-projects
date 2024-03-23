@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [HeaderAttribute("Animators")]
     [SerializeField] private Animator ActPopup;
     [SerializeField] private Animator RoundPopup;
+    [SerializeField] private Animator GameOverPopup;
 
     [HeaderAttribute("Player 1")]
     [SerializeField] private Player player1; // The human player
@@ -32,6 +33,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI powerPlayer2;
     [SerializeField] private TextMeshProUGUI frontPowerPlayer2;
     [SerializeField] private TextMeshProUGUI backPowerPlayer2;
+
+    [HeaderAttribute("Game Over UI")]
+    [SerializeField] private TextMeshProUGUI playerTotalPowerCount;
+    [SerializeField] private TextMeshProUGUI enemyTotalPowerCount;
+    [SerializeField] private TextMeshProUGUI overkillText;
+    [SerializeField] private TextMeshProUGUI resultText;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +61,24 @@ public class UIManager : MonoBehaviour
 
     public async void GameOver()
     {
+        uint playerTotalPower = board.GetTotalPower(gameManager.player1);
+        uint enemyTotalPower = board.GetTotalPower(gameManager.player2);
 
+        playerTotalPowerCount.text = playerTotalPower.ToString();
+        enemyTotalPowerCount.text = enemyTotalPower.ToString();
+
+        if (playerTotalPower > enemyTotalPower)
+        {
+            resultText.text = "You Win";
+            overkillText.text = $"Overkill: {(playerTotalPower - enemyTotalPower).ToString()}";
+        }
+        else
+        {
+            resultText.text = "You Lose";
+            overkillText.text = $"Overkill: {(enemyTotalPower - playerTotalPower).ToString()}";
+        }
+
+        GameOverPopup.SetTrigger("GameOver");
     }
 
     public void UpdateDeck(Player player)

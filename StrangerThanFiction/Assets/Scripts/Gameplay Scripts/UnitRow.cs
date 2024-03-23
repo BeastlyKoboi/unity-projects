@@ -28,7 +28,6 @@ public class UnitRow : MonoBehaviour
 
     public void UpdateUnitPositions()
     {
-
         float unitWidth = units[0].unitView.transform.localScale.x * units[0].unitView.GetComponent<RectTransform>().rect.width;
         float unitCount = units.Count;
 
@@ -43,6 +42,11 @@ public class UnitRow : MonoBehaviour
             startingXPos += unitWidth;
         }
 
+    }
+    
+    public void ForEach(Action<CardModel> action)
+    {
+        units.ForEach(action);
     }
 
     // ----------------------------------------------------------------------------
