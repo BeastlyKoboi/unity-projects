@@ -101,9 +101,9 @@ public class UnitRow : MonoBehaviour
     /// Calculates and returns the total power of units in this row. 
     /// </summary>
     /// <returns></returns>
-    public uint GetTotalPower()
+    public int GetTotalPower()
     {
-        uint total = 0;
+        int total = 0;
 
         units.ForEach(unit => { total += unit.CurrentPower; });
 

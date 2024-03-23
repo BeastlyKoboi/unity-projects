@@ -10,7 +10,7 @@ public sealed class TallTale : CardModel
     public override CardType Type => CardType.Spell;
     public override string PortraitPath => "Assets/Textures/CardPortraits/Tall_Tale.png";
 
-    public override uint BaseCost => 0;
+    public override int BaseCost => 0;
 
 
     // Start is called before the first frame update

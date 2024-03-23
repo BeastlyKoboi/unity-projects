@@ -10,7 +10,7 @@ public sealed class GrowthSpurt : CardModel
     public override CardType Type => CardType.Spell;
     public override string PortraitPath => "Assets/Textures/CardPortraits/Affable_Nipper.png";
 
-    public override uint BaseCost => 1;
+    public override int BaseCost => 1;
 
     // Start is called before the first frame update
     public override void Start()

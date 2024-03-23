@@ -1,9 +1,9 @@
 public class Poisoned : ICondition
 {
     private readonly CardModel card;
-    public uint amount;
+    public int amount;
 
-    public Poisoned(CardModel card, uint amount)
+    public Poisoned(CardModel card, int amount)
     {
         this.card = card;
         this.amount = amount;

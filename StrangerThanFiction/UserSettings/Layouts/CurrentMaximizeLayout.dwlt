@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 62221
+  controlID: 63910
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 62222
+  controlID: 63911
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 62223
+  controlID: 63912
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,8 +236,8 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 374.8}
-      m_SelectedIDs: a6a30000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 6a700000
       m_LastClickedID: 0
       m_ExpandedIDs: 7afcc0ffe6b6e0ff14daf9ffd4daf9ffe8dbf9ff60e0f9ffd6e1f9ffa0c5ffff6ac6ffff0cc7ffff2cc9ffff0eceffffcaf4ffff12fbffff0a79000018790000fc7a0000307b0000367b0000627b0000a67b0000447c000066a10000aca10000bca10000caa10000eaa10000fea1000014a2000044a20000a2a20000aea20000f2a200003ea300004ca30000
       m_RenameOverlay:
@@ -857,8 +857,8 @@ MonoBehaviour:
     y: 0
     width: 448.79993
     height: 419.2
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -937,7 +937,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Textures/CardPortraits
+    - Assets/TextAssets
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -945,16 +945,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Textures/CardPortraits
+  - Assets/TextAssets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\itsal\Documents\GitHub\unity-projects\StrangerThanFiction
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 153.40002}
-    m_SelectedIDs: 647c0000
-    m_LastClickedID: 31844
-    m_ExpandedIDs: 00000000d0720000d27200000273000000ca9a3bffffff7f
+    m_SelectedIDs: fe720000
+    m_LastClickedID: 29438
+    m_ExpandedIDs: 00000000d0720000d272000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1007,9 +1007,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: a6a30000
-    m_LastClickedInstanceID: 41894
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: 6a700000
+    m_LastClickedInstanceID: 28778
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000a874000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

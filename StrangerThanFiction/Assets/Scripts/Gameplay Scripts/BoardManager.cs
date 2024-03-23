@@ -176,7 +176,7 @@ public class BoardManager : MonoBehaviour
         return backWeakest;
     }
 
-    public uint GetTotalFrontPower(Player player)
+    public int GetTotalFrontPower(Player player)
     {
         UnitRow frontline;
         if (player == gameManager.player1)
@@ -187,7 +187,7 @@ public class BoardManager : MonoBehaviour
         return frontline.GetTotalPower();
     }
 
-    public uint GetTotalBackPower(Player player)
+    public int GetTotalBackPower(Player player)
     {
         UnitRow backline;
         if (player == gameManager.player1)
@@ -198,7 +198,7 @@ public class BoardManager : MonoBehaviour
         return backline.GetTotalPower();
     }
 
-    public uint GetTotalPower(Player player)
+    public int GetTotalPower(Player player)
     {
         return GetTotalFrontPower(player) + GetTotalBackPower(player);
     }

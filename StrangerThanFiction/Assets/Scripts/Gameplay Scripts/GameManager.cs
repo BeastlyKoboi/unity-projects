@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     public BoardManager boardManager;
 
     [HeaderAttribute("Game State Information")]
-    public uint roundNumber = 0;
-    private uint totalRounds = 6;
+    public int roundNumber = 0;
+    private int totalRounds = 6;
 
     [HeaderAttribute("Text Assets")]
     [SerializeField] private TextAsset StarterDecksJSON;

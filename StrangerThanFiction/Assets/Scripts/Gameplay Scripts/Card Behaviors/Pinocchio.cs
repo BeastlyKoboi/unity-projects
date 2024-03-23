@@ -14,9 +14,9 @@ public sealed class Pinocchio : CardModel
     public override CardType Type => CardType.Unit;
     public override string PortraitPath => "Assets/Textures/CardPortraits/Pinocchio.png";
 
-    public override uint BaseCost => 2;
-    public override uint BasePower => 3;
-    public override uint BasePlotArmor => 3;
+    public override int BaseCost => 2;
+    public override int BasePower => 3;
+    public override int BasePlotArmor => 3;
 
 
     // Start is called before the first frame update

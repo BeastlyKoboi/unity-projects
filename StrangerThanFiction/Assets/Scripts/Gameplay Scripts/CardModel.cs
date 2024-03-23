@@ -43,21 +43,21 @@ public abstract class CardModel : MonoBehaviour
     // ----------------------------------------------------------------------------
     // Stats that will not be changed - Consider making children implement this as static somehow?
     // ----------------------------------------------------------------------------
-    public virtual uint BaseCost { get; }
-    public virtual uint BasePower { get; } = 0;
-    public virtual uint BasePlotArmor { get; } = 0;
+    public virtual int BaseCost { get; }
+    public virtual int BasePower { get; } = 0;
+    public virtual int BasePlotArmor { get; } = 0;
 
     // ----------------------------------------------------------------------------
     // Stats that reflect gameplay and can be changed.
     //  - Max properties will automatically increase when current goes above it.
     // ----------------------------------------------------------------------------
-    public virtual uint MaxCost { get; set; }
-    public virtual uint MaxPower { get; set; }
-    public virtual uint MaxPlotArmor { get; set; }
+    public virtual int MaxCost { get; set; }
+    public virtual int MaxPower { get; set; }
+    public virtual int MaxPlotArmor { get; set; }
 
 
-    private uint _currentCost;
-    public virtual uint CurrentCost
+    private int _currentCost;
+    public virtual int CurrentCost
     {
         get { return _currentCost; }
         set
@@ -69,8 +69,8 @@ public abstract class CardModel : MonoBehaviour
                 UpdateUnitStatText();
         }
     }
-    private uint _currentPower;
-    public virtual uint CurrentPower
+    private int _currentPower;
+    public virtual int CurrentPower
     {
         get { return _currentPower; }
         set
@@ -82,8 +82,8 @@ public abstract class CardModel : MonoBehaviour
                 UpdateUnitStatText();
         }
     }
-    private uint _currentPlotArmor;
-    public virtual uint CurrentPlotArmor
+    private int _currentPlotArmor;
+    public virtual int CurrentPlotArmor
     {
         get { return _currentPlotArmor; }
         set
@@ -97,7 +97,7 @@ public abstract class CardModel : MonoBehaviour
     }
 
     // Used in conditions like Resilient
-    public virtual uint DamageResistence { get; set; } = 0;
+    public virtual int DamageResistence { get; set; } = 0;
 
     /// <summary>
     /// Holds labeled objects for the conditions applied to a card: Resilient, Poisoned, etc.
@@ -250,7 +250,7 @@ public abstract class CardModel : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="ignorePlotArmor">Whether the damage is affected by plot armor.</param>
     /// <returns></returns>
-    public uint TakeDamage(uint damage, bool ignorePlotArmor = false)
+    public int TakeDamage(int damage, bool ignorePlotArmor = false)
     {
         // Should NOT be called if in card form.
         if (Type != CardType.Unit) return 0;
@@ -293,7 +293,7 @@ public abstract class CardModel : MonoBehaviour
     /// </summary>
     /// <param name="powerAmount"></param>
     /// <returns></returns>
-    public uint GrantPower(uint powerAmount)
+    public int GrantPower(int powerAmount)
     {
         MaxPower += powerAmount;
         CurrentPower += powerAmount;
@@ -308,7 +308,7 @@ public abstract class CardModel : MonoBehaviour
     /// </summary>
     /// <param name="armorAmount"></param>
     /// <returns></returns>
-    public uint GrantPlotArmor(uint armorAmount)
+    public int GrantPlotArmor(int armorAmount)
     {
         CurrentPlotArmor += armorAmount;
 
@@ -322,13 +322,13 @@ public abstract class CardModel : MonoBehaviour
     /// </summary>
     /// <param name="healAmount"></param>
     /// <returns></returns>
-    public uint Heal(uint healAmount)
+    public int Heal(int healAmount)
     {
         // Should NOT be called if in card form.
         if (Type != CardType.Unit) return 0;
 
         // should never be negative
-        uint totalHealPossible = MaxPower - CurrentPower;
+        int totalHealPossible = MaxPower - CurrentPower;
 
         if (totalHealPossible == 0) return 0;
 

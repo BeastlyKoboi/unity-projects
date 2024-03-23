@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void RoundStart(uint roundNum)
+    public void RoundStart(int roundNum)
     {
         RoundPopup.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"Round {roundNum}";
         RoundPopup.SetTrigger("Popup");
@@ -61,8 +61,8 @@ public class UIManager : MonoBehaviour
 
     public async void GameOver()
     {
-        uint playerTotalPower = board.GetTotalPower(gameManager.player1);
-        uint enemyTotalPower = board.GetTotalPower(gameManager.player2);
+        int playerTotalPower = board.GetTotalPower(gameManager.player1);
+        int enemyTotalPower = board.GetTotalPower(gameManager.player2);
 
         playerTotalPowerCount.text = playerTotalPower.ToString();
         enemyTotalPowerCount.text = enemyTotalPower.ToString();
@@ -107,8 +107,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTotalPower()
     {
-        uint frontPower = board.GetTotalFrontPower(gameManager.player1);
-        uint backPower = board.GetTotalBackPower(gameManager.player1);
+        int frontPower = board.GetTotalFrontPower(gameManager.player1);
+        int backPower = board.GetTotalBackPower(gameManager.player1);
 
         powerPlayer1.text = (frontPower + backPower).ToString();
         frontPowerPlayer1.text = frontPower.ToString();

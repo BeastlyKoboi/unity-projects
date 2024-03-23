@@ -10,9 +10,9 @@ public sealed class Donkey : CardModel
     public override CardType Type => CardType.Unit;
     public override string PortraitPath => "Assets/Textures/CardPortraits/Donkey.png";
 
-    public override uint BaseCost => 1;
-    public override uint BasePower => 1;
-    public override uint BasePlotArmor => 1;
+    public override int BaseCost => 1;
+    public override int BasePower => 1;
+    public override int BasePlotArmor => 1;
 
 
     // Start is called before the first frame update
@@ -22,15 +22,14 @@ public sealed class Donkey : CardModel
 
         OnPlay += () =>
         {
-            
+            Owner.OnUnitSummoned += (unit) =>
+            {
+                if (unit.Title == Title && unit != this)
+                {
+                    GrantPower(1);
+                }
+            };
         };
-
-        OnSummon += () =>
-        {
-
-        };
-
-        
     }
 
 }

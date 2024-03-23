@@ -32,8 +32,8 @@ public class Player : MonoBehaviour
     public BoardManager board;
     public Player enemyPlayer;
 
-    private uint _maxMana = 5;
-    public uint MaxMana
+    private int _maxMana = 5;
+    public int MaxMana
     {
         get { return _maxMana; }
         set
@@ -42,8 +42,8 @@ public class Player : MonoBehaviour
             uiManager.UpdateMana(this);
         }
     }
-    private uint _currentMana = 5;
-    public uint CurrentMana
+    private int _currentMana = 5;
+    public int CurrentMana
     {
         get { return _currentMana; }
         set
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     }
 
     [HeaderAttribute("Game State Info")]
-    public uint totalDepth = 0;
+    public int totalDepth = 0;
     public bool hasEndedTurn = false;
     public bool hasEndedRound = false;
 
