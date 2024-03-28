@@ -9,10 +9,10 @@ using UnityEngine;
 public sealed class Pinocchio : CardModel
 {
     public override string Title => "Pinnochio";
-    public override string Description => "Every turn, create a Tall Tale in your hand.";
+    public override string Description => "On round start, create a Tall Tale in your hand.";
     public override string FlavorText => base.FlavorText;
     public override CardType Type => CardType.Unit;
-    public override string PortraitPath => "Assets/Textures/CardPortraits/Pinocchio.png";
+    public override string PortraitPath => "CardPortraits/Pinocchio.png";
 
     public override int BaseCost => 2;
     public override int BasePower => 3;

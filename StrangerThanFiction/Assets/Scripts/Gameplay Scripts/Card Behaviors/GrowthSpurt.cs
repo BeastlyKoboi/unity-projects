@@ -5,12 +5,12 @@ using UnityEngine;
 public sealed class GrowthSpurt : CardModel
 {
     public override string Title => "Growth Spurt";
-    public override string Description => "Grant your weakest unit +3 power.";
+    public override string Description => "Grant your weakest unit +4 power.";
     public override string FlavorText => base.FlavorText;
     public override CardType Type => CardType.Spell;
-    public override string PortraitPath => "Assets/Textures/CardPortraits/Affable_Nipper.png";
+    public override string PortraitPath => "CardPortraits/Affable_Nipper.png";
 
-    public override int BaseCost => 1;
+    public override int BaseCost => 2;
 
     // Start is called before the first frame update
     public override void Start()
@@ -23,7 +23,7 @@ public sealed class GrowthSpurt : CardModel
 
             if (weakestUnit)
             {
-                weakestUnit.GrantPower(3);
+                weakestUnit.GrantPower(4);
             }
         };
     }

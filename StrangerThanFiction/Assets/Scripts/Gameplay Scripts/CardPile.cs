@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -71,6 +72,17 @@ public class CardPile
     }
     public void Shuffle()
     {
+
+        int n = cards.Count;
+        System.Random rng = new System.Random();
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            CardModel value = cards[k];
+            cards[k] = cards[n];
+            cards[n] = value;
+        }
 
         OnShuffle?.Invoke();
     }

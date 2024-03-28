@@ -9,6 +9,11 @@ public class Poisoned : ICondition
         this.amount = amount;
     }
 
+    public static string GetName()
+    {
+        return "Poisoned";
+    }
+
     public void OnAdd()
     {
         card.OnRoundEnd += OnTrigger;

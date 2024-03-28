@@ -8,7 +8,7 @@ public sealed class Donkey : CardModel
     public override string Description => "Whenever you summon another copy of me, grant me +1 power.";
     public override string FlavorText => base.FlavorText;
     public override CardType Type => CardType.Unit;
-    public override string PortraitPath => "Assets/Textures/CardPortraits/Donkey.png";
+    public override string PortraitPath => "CardPortraits/Donkey.png";
 
     public override int BaseCost => 1;
     public override int BasePower => 1;

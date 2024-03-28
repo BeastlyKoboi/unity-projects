@@ -5,10 +5,10 @@ using UnityEngine;
 public sealed class TallTale : CardModel
 {
     public override string Title => "Tall Tale";
-    public override string Description => "The top card on deck get -1 cost.";
+    public override string Description => "The top card on deck get -1 cost. On play I am destroyed.";
     public override string FlavorText => base.FlavorText;
     public override CardType Type => CardType.Spell;
-    public override string PortraitPath => "Assets/Textures/CardPortraits/Tall_Tale.png";
+    public override string PortraitPath => "CardPortraits/Tall_Tale.png";
 
     public override int BaseCost => 0;
 
@@ -18,11 +18,17 @@ public sealed class TallTale : CardModel
     {
         base.Start();
 
+        ApplyCondition(Combust.GetName(), new Combust(this, 0));
+
         OnPlay += () =>
         {
-            CardModel topUnit = Owner.Deck[^1];
+            if (Owner.Deck.Count > 0)
+            {
+                CardModel topUnit = Owner.Deck[^1];
 
-            topUnit.CurrentCost -= 1;
+                topUnit.CurrentCost -= 1;
+            }
+
         };
     }
 

@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 63910
+  controlID: 15574
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 63911
+  controlID: 15575
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 63912
+  controlID: 15576
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,10 +236,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6a700000
-      m_LastClickedID: 0
-      m_ExpandedIDs: 7afcc0ffe6b6e0ff14daf9ffd4daf9ffe8dbf9ff60e0f9ffd6e1f9ffa0c5ffff6ac6ffff0cc7ffff2cc9ffff0eceffffcaf4ffff12fbffff0a79000018790000fc7a0000307b0000367b0000627b0000a67b0000447c000066a10000aca10000bca10000caa10000eaa10000fea1000014a2000044a20000a2a20000aea20000f2a200003ea300004ca30000
+      scrollPos: {x: 0, y: 60}
+      m_SelectedIDs: c6930100
+      m_LastClickedID: 103366
+      m_ExpandedIDs: 1c92fbffc092fbffd298fbffec98fbffe0a2fbff84a3fbff94a9fbffaea9fbffb820fcffaeb1fcff52b2fcff6ab8fcff8cb8fcffee1ffdff4a07feffee07feff020efeff200efeffda18feffde25feff8226feff922cfeffac2cfeffa03bfeff443cfeff3842feff5242feff2649feffca49feffbe4ffeffd84ffeffcc5afeff705bfeff8061feff9a61feffd083ffff20f2ffff12fbffffde170100121801002a180100a418010040490100784b0100c6930100089401000c95010044970100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -672,9 +672,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 95.86698, y: 10.236844, z: -12.189763}
+    m_Target: {x: 294.8245, y: 117.93698, z: -11.667223}
     speed: 2
-    m_Value: {x: 95.86698, y: 10.236844, z: -12.189763}
+    m_Value: {x: 295.43915, y: 119.241585, z: -11.70611}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -724,9 +724,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 116.79729
+    m_Target: 82.52735
     speed: 2
-    m_Value: 116.79729
+    m_Value: 86.41608
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -857,8 +857,8 @@ MonoBehaviour:
     y: 0
     width: 448.79993
     height: 419.2
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -937,7 +937,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/TextAssets
+    - Assets/Animations/GameOverPopup
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -945,16 +945,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/TextAssets
+  - Assets/Animations/GameOverPopup
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\itsal\Documents\GitHub\unity-projects\StrangerThanFiction
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 153.40002}
-    m_SelectedIDs: fe720000
-    m_LastClickedID: 29438
-    m_ExpandedIDs: 00000000d0720000d272000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 127}
+    m_SelectedIDs: c2a50100
+    m_LastClickedID: 107970
+    m_ExpandedIDs: 00000000787300007a7300008e73000094730000a6730000920a010000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -970,7 +970,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 11}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -982,7 +982,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d0720000d272000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000787300007a73000094730000a6730000920a010000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1007,8 +1007,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 6a700000
-    m_LastClickedInstanceID: 28778
+    m_SelectedInstanceIDs: c6930100
+    m_LastClickedInstanceID: 103366
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000a874000000000000
     m_RenameOverlay:
@@ -1108,7 +1108,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 41404
+  m_LastSelectedObjectID: 103366
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1128,8 +1128,8 @@ MonoBehaviour:
     y: 0
     width: 364.80005
     height: 722.8
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -1176,7 +1176,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 548.8
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:

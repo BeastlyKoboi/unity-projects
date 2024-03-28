@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Mathematics;
@@ -233,9 +234,10 @@ public abstract class CardModel : MonoBehaviour
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public virtual async Task Destroy(Player player)
+    public virtual async Task Destroy()
     {
         OnDestroy?.Invoke();
+        Destroy(cardView.gameObject);
     }
 
     public void RoundStart()
@@ -406,21 +408,23 @@ public abstract class CardModel : MonoBehaviour
     /// <summary>
     /// Loads a sprite and returns it from a path string. 
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="filename"></param>
     /// <returns></returns>
-    private static Sprite LoadSprite(string path)
+    private static Sprite LoadSprite(string filename)
     {
-        if (string.IsNullOrEmpty(path)) return null;
+        if (string.IsNullOrEmpty(filename)) return null;
+
+        string path = Path.Combine(Application.streamingAssetsPath, filename);
+
         if (System.IO.File.Exists(path))
         {
-            int sprite_width = 100;
-            int sprite_height = 100;
             byte[] bytes = System.IO.File.ReadAllBytes(path);
-            Texture2D texture = new Texture2D(sprite_width, sprite_height, TextureFormat.RGB24, false);
+            Texture2D texture = new Texture2D(100, 100, TextureFormat.RGB24, false);
             texture.LoadImage(bytes);
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             return sprite;
         }
+
         return null;
     }
 
@@ -447,7 +451,7 @@ public abstract class CardModel : MonoBehaviour
         // Placeholder has Unit Card frame automatically, so replace it if needed
         if (Type == CardType.Spell)
         {
-            Sprite spellCardFrame = LoadSprite("Assets/Textures/SpellCardFrontFrame.png");
+            Sprite spellCardFrame = LoadSprite("SpellCardFrontFrame.png");
             Transform background = cardView.Find("Background");
             background.GetComponent<Image>().sprite = spellCardFrame;
 

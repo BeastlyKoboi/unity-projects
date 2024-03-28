@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
-using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.XR;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// My thinking is that all player input will be filtered in from here, human or AI. 
@@ -23,7 +21,7 @@ public class Player : MonoBehaviour
     public event Action OnGameOver;
 
     public event Action<CardModel> OnUnitSummoned;
-    public event Action OnCardPlayed;
+    public event Action<CardModel> OnCardPlayed;
     public event Action OnMyTurnStart;
 
     [HeaderAttribute("Game and Enemy Info")]
@@ -91,6 +89,8 @@ public class Player : MonoBehaviour
             Deck.Add(CreateCard(card, isHidden, deckGameObject));
         }
 
+        Deck.Shuffle();
+
         Discard = new CardPile();
         Discard.OnChange += () =>
         {
@@ -100,21 +100,26 @@ public class Player : MonoBehaviour
 
     public async Task PlayerTurn()
     {
+        hasEndedTurn = false;
+
         handManager.RefreshPlayableCards();
 
         OnMyTurnStart?.Invoke();
 
         handManager.RefreshPlayableCards();
 
-        while (handManager.playedCard == null)
+        while (handManager.playedCard == null && !hasEndedTurn)
         {
             await Task.Yield();
         }
 
-        Debug.Log("Card Played");
-        await PlayCard(handManager.playedCard);
+        if (handManager.playedCard)
+        {
+            Debug.Log("Card Played");
+            await PlayCard(handManager.playedCard);
 
-        uiManager.UpdateTotalPower();
+            uiManager.UpdateTotalPower();
+        }
 
         handManager.LockCards();
     }
@@ -123,6 +128,9 @@ public class Player : MonoBehaviour
     {
         if (Deck.Count == 0)
             ShuffleDiscardIntoDeck();
+
+        if (Deck.Count == 0)
+            return;
 
         CardModel drawnCard;
         drawnCard = Deck[Deck.Count - 1];
@@ -138,6 +146,17 @@ public class Player : MonoBehaviour
         RectTransform cardRect = card.gameObject.GetComponent<RectTransform>();
         cardRect.anchoredPosition = new Vector2(0, 0);
         cardRect.rotation = Quaternion.identity;
+    }
+
+    public async void DestroyCard(CardModel card)
+    {
+        handManager.RemoveCardFromHand(card);
+        await card.Destroy();
+    }
+
+    public void PassTurn()
+    {
+        hasEndedTurn = true;
     }
 
     public bool CanDoSomething()
@@ -156,12 +175,19 @@ public class Player : MonoBehaviour
 
     private async Task PlayCard(CardModel card)
     {
+        OnCardPlayed?.Invoke(card);
+
         await card.Play(this);
 
         if (card.Type == CardType.Unit)
             handManager.RemoveCardFromHand(card);
         else
-            DiscardCard(card);
+        {
+            if (card.HasCondition(Combust.GetName())) 
+                DestroyCard(card);
+            else 
+                DiscardCard(card);
+        }
 
         handManager.playedCard = null;
     }

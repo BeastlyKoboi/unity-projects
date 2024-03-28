@@ -31,8 +31,28 @@ public class GameManager : MonoBehaviour
 
     [HeaderAttribute("Text Assets")]
     [SerializeField] private TextAsset StarterDecksJSON;
-    public string[] Pinocchio;
-    public string[] TheBigBadWolf;
+    private string[] Pinocchio = new string[]
+    {
+        "Donkey",
+        "GrowthSpurt",
+        "Donkey",
+        "GrowthSpurt",
+        "Donkey",
+        "GrowthSpurt",
+        "TheBlueFairy",
+        "GrowthSpurt",
+        "Donkey",
+        "GrowthSpurt",
+        "TheBlueFairy",
+        "GrowthSpurt",
+        "Donkey",
+        "GrowthSpurt",
+        "Donkey",
+        "TheBlueFairy",
+        "Pinocchio",
+        "GrowthSpurt"
+    };
+    private string[] TheBigBadWolf;
 
     // Something for battlefield conditions
     //  - 
@@ -43,7 +63,11 @@ public class GameManager : MonoBehaviour
     {
         // initialize all needed stuff for beginning of game 
 
-        JsonUtility.FromJsonOverwrite(StarterDecksJSON.text, this);
+        //JsonUtility.FromJsonOverwrite(StarterDecksJSON.text, this);
+
+        //gameObject.AddComponent<LocalStorageManager>();
+        //LocalStorageManager storage = gameObject.GetComponent<LocalStorageManager>();
+        //storage.SaveData("Starter Deck", StarterDecksJSON.text);
 
         player1.PopulateDeck(Pinocchio, false);
         player2.PopulateDeck(Pinocchio, true);
@@ -121,7 +145,8 @@ public class GameManager : MonoBehaviour
 
             await Task.Yield();
 
-        } while (player1.CanDoSomething() || player2.CanDoSomething());
+        } while ((player1.CanDoSomething() && !player1.hasEndedTurn) ||
+            (player2.CanDoSomething() && !player2.hasEndedTurn));
         // 
 
         await DiscardHands();
@@ -165,5 +190,10 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         uiManager.GameOver();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
